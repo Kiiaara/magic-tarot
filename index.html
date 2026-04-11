@@ -2,17 +2,11 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Magic Tarot — Final Production</title>
+    <title>Magic Tarot — Final Debug</title>
     <style>
-        body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            overflow: hidden; background: #000;
-            display: flex; justify-content: center; align-items: center;
-            font-family: 'Georgia', serif;
-        }
-
-        /* ВИДЕО-ФОН */
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; display: flex; justify-content: center; align-items: center; }
+        
+        /* Видео фон */
         .video-bg {
             position: fixed; top: 50%; left: 50%;
             min-width: 100%; min-height: 100%;
@@ -20,73 +14,36 @@
             transform: translate(-50%, -50%);
             z-index: -2; object-fit: cover;
             filter: brightness(0.4);
+            display: block;
         }
 
-        /* МИСТИЧЕСКИЙ ГРАДИЕНТ */
-        .overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, transparent, #05010c);
-            z-index: -1; pointer-events: none;
-        }
-
-        /* СВЕТЛЯЧКИ */
-        #particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
-
-        .main-wrapper { 
-            position: relative; display: flex; gap: 40px; z-index: 10; 
-            transform: scale(0.9); /* Чуть уменьшил для лучшей записи */
-        }
-
-        /* КАРТЫ С ЛЕВИТАЦИЕЙ */
-        .card { 
-            width: 300px; height: 460px; perspective: 1500px; cursor: pointer;
-            animation: levitate 6s ease-in-out infinite;
-        }
-        @keyframes levitate {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-        .card:nth-child(1) { animation-delay: 0s; }
-        .card:nth-child(2) { animation-delay: -1.5s; }
-        .card:nth-child(3) { animation-delay: -3s; }
-
-        .card-inner {
-            position: relative; width: 100%; height: 100%;
-            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform-style: preserve-3d; box-shadow: 0 20px 60px rgba(0,0,0,1); border-radius: 20px;
-        }
-        .card.open .card-inner { transform: rotateY(180deg); }
-
-        .card-front, .card-back {
-            position: absolute; width: 100%; height: 100%;
-            backface-visibility: hidden; border-radius: 20px;
-            border: 3px solid #c5a059; display: flex; flex-direction: column; justify-content: center; align-items: center;
-        }
-        .card-front { background: #111; color: #c5a059; font-size: 100px; }
-        .card-back { 
-            background: #000; color: #fff; transform: rotateY(180deg); 
-            box-shadow: inset 0 0 100px rgba(197, 160, 89, 0.3);
-        }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, transparent, #05010c); z-index: -1; }
+        .main-wrapper { position: relative; display: flex; gap: 40px; z-index: 10; }
         
-        .amount { font-size: 52px; font-weight: bold; color: #c5a059; text-shadow: 0 0 25px #c5a059; }
+        /* Карты */
+        .card { width: 300px; height: 460px; perspective: 1200px; cursor: pointer; animation: levitate 6s ease-in-out infinite; }
+        @keyframes levitate { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        .card-inner { position: relative; width: 100%; height: 100%; transition: 0.8s; transform-style: preserve-3d; box-shadow: 0 20px 60px #000; border-radius: 20px; }
+        .card.open .card-inner { transform: rotateY(180deg); }
+        .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 20px; border: 3px solid #c5a059; display: flex; justify-content: center; align-items: center; }
+        .card-front { background: #111; color: #c5a059; font-size: 80px; }
+        .card-back { background: #000; color: #fff; transform: rotateY(180deg); }
+        .amount { font-size: 48px; font-weight: bold; color: #c5a059; }
 
-        /* ОГОНЬКИ */
-        .dot { 
-            position: absolute; background: #fff; border-radius: 50%; 
-            opacity: 0.5; box-shadow: 0 0 10px #c5a059; animation: float linear infinite; 
-        }
-        @keyframes float { from { transform: translate(0, 0); } to { transform: translate(var(--x), var(--y)); } }
+        /* Текст статуса (для дебага) */
+        #status { position: fixed; bottom: 10px; left: 10px; color: #c5a059; font-size: 10px; z-index: 100; opacity: 0.5; }
     </style>
 </head>
-<body onclick="startVideo()">
+<body onclick="forcePlay()">
 
-    <video id="bgVideo" autoplay muted loop playsinline class="video-bg">
+    <div id="status">Ожидание клика для запуска видео...</div>
+
+    <video id="bgVideo" preload="auto" autoplay muted loop playsinline class="video-bg">
+        <source src="./1.mp4" type="video/mp4">
         <source src="1.mp4" type="video/mp4">
     </video>
-    <div id="fallback-bg" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-3; background: url('bg.jpg.jpg') center/cover no-repeat; filter: brightness(0.4);"></div>
 
     <div class="overlay"></div>
-    <div id="particles"></div>
 
     <div class="main-wrapper">
         <div class="card" onclick="flip(this)"><div class="card-inner"><div class="card-front">✦</div><div class="card-back"><div class="amount"></div></div></div></div>
@@ -95,33 +52,29 @@
     </div>
 
     <script>
-        // Функция для обхода блокировки автоплея браузером
-        function startVideo() {
-            const video = document.getElementById('bgVideo');
-            if (video) video.play();
+        const video = document.getElementById('bgVideo');
+        const status = document.getElementById('status');
+
+        function forcePlay() {
+            video.play().then(() => {
+                status.innerText = "Видео запущено";
+            }).catch(err => {
+                status.innerText = "Ошибка запуска: " + err.message;
+            });
         }
 
-        const res = ["10 000 ₽", "30 000 ₽", "50 000 ₽", "100 000 ₽", "ALL IN", "X2 DEP"];
+        // Логика карт
+        const res = ["10 000 ₽", "30 000 ₽", "50 000 ₽", "100 000 ₽", "ALL IN"];
         function flip(c) {
             if (c.classList.contains('open')) return;
             c.querySelector('.amount').innerText = res[Math.floor(Math.random() * res.length)];
             c.classList.add('open');
-            startVideo(); // Запускаем видео при первом же клике на карту
+            forcePlay();
         }
 
-        // Создаем светлячки
-        const container = document.getElementById('particles');
-        for (let i = 0; i < 45; i++) {
-            const dot = document.createElement('div');
-            dot.className = 'dot';
-            const s = Math.random() * 4 + 2;
-            dot.style.width = s + 'px'; dot.style.height = s + 'px';
-            dot.style.left = Math.random() * 100 + '%'; dot.style.top = Math.random() * 100 + '%';
-            dot.style.setProperty('--x', (Math.random() - 0.5) * 600 + 'px');
-            dot.style.setProperty('--y', (Math.random() - 0.5) * 600 + 'px');
-            dot.style.animationDuration = (Math.random() * 10 + 10) + 's';
-            container.appendChild(dot);
-        }
+        // Проверка загрузки видео
+        video.onloadeddata = () => { status.innerText = "Видео загружено, нажмите для старта"; };
+        video.onerror = () => { status.innerText = "Файл видео не найден или кодек не поддерживается"; };
     </script>
 </body>
 </html>
