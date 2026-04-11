@@ -86,7 +86,7 @@
     <script>
         function flip(c) {
             if (c.classList.contains('open')) return;
-            const res = ["10 000 ₽", "30 000 ₽", "50 000 ₽", "100 000 ₽", "ALL IN"];
+            const res = ["30 000 ₽", "50 000 ₽", "100 000 ₽", "300 000 ₽"];
             c.querySelector('.sum').innerText = res[Math.floor(Math.random() * res.length)];
             c.classList.add('open');
             document.getElementById('v').play();
