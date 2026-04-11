@@ -70,12 +70,36 @@
         }
         .card.open .inner { transform: rotateY(180deg); }
         
-       /* ОБЩИЕ СТИЛИ СТОРОН */
-        .f, .back { 
-            position: absolute; width: 100%; height: 100%; 
-            backface-visibility: hidden; border-radius: 20px; 
-            border: 3px solid #c5a059; display: flex; flex-direction: column; justify-content: center; align-items: center; 
-        }
+      /* 1. ОБЩИЕ СТИЛИ (Оставляем как базу для обеих сторон) */
+.f, .back { 
+    position: absolute; 
+    width: 100%; 
+    height: 100%; 
+    backface-visibility: hidden; 
+    border-radius: 20px; 
+    border: 3px solid #c5a059; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+}
+
+/* 2. УНИКАЛЬНЫЙ ФОН ДЛЯ ЗАДНЕЙ СТОРОНЫ (Вариант с текстурой) */
+.back { 
+    /* Путь к твоей текстуре */
+    background-image: url('back-texture.webp'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    /* Эффект "Глубокого тонирования", чтобы золотой текст лучше читался */
+    background-color: rgba(0, 0, 0, 0.6); 
+    background-blend-mode: darken; 
+
+    color: #fff; 
+    transform: rotateY(180deg); /* Это критически важно для разворота! */
+    box-shadow: inset 0 0 30px rgba(197, 160, 89, 0.4); 
+}
         
        /* --- ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ ОБЛОЖЕК --- */
         .f { 
