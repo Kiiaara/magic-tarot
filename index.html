@@ -105,15 +105,19 @@
         .card:nth-child(3) .f { background-image: url('4 обложка.webp'); }
 
         .sum {
-            font-size: 54px;
-            font-weight: bold;
-            color: #fff; /* Текст белый для яркости */
-            text-shadow: 0 0 15px #c5a059, 0 0 30px #c5a059; /* Золотое свечение текста */
-            display: inline-block;
-            white-space: nowrap;
-            /* ФИКС ЗЕРКАЛЬНОГО ТЕКСТА (Разворот обратно) */
-            transform: rotateY(180deg); 
-        }
+    font-size: 54px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 15px #c5a059, 0 0 30px #c5a059;
+    display: inline-block;
+    white-space: nowrap;
+    
+    /* Если текст все еще отзеркален — используй это: */
+    transform: scaleX(-1); 
+    
+    /* Если после scaleX(-1) текст стал нормальным, но картинка-фон 
+       разворота осталась отзеркаленной, напиши мне. Но текст поправим так. */
+}
     </style>
 </head>
 <body onclick="document.getElementById('v').play()">
