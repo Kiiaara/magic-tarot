@@ -37,71 +37,60 @@
         /* КАРТЫ */
         .wrapper { display: flex; gap: 40px; z-index: 100; position: relative; }
         .card { width: 300px; height: 460px; perspective: 1200px; cursor: pointer; animation: lev 6s infinite ease-in-out; }
+        
         /* АСИНХРОННОСТЬ (РАЗНАЯ ЗАДЕРЖКА) */
-
-        /* Первая карта — стартует сразу */
-        .card:nth-child(1) { 
-            animation-delay: 0s; 
-        }
-
-        /* Вторая карта — смещена на треть цикла (2 секунды) */
-        .card:nth-child(2) { 
-            animation-delay: -2s; 
-        }
-
-        /* Третья карта — смещена на две трети цикла (4 секунды) */
-        .card:nth-child(3) { 
-            animation-delay: -4s; 
-        }
+        .card:nth-child(1) { animation-delay: 0s; }
+        .card:nth-child(2) { animation-delay: -2s; }
+        .card:nth-child(3) { animation-delay: -4s; }
+        
         @keyframes lev { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
         
-       .inner { 
+        .inner { 
             position: relative; 
             width: 100%; 
             height: 100%; 
             transition: 0.8s; 
             transform-style: preserve-3d; 
             border-radius: 20px;
-            
-            /* КОМБИНИРОВАННАЯ ТЕНЬ: 
-               1. Черная (0 15px 60px #000) — для объема и отделения от фона.
-               2. Золотая (0 0 40px 10px rgba(197, 160, 89, 0.6)) — само свечение. */
+            /* ВНЕШНЕЕ ЗОЛОТОЕ СВЕЧЕНИЕ КАРТ */
             box-shadow: 0 15px 60px #000, 0 0 40px 10px rgba(197, 160, 89, 0.6); 
         }
         .card.open .inner { transform: rotateY(180deg); }
         
-      /* 1. ОБЩИЕ СТИЛИ (Оставляем как базу для обеих сторон) */
-.f, .back { 
-    position: absolute; 
-    width: 100%; 
-    height: 100%; 
-    backface-visibility: hidden; 
-    border-radius: 20px; 
-    border: 3px solid #c5a059; 
-    display: flex; 
-    flex-direction: column; 
-    justify-content: center; 
-    align-items: center; 
-}
+        /* ОБЩИЕ СТИЛИ (Оставляем как базу для обеих сторон) */
+        .f, .back { 
+            position: absolute; 
+            width: 100%; 
+            height: 100%; 
+            backface-visibility: hidden; 
+            border-radius: 20px; 
+            border: 3px solid #c5a059; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+        }
 
-/* 2. УНИКАЛЬНЫЙ ФОН ДЛЯ ЗАДНЕЙ СТОРОНЫ (Вариант с текстурой) */
-.back { 
-    /* Путь к твоей текстуре */
-    background-image: url('разворот.webp'); 
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+        /* УНИКАЛЬНЫЙ ФОН ДЛЯ ЗАДНЕЙ СТОРОНЫ (ОБЪЕДИНЕННЫЙ БЛОК) */
+        .back { 
+            /* 1. Задаем текстуру */
+            background-image: url('разворот.webp'); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
 
-    /* Эффект "Глубокого тонирования", чтобы золотой текст лучше читался */
-    background-color: rgba(0, 0, 0, 0.6); 
-    background-blend-mode: darken; 
+            /* 2. Эффект тонирования поверх текстуры */
+            background-color: rgba(0, 0, 0, 0.6); 
+            background-blend-mode: darken; 
 
-    color: #fff; 
-    transform: rotateY(180deg); /* Это критически важно для разворота! */
-    box-shadow: inset 0 0 30px rgba(197, 160, 89, 0.4); 
-}
+            color: #fff; 
+            transform: rotateY(180deg); /* Это критически важно для разворота! */
+            
+            /* 3. Мягкое внутреннее золотое свечение */
+            box-shadow: inset 0 0 30px rgba(197, 160, 89, 0.4); 
+        }
         
-       /* --- ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ ОБЛОЖЕК --- */
+        /* ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ ОБЛОЖЕК (Рубашка) */
         .f { 
             background-size: cover;
             background-position: center;
@@ -110,38 +99,20 @@
         /* Убираем старый символ ✦ */
         .f::after { content: none; }
 
-        /* ПЕРСОНАЛЬНЫЕ КАРТИНКИ ДЛЯ КАЖДОЙ КАРТЫ */
-        
-        /* Первая карта */
-        .card:nth-child(1) .f {
-            background-image: url('3 обложка.webp'); 
-        }
-
-        /* Вторая карта */
-        .card:nth-child(2) .f {
-            background-image: url('2 обложка.webp'); 
-        }
-
-        /* Третья карта */
-        .card:nth-child(3) .f {
-            background-image: url('4 обложка.webp'); 
-        }
-        
-        .back { 
-            background: #000; transform: rotateY(180deg); 
-            /* Мягкое внутреннее свечение */
-            box-shadow: inset 0 0 20px rgba(197, 160, 89, 0.4); 
-        }
+        /* ПЕРСОНАЛЬНЫЕ КАРТИНКИ ДЛЯ КАЖДОЙ КАРТЫ (Обложки) */
+        .card:nth-child(1) .f { background-image: url('3 обложка.webp'); }
+        .card:nth-child(2) .f { background-image: url('2 обложка.webp'); }
+        .card:nth-child(3) .f { background-image: url('4 обложка.webp'); }
 
         .sum {
             font-size: 54px;
             font-weight: bold;
-            color: #fff; /* Сделал текст белым для яркости */
-            text-shadow: 0 0 15px #c5a059, 0 0 30px #c5a059; /* Золотое свечение */
+            color: #fff; /* Текст белый для яркости */
+            text-shadow: 0 0 15px #c5a059, 0 0 30px #c5a059; /* Золотое свечение текста */
             display: inline-block;
             white-space: nowrap;
-            /* Убрал разворот отсюда, так как он мешал */
-            transform: none; 
+            /* ФИКС ЗЕРКАЛЬНОГО ТЕКСТА (Разворот обратно) */
+            transform: rotateY(180deg); 
         }
     </style>
 </head>
@@ -156,7 +127,7 @@
     <div class="wrapper">
         <div class="card" onclick="flip(this)"><div class="inner"><div class="f"></div><div class="back"><div class="sum"></div></div></div></div>
         <div class="card" onclick="flip(this)"><div class="inner"><div class="f"></div><div class="back"><div class="sum"></div></div></div></div>
-        <div class="card" onclick="flip(this)"><div class="inner"><div class="f"></div><div class="back"><div class="sum"></div></div></div></div>
+        <div class="card" onclick="flip(this)"><div class="inner"><div class="f">✦</div><div class="back"><div class="sum"></div></div></div></div>
     </div>
 
     <script>
