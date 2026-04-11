@@ -42,15 +42,24 @@
         .inner { position: relative; width: 100%; height: 100%; transition: 0.8s; transform-style: preserve-3d; box-shadow: 0 15px 60px #000; border-radius: 20px; }
         .card.open .inner { transform: rotateY(180deg); }
         
+       /* ОБЩИЕ СТИЛИ СТОРОН */
         .f, .back { 
             position: absolute; width: 100%; height: 100%; 
             backface-visibility: hidden; border-radius: 20px; 
             border: 3px solid #c5a059; display: flex; flex-direction: column; justify-content: center; align-items: center; 
         }
         
-        .f { background: #111; color: #c5a059; font-size: 100px; }
-        .f::after { content: "✦"; text-shadow: 0 0 20px #c5a059; }
-
+        /* --- ВНЕШНЯЯ СТОРОНА (РУБАШКА) С КАРТИНКОЙ --- */
+        .f { 
+            /* Убедись, что файл card-shirt.webp загружен на GitHub */
+            background-image: url('Mystical_sorceress_avatar,_202604112342.webp'); 
+            background-size: cover; /* Растянуть картинку по размеру карты */
+            background-position: center; /* Центрировать */
+            background-repeat: no-repeat;
+        }
+        /* Убираем старый символ ✦ */
+        .f::after { content: none; }
+        
         .back { 
             background: #000; transform: rotateY(180deg); 
             /* Мягкое внутреннее свечение */
