@@ -2,82 +2,137 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Magic Tarot — Final Release</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magic Tarot — Ultra Final</title>
     <style>
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
-            overflow: hidden;
-            background: #05010c url('bg.webp') no-repeat center center fixed;
-            background-size: cover;
+            overflow: hidden; background: #000;
             display: flex; justify-content: center; align-items: center;
             font-family: 'Georgia', serif;
         }
 
-        /* ВИДЕО ФОН */
-        .video-layer {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0; object-fit: cover; 
-            filter: brightness(0.5);
-            pointer-events: none;
+        /* ВИДЕО-ФОН */
+        .video-bg {
+            position: fixed; top: 50%; left: 50%;
+            min-width: 100%; min-height: 100%;
+            width: auto; height: auto;
+            transform: translate(-50%, -50%);
+            z-index: -2; object-fit: cover;
+            filter: brightness(0.4); /* Затемнение */
         }
 
-        /* СВЕТЛЯЧКИ */
-        .sparkle {
-            position: absolute; background: #fff; border-radius: 50%;
-            box-shadow: 0 0 10px #c5a059, 0 0 20px #c5a059;
-            z-index: 5; pointer-events: none;
-            animation: fly linear infinite;
-        }
-        @keyframes fly { 
-            from { transform: translate(0,0); opacity: 0; } 
-            50% { opacity: 0.8; } 
-            to { transform: translate(var(--x), var(--y)); opacity: 0; } 
+        /* ОБЕРТКА ДЛЯ КАРТ */
+        .main-wrapper { 
+            position: relative; display: flex; gap: 40px; z-index: 10; 
+            perspective: 1500px; /* Важно для 3D переворота */
         }
 
-        /* КАРТЫ */
-        .wrapper { display: flex; gap: 40px; z-index: 100; position: relative; }
-        .card { width: 300px; height: 460px; perspective: 1200px; cursor: pointer; animation: lev 6s infinite ease-in-out; }
-        @keyframes lev { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-        
-        .inner { position: relative; width: 100%; height: 100%; transition: 0.8s; transform-style: preserve-3d; box-shadow: 0 15px 50px #000; border-radius: 20px; }
-        .card.open .inner { transform: rotateY(180deg); }
-        
-        .f, .back { 
-            position: absolute; width: 100%; height: 100%; 
-            backface-visibility: hidden; border-radius: 20px; 
-            border: 3px solid #c5a059; display: flex; justify-content: center; align-items: center; 
+        /* КАРТА (Родительский элемент) */
+        .card { 
+            width: 300px; height: 460px; cursor: pointer;
+            animation: levitate 6s ease-in-out infinite;
         }
-        
-        .f { background: #111; color: #c5a059; font-size: 100px; }
-        .f::after { content: "✦"; text-shadow: 0 0 20px #c5a059; }
+        @keyframes levitate {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        /* Разная задержка левитации */
+        .card:nth-child(1) { animation-delay: 0s; }
+        .card:nth-child(2) { animation-delay: -1.5s; }
+        .card:nth-child(3) { animation-delay: -3s; }
 
-        .back { 
-            background: #000; color: #fff; transform: rotateY(180deg); 
-            /* УМЕНЬШЕНО ВНУТРЕННЕЕ СВЕЧЕНИЕ (с 80px до 30px) */
-            box-shadow: inset 0 0 30px rgba(197, 160, 89, 0.3); 
+        /* ВНУТРЕННИЙ КОНТЕЙНЕР (Который крутится) */
+        .card-inner {
+            position: relative; width: 100%; height: 100%;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d; /* Включает 3D */
+            box-shadow: 0 20px 60px rgba(0,0,0,1); border-radius: 20px;
         }
 
-        .sum {
-            font-size: 52px;
-            font-weight: bold;
-            color: #c5a059;
-            /* СДЕЛАЛ ТЕКСТ ЯРЧЕ (сменил тень) */
-            text-shadow: 0 0 15px white, 0 0 25px #c5a059;
-            /* ФИКС ЗЕРКАЛЬНОГО ТЕКСТА (РАЗВОРОТ ОБРАТНО) */
+        /* Класс, который добавляет JS для переворота */
+        .card.open .card-inner { 
             transform: rotateY(180deg); 
-            display: inline-block;
-            white-space: nowrap; /* Чтобы не переносился текст */
+        }
+
+        /* ОБЩИЕ СТИЛИ СТОРОН */
+        .card-front, .card-back {
+            position: absolute; width: 100%; height: 100%;
+            backface-visibility: hidden; border-radius: 20px;
+            border: 3px solid #c5a059; display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+
+        /* ЛИЦЕВАЯ СТОРОНА */
+        .card-front { 
+            background: #111; color: #c5a059; font-size: 100px; 
+            z-index: 2; /* Лицо сверху */
+        }
+
+        /*РУБАШКА (Задняя сторона)*/
+        .card-back { 
+            background: #000; color: #fff; 
+            transform: rotateY(180deg); /* Изначально развернута */
+            box-shadow: inset 0 0 100px rgba(197, 160, 89, 0.3);
+            z-index: 1;
+        }
+        
+        .amount { 
+            font-size: 52px; font-weight: bold; color: #c5a059; 
+            text-shadow: 0 0 25px #c5a059; 
         }
     </style>
 </head>
-<body onclick="document.getElementById('v').play()">
+<body onclick="startVideo()">
 
-    <video id="v" autoplay muted loop playsinline class="video-layer">
+    <video id="bgVideo" autoplay muted loop playsinline class="video-bg">
         <source src="1.mp4" type="video/mp4">
     </video>
+    <div style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-3; background: url('bg.jpg.jpg') center/cover no-repeat; filter: brightness(0.4);"></div>
 
-    <div id="sparkle-box"></div>
+    <div class="main-wrapper">
+        <div class="card" onclick="flip(this)">
+            <div class="card-inner">
+                <div class="card-front">✦</div>
+                <div class="card-back"><div class="amount"></div></div>
+            </div>
+        </div>
+        <div class="card" onclick="flip(this)">
+            <div class="card-inner">
+                <div class="card-front">✦</div>
+                <div class="card-back"><div class="amount"></div></div>
+            </div>
+        </div>
+        <div class="card" onclick="flip(this)">
+            <div class="card-inner">
+                <div class="card-front">✦</div>
+                <div class="card-back"><div class="amount"></div></div>
+            </div>
+        </div>
+    </div>
 
-    <div class="wrapper">
-        <div class="card" onclick="flip(this)"><div class="inner"><div class="f"></div><div class="back"><div class="sum"></div></div></div></div>
-        <div class="card" onclick="flip(this)"><div class="inner"><div class="f"></div><div class="back"><div class="sum"></div></div></div>
+    <script>
+        const video = document.getElementById('bgVideo');
+
+        // Принудительный запуск видео (для обхода блокировок браузера)
+        function startVideo() {
+            if (video) video.play();
+        }
+
+        const res = ["10 000 ₽", "30 000 ₽", "50 000 ₽", "100 000 ₽", "ALL IN"];
+        
+        function flip(cardElement) {
+            // Если карта уже открыта, ничего не делаем
+            if (cardElement.classList.contains('open')) return;
+            
+            // Вставляем случайную сумму
+            cardElement.querySelector('.amount').innerText = res[Math.floor(Math.random() * res.length)];
+            
+            // Добавляем класс переворота
+            cardElement.classList.add('open');
+            
+            // Запускаем видео, если оно вдруг стояло
+            startVideo(); 
+        }
+    </script>
+</body>
+</html>
