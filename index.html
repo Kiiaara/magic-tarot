@@ -49,16 +49,31 @@
             border: 3px solid #c5a059; display: flex; flex-direction: column; justify-content: center; align-items: center; 
         }
         
-        /* --- ВНЕШНЯЯ СТОРОНА (РУБАШКА) С КАРТИНКОЙ --- */
+       /* --- ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ ОБЛОЖЕК --- */
         .f { 
-            /* Убедись, что файл card-shirt.webp загружен на GitHub */
-            background-image: url('Mystical_sorceress_avatar,_202604112342.webp'); 
-            background-size: cover; /* Растянуть картинку по размеру карты */
-            background-position: center; /* Центрировать */
+            background-size: cover;
+            background-position: center;
             background-repeat: no-repeat;
         }
         /* Убираем старый символ ✦ */
         .f::after { content: none; }
+
+        /* ПЕРСОНАЛЬНЫЕ КАРТИНКИ ДЛЯ КАЖДОЙ КАРТЫ */
+        
+        /* Первая карта */
+        .card:nth-child(1) .f {
+            background-image: url('3 обложка.webp'); 
+        }
+
+        /* Вторая карта */
+        .card:nth-child(2) .f {
+            background-image: url('2 обложка.webp'); 
+        }
+
+        /* Третья карта */
+        .card:nth-child(3) .f {
+            background-image: url('4 обложка.webp'); 
+        }
         
         .back { 
             background: #000; transform: rotateY(180deg); 
