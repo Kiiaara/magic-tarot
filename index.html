@@ -29,7 +29,7 @@
             pointer-events: none;
         }
 
-        /* КНОПКА УПРАВЛЕНИЯ ЗВУКОМ */
+        /* КНОПКА УПРАВЛЕНИЯ ЗВУКОМ (SVG) */
         .music-control-btn {
             position: fixed;
             top: 20px;
@@ -40,8 +40,6 @@
             border-radius: 50%;
             background: rgba(0, 0, 0, 0.6);
             border: 2px solid #c5a059;
-            color: #c5a059;
-            font-size: 24px;
             cursor: pointer;
             display: flex;
             justify-content: center; align-items: center;
@@ -49,9 +47,24 @@
             box-shadow: 0 0 15px rgba(197, 160, 89, 0.4);
             transition: 0.3s;
         }
+        
+        .music-control-btn svg {
+            width: 24px;
+            height: 24px;
+            stroke: #c5a059; /* Золотой цвет иконок */
+            filter: drop-shadow(0 0 5px rgba(197, 160, 89, 0.8));
+            transition: 0.3s;
+        }
+
         .music-control-btn:hover {
             transform: scale(1.1);
             box-shadow: 0 0 25px rgba(197, 160, 89, 0.8);
+        }
+
+        #icon-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         #sparkle-box {
@@ -217,7 +230,11 @@
     </audio>
 
     <button id="music-control" class="music-control-btn" onclick="toggleMusic(event)">
-        <span id="music-icon">🔇</span>
+        <div id="icon-container">
+            <svg id="svg-mute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+            
+            <svg id="svg-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+        </div>
     </button>
 
     <video id="v" autoplay muted loop playsinline class="video-layer">
@@ -236,10 +253,8 @@
 
     <script>
         const bgMusic = document.getElementById('bg-music');
-        const musicIcon = document.getElementById('music-icon');
         const flipSnd = document.getElementById('flip-sound');
 
-        // 1. ФУНКЦИЯ ПЕРЕМЕШИВАНИЯ
         function shuffle(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -248,9 +263,8 @@
             return array;
         }
 
-        // 2. ГЕНЕРИРУЕМ УНИКАЛЬНЫЕ ПРИЗЫ ПРИ ЗАГРУЗКЕ
         const allPrizes = ["30 000 ₽", "50 000 ₽", "100 000 ₽", "300 000 ₽", "500 000 ₽", "750 000 ₽", "1 000 000 ₽", "1 250 000 ₽", "1 500 000 ₽", "2 000 000 ₽"];
-        const sessionPrizes = shuffle([...allPrizes]); // Перемешиваем копию массива
+        const sessionPrizes = shuffle([...allPrizes]);
 
         function startInteraction() {
             document.getElementById('v').play();
@@ -258,17 +272,23 @@
 
         function toggleMusic(event) {
             event.stopPropagation(); 
+            const svgOn = document.getElementById('svg-on');
+            const svgMute = document.getElementById('svg-mute');
+
             if (bgMusic.paused) {
                 bgMusic.volume = 0.2;
                 bgMusic.play();
-                musicIcon.innerText = '🔊';
+                svgOn.style.display = 'block';
+                svgMute.style.display = 'none';
+                document.getElementById('music-control').style.boxShadow = '0 0 25px rgba(197, 160, 89, 0.9)';
             } else {
                 bgMusic.pause();
-                musicIcon.innerText = '🔇';
+                svgOn.style.display = 'none';
+                svgMute.style.display = 'block';
+                document.getElementById('music-control').style.boxShadow = '0 0 15px rgba(197, 160, 89, 0.4)';
             }
         }
 
-        // 3. ОБНОВЛЕННАЯ ФУНКЦИЯ ПЕРЕВОРОТА
         function flip(c, index) {
             if (c.classList.contains('open')) return;
             
@@ -277,12 +297,10 @@
             flipSnd.volume = 0.3; 
             flipSnd.play();
 
-            // Берем приз из заранее перемешанного списка по индексу карты
             c.querySelector('.sum').innerText = sessionPrizes[index];
             c.classList.add('open');
         }
 
-        // Светлячки
         const box = document.getElementById('sparkle-box');
         for (let i = 0; i < 60; i++) {
             const s = document.createElement('div');
