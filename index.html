@@ -76,18 +76,43 @@
         }
         
         @media (max-width: 768px) {
+            /* 1. Сжимаем заголовок и запрещаем перенос */
             .main-header { 
-                font-size: 28px; /* Было 22px */
-                top: 5px; 
-                padding: 0 20px; 
+                font-size: 20px !important; /* Уменьшаем, чтобы влезло в ряд */
+                top: 10px; 
+                padding: 0 10px;
+                width: 100%;
+                box-sizing: border-box;
+                white-space: nowrap; /* Жестко в одну строку */
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
-            .main-header span { font-size: 36px; } /* Было 28px */
-            
-            .sum { font-size: 50px; } /* Было 48px */
+
+            /* 2. Уменьшаем значки ᛃ пропорционально тексту */
+            .main-header span { 
+                font-size: 28px !important; 
+                margin: 0 8px; 
+            }
+
+            /* 3. Сумма на карте на мобилке тоже должна быть чуть скромнее */
+            .sum { font-size: 42px; } 
+
+            /* 4. Отодвигаем карты вниз от заголовка */
+            .wrapper {
+                margin-top: 60px; /* Создаем зазор, чтобы хедер не "лежал" на картах */
+                gap: 20px; /* Уменьшаем расстояние между картами, чтобы влезли */
+                flex-direction: column; /* Карты встанут одна под другой — так удобнее на тачскрине */
+                transform: scale(0.85); /* Чуть уменьшаем масштаб всей группы карт */
+            }
+
+            /* 5. Настраиваем кнопку */
             .magic-btn {
-                font-size: 18px; /* На мобилках делаем чуть скромнее */
-                padding: 12px 30px;
-                bottom: 20px;
+                font-size: 20px;
+                padding: 15px 40px;
+                bottom: 15px;
+                width: 80%; /* Кнопка почти во всю ширину — по ней легче попасть */
+                text-align: center;
             }
         }
 
