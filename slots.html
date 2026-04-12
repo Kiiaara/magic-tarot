@@ -162,13 +162,19 @@
         }
 
         // Переключатель кнопкой
-        function toggleMusic(event) {
-            event.stopPropagation();
+      function toggleMusic(event) {
+            event.stopPropagation(); 
+            const svgOn = document.getElementById('svg-on');
+            const svgMute = document.getElementById('svg-mute');
+
             if (bgMusic.paused) {
+                // ВОТ ЭТА СТРОКА: принудительно ставим 0.2 при включении кнопкой
+                bgMusic.volume = 0.2; 
+                
                 bgMusic.play();
                 svgOn.style.display = 'block';
                 svgMute.style.display = 'none';
-                musicStarted = true;
+                musicStarted = true; // Фиксируем старт
                 document.getElementById('music-control').style.boxShadow = '0 0 25px rgba(197, 160, 89, 0.9)';
             } else {
                 bgMusic.pause();
