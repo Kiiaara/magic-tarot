@@ -30,35 +30,21 @@
 
         /* КНОПКА УПРАВЛЕНИЯ ЗВУКОМ (SVG) */
         .music-control-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px solid #c5a059;
-            cursor: pointer;
-            display: flex;
-            justify-content: center; align-items: center;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 0 15px rgba(197, 160, 89, 0.4);
+            position: fixed; top: 20px; right: 20px; z-index: 1000;
+            width: 65px; height: 65px; border-radius: 50%;
+            background: rgba(0, 0, 0, 0.6); border: 2px solid #c5a059;
+            cursor: pointer; display: flex; justify-content: center; align-items: center;
+            backdrop-filter: blur(5px); box-shadow: 0 0 15px rgba(197, 160, 89, 0.4);
             transition: 0.3s;
         }
         
         .music-control-btn svg {
-            width: 24px;
-            height: 24px;
-            stroke: #c5a059;
+            width: 32px; height: 32px; stroke: #c5a059;
             filter: drop-shadow(0 0 5px rgba(197, 160, 89, 0.8));
             transition: 0.3s;
         }
 
-        .music-control-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 25px rgba(197, 160, 89, 0.8);
-        }
+        .music-control-btn:hover { transform: scale(1.1); box-shadow: 0 0 25px rgba(197, 160, 89, 0.8); }
 
         /* ФИКСИРОВАННЫЙ ХЕДЕР */
         .header-fixed {
@@ -73,16 +59,10 @@
         .header-title { 
             position: relative; z-index: 10; color: #c5a059; 
             margin: 0 0 10px 0; text-shadow: 0 0 20px #c5a059; 
-            font-size: 36px;
-            text-transform: uppercase; letter-spacing: 3px;
+            font-size: 36px; text-transform: uppercase; letter-spacing: 3px;
         }
 
-        .header-title span {
-            font-size: 48px;
-            vertical-align: middle;
-            margin: 0 10px;
-            display: inline-block;
-        }
+        .header-title span { font-size: 48px; vertical-align: middle; margin: 0 10px; display: inline-block; }
 
         .magic-btn-back {
             position: relative; z-index: 200; margin-bottom: 15px;
@@ -93,110 +73,33 @@
             letter-spacing: 1px;
         }
 
-        /* СЕТКА: ЖЕСТКО 11 КОЛОНОК (даст 14 полных строк для 154 карт) */
+        /* СЕТКА */
         .slots-grid { 
-            position: relative; z-index: 100;
-            margin-top: 160px; 
-            display: grid; 
-            grid-template-columns: repeat(11, 1fr); 
-            gap: 6px; 
-            padding: 20px; 
-            width: 100%; 
-            box-sizing: border-box;
+            position: relative; z-index: 100; margin-top: 160px; 
+            display: grid; grid-template-columns: repeat(11, 1fr); 
+            gap: 6px; padding: 20px; width: 100%; box-sizing: border-box;
         }
 
-        .card { 
-            width: 100%; 
-            height: 90px; /* Увеличили высоту для читаемости текста */
-            perspective: 1000px; 
-            cursor: pointer; 
-        }
-
-        .inner { 
-            position: relative; width: 100%; height: 100%; 
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
-            transform-style: preserve-3d;
-            border-radius: 6px;
-        }
-
+        .card { width: 100%; height: 90px; perspective: 1000px; cursor: pointer; }
+        .inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; border-radius: 6px; }
         .card.open .inner { transform: rotateY(180deg); }
+        .card.hot-glow .inner { box-shadow: 0 0 25px 8px rgba(197, 160, 89, 0.8), inset 0 0 15px rgba(197, 160, 89, 0.6); animation: pulse-only-glow 2s infinite ease-in-out; }
 
-        .card.hot-glow .inner {
-            box-shadow: 0 0 25px 8px rgba(197, 160, 89, 0.8), 
-                        inset 0 0 15px rgba(197, 160, 89, 0.6);
-            animation: pulse-only-glow 2s infinite ease-in-out;
-        }
+        @keyframes pulse-only-glow { 0%, 100% { box-shadow: 0 0 25px 8px rgba(197, 160, 89, 0.8); } 50% { box-shadow: 0 0 45px 15px rgba(197, 160, 89, 1); } }
 
-        @keyframes pulse-only-glow {
-            0%, 100% { box-shadow: 0 0 25px 8px rgba(197, 160, 89, 0.8); }
-            50% { box-shadow: 0 0 45px 15px rgba(197, 160, 89, 1); }
-        }
+        .f, .back { position: absolute; top: 0; left: 0; width: 100%; height: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 6px; border: 1.5px solid #c5a059; display: flex; align-items: center; justify-content: center; }
+        .f { z-index: 2; transform: rotateY(0deg); background-color: rgba(0, 0, 0, 0.7); background-image: url('разворот.webp'); background-size: cover; background-position: center; background-repeat: no-repeat; background-blend-mode: darken; }
+        .card:nth-child(even) .f { background-color: rgba(0, 0, 0, 0.3); background-blend-mode: normal; }
+        .f::after { content: '⚚'; font-size: 28px; color: #fff; text-shadow: 0 0 5px #fff, 0 0 10px #c5a059, 0 0 20px #c5a059; position: absolute; z-index: 3; }
+        .back { z-index: 1; background: #000; color: #fff; transform: rotateY(180deg); padding: 5px; box-sizing: border-box; box-shadow: inset 0 0 15px rgba(197, 160, 89, 0.5); }
 
-        .f, .back { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            backface-visibility: hidden; -webkit-backface-visibility: hidden;
-            border-radius: 6px; border: 1.5px solid #c5a059; 
-            display: flex; align-items: center; justify-content: center;
-        }
-
-        .f { 
-            z-index: 2; transform: rotateY(0deg);
-            background-color: rgba(0, 0, 0, 0.7); 
-            background-image: url('разворот.webp'); background-size: cover;
-            background-position: center; background-repeat: no-repeat;
-            background-blend-mode: darken;
-        }
-
-        .card:nth-child(even) .f { 
-            background-color: rgba(0, 0, 0, 0.3); 
-            background-blend-mode: normal; 
-        }
-
-        .f::after {
-            content: '⚚'; 
-            font-size: 28px; color: #fff; 
-            text-shadow: 0 0 5px #fff, 0 0 10px #c5a059, 0 0 20px #c5a059;
-            position: absolute; z-index: 3;
-            animation: symbol-breathe 4s infinite ease-in-out;
-        }
-
-        .back { 
-            z-index: 1; background: #000; color: #fff; 
-            transform: rotateY(180deg);
-            padding: 5px; box-sizing: border-box;
-            box-shadow: inset 0 0 15px rgba(197, 160, 89, 0.5);
-        }
-
-        /* УВЕЛИЧЕННЫЙ ШРИФТ И ПЕРЕНОСЫ */
-        .slot-name { 
-            font-size: 14px; 
-            font-weight: bold; 
-            color: #c5a059;
-            text-align: center; 
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            white-space: normal; 
-            line-height: 1.1;
-            text-shadow: none; /* Убрали тени для четкости */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-        }
+        .slot-name { font-size: 14px; font-weight: bold; color: #c5a059; text-align: center; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; line-height: 1.1; text-shadow: none; display: flex; align-items: center; justify-content: center; height: 100%; }
 
         @media (max-width: 768px) {
             .header-fixed { padding-top: 10px; }
-            .header-title { 
-                font-size: 18px !important; 
-                white-space: nowrap; 
-                display: flex; align-items: center; justify-content: center;
-            }
+            .header-title { font-size: 18px !important; white-space: nowrap; display: flex; align-items: center; justify-content: center; }
             .header-title span { font-size: 24px !important; margin: 0 8px !important; }
-            .slots-grid { 
-                grid-template-columns: repeat(11, 1fr); /* Оставляем 11 колонок */
-                margin-top: 165px !important; 
-                padding: 5px; gap: 3px; 
-            }
+            .slots-grid { grid-template-columns: repeat(11, 1fr); margin-top: 165px !important; padding: 5px; gap: 3px; }
             .card { height: 60px; }
             .slot-name { font-size: 8px; }
             .music-control-btn { top: auto; bottom: 20px; right: 20px; }
@@ -233,68 +136,45 @@
     <script>
         const bgMusic = document.getElementById('bg-music');
         const flipSnd = document.getElementById('flip-sound');
+        const svgOn = document.getElementById('svg-on');
+        const svgMute = document.getElementById('svg-mute');
+        const video = document.getElementById('v');
+        
+        let musicStarted = false;
 
-        const slotNames = [
-            "Wanted Dead or a Wild", "Le Bandit", "RIP City", "Chaos Crew 2", "Hand of Anubis", 
-            "Gladiator Legends", "Rotten", "Undead Fortune", "Dork Unit", "Beam Boys", 
-            "Evil Eyes", "Duel at Dawn", "Fist of Destruction", "Cursed Seas", "Bloodthirst", 
-            "2 Wild 2 Die", "Fear the Dark", "Benny the Beer", "Fred's Food Truck", "Toshi Video Club", 
-            "Beast Below", "Orb of Destiny", "Le Viking", "Stick'em", "Xpander", 
-            "Keep 'em", "Stack 'em", "Bow of Artemis", "Angel vs Sinner", "Mystery Mice", 
-            "Forging Wilds", "Gem Elevator", "Slayers Inc", "Itero", "Alpha Eagle", 
-            "Vending Machine", "Tai the Toad", "Booze Bash", "Twisted Lab", "Hop 'n' Pop", 
-            "The Count", "Time Spinners", "Eye of the Panda", "Frank's Farm", "Keep 'em Cool", 
-            "Drop 'em", "Xmas Drop", "Buffalo Stack'n'Sync", "Ronin Stackways", "Donny Dough", 
-            "Danny Dollar", "Feel the Beat", "Aztec Twist", "Break Bones", "Cubes", 
-            "Cubes 2", "Cash Quest", "Dark Summoning", "Forest Fortune", "Wings of Horus", 
-            "Double Rainbow", "Gronk's Gems", "Chaos Crew", "Mayan Stackways", "Warrior Ways", 
-            "Fruit Duel", "Marlin Masters", "Wishbringer", "Aiko and the Wind Spirit", "Stormy Witch",
-            "Gates of Olympus 1000", "Sugar Rush 1000", "Sweet Bonanza 1000", "Starlight Princess 1000", "Zeus vs Hades", 
-            "Wisdom of Athena 1000", "The Dog House Megaways", "The Dog House Multihold", "Big Bass Splash", "Big Bass Floats My Boat", 
-            "Gems Bonanza", "Madame Destiny Megaways", "Wild West Gold", "Cleocatra", "Forge of Olympus", 
-            "Juicy Fruits", "Fruit Party 2", "Release the Bison", "Rise of Pyramids", "Fire Portals", 
-            "Big Burger", "Candy Corner", "Moleionaire", "Trees of Treasure", "Loki's Riches", 
-            "Gods of Giza", "The Red Queen", "Goblin Heist", "Wild Wild Riches Luck of the Irish", "Star Bounty", 
-            "Drago Jewels of Fortune", "Release the Kraken 2", "Buffalo King Megaways", "Great Rhino Megaways", "Sword of Ares", 
-            "Big Bass Amazon Xtreme", "Pub Kings", "Fat Panda", "Wisdom of Athena", "Badge Blitz", 
-            "Oodles of Noodles", "Congo Cash XL", "Big Bass Vegas", "Sumo Supreme", "Yeti Quest", 
-            "Dragon Gold 88", "Jackpot Hunter", "Samurai Code", "Crank it Up", "Sweet Kingdom", 
-            "Hand of Midas 2", "Buffalo King Untamed", "Medusa's Stone", "Devilicious", "Wildies", 
-            "Heroic Spins", "Starlight Princess Pachi", "Dwarf & Dragon", "Heart of Cleopatra", "Fruity Treats", 
-            "Candy Blitz Bombs", "Barnyard Megaways", "Ice Lobster", "Aztec Powernudge", "Ripe Rewards", 
-            "The Dog House Dog or Alive", "Gears of Horus", "Wheel o' Gold", "Mighty Munching Melons", "Strawberry Cocktail", 
-            "The Alter Ego", "Red Hot Luck", "Good Luck & Good Fortune", "Year of the Dragon King", "Castle of Fire", 
-            "The Big Dawgs", "Blade & Fangs", "The Wild Gang", "Nile Fortune", "Timber Stacks", 
-            "Sugar Supreme", "Viking Forge", "Infective Wild", "Tundra's Fortune", "Demon Pots", 
-            "Twilight Princess", "Gravity Bonanza", "Rainbow Reels", "Gold Oasis", "Golden Dragon", 
-            "SixSixSix", "Cursed Crypt", "Bouncy Bombs", "Big Bass Mission Fishin'"
-        ];
+        // Попытка запустить видео сразу (для Safari/iOS)
+        window.addEventListener('load', () => {
+            video.play().catch(() => console.log("Видео ждет клика"));
+        });
 
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
-
+        // Запуск музыки при первом клике по экрану
         function startInteraction() {
-            document.getElementById('v').play();
+            video.play();
+            if (!musicStarted) {
+                bgMusic.volume = 0.2;
+                bgMusic.play().then(() => {
+                    musicStarted = true;
+                    svgOn.style.display = 'block';
+                    svgMute.style.display = 'none';
+                    document.getElementById('music-control').style.boxShadow = '0 0 25px rgba(197, 160, 89, 0.9)';
+                }).catch(err => console.log("Браузер блокирует автоплей звука"));
+            }
         }
 
+        // Переключатель кнопкой
         function toggleMusic(event) {
             event.stopPropagation();
-            const svgOn = document.getElementById('svg-on');
-            const svgMute = document.getElementById('svg-mute');
             if (bgMusic.paused) {
-                bgMusic.volume = 0.2; 
                 bgMusic.play();
                 svgOn.style.display = 'block';
                 svgMute.style.display = 'none';
+                musicStarted = true;
+                document.getElementById('music-control').style.boxShadow = '0 0 25px rgba(197, 160, 89, 0.9)';
             } else {
                 bgMusic.pause();
                 svgOn.style.display = 'none';
                 svgMute.style.display = 'block';
+                document.getElementById('music-control').style.boxShadow = '0 0 15px rgba(197, 160, 89, 0.4)';
             }
         }
 
@@ -307,11 +187,20 @@
             el.classList.toggle('open');
         }
 
+        const slotNames = ["Wanted Dead or a Wild", "Le Bandit", "RIP City", "Chaos Crew 2", "Hand of Anubis", "Gladiator Legends", "Rotten", "Undead Fortune", "Dork Unit", "Beam Boys", "Evil Eyes", "Duel at Dawn", "Fist of Destruction", "Cursed Seas", "Bloodthirst", "2 Wild 2 Die", "Fear the Dark", "Benny the Beer", "Fred's Food Truck", "Toshi Video Club", "Beast Below", "Orb of Destiny", "Le Viking", "Stick'em", "Xpander", "Keep 'em", "Stack 'em", "Bow of Artemis", "Angel vs Sinner", "Mystery Mice", "Forging Wilds", "Gem Elevator", "Slayers Inc", "Itero", "Alpha Eagle", "Vending Machine", "Tai the Toad", "Booze Bash", "Twisted Lab", "Hop 'n' Pop", "The Count", "Time Spinners", "Eye of the Panda", "Frank's Farm", "Keep 'em Cool", "Drop 'em", "Xmas Drop", "Buffalo Stack'n'Sync", "Ronin Stackways", "Donny Dough", "Danny Dollar", "Feel the Beat", "Aztec Twist", "Break Bones", "Cubes", "Cubes 2", "Cash Quest", "Dark Summoning", "Forest Fortune", "Wings of Horus", "Double Rainbow", "Gronk's Gems", "Chaos Crew", "Mayan Stackways", "Warrior Ways", "Fruit Duel", "Marlin Masters", "Wishbringer", "Aiko and the Wind Spirit", "Stormy Witch", "Gates of Olympus 1000", "Sugar Rush 1000", "Sweet Bonanza 1000", "Starlight Princess 1000", "Zeus vs Hades", "Wisdom of Athena 1000", "The Dog House Megaways", "The Dog House Multihold", "Big Bass Splash", "Big Bass Floats My Boat", "Gems Bonanza", "Madame Destiny Megaways", "Wild West Gold", "Cleocatra", "Forge of Olympus", "Juicy Fruits", "Fruit Party 2", "Release the Bison", "Rise of Pyramids", "Fire Portals", "Big Burger", "Candy Corner", "Moleionaire", "Trees of Treasure", "Loki's Riches", "Gods of Giza", "The Red Queen", "Goblin Heist", "Wild Wild Riches Luck of the Irish", "Star Bounty", "Drago Jewels of Fortune", "Release the Kraken 2", "Buffalo King Megaways", "Great Rhino Megaways", "Sword of Ares", "Big Bass Amazon Xtreme", "Pub Kings", "Fat Panda", "Wisdom of Athena", "Badge Blitz", "Oodles of Noodles", "Congo Cash XL", "Big Bass Vegas", "Sumo Supreme", "Yeti Quest", "Dragon Gold 88", "Jackpot Hunter", "Samurai Code", "Crank it Up", "Sweet Kingdom", "Hand of Midas 2", "Buffalo King Untamed", "Medusa's Stone", "Devilicious", "Wildies", "Heroic Spins", "Starlight Princess Pachi", "Dwarf & Dragon", "Heart of Cleopatra", "Fruity Treats", "Candy Blitz Bombs", "Barnyard Megaways", "Ice Lobster", "Aztec Powernudge", "Ripe Rewards", "The Dog House Dog or Alive", "Gears of Horus", "Wheel o' Gold", "Mighty Munching Melons", "Strawberry Cocktail", "The Alter Ego", "Red Hot Luck", "Good Luck & Good Fortune", "Year of the Dragon King", "Castle of Fire", "The Big Dawgs", "Blade & Fangs", "The Wild Gang", "Nile Fortune", "Timber Stacks", "Sugar Supreme", "Viking Forge", "Infective Wild", "Tundra's Fortune", "Demon Pots", "Twilight Princess", "Gravity Bonanza", "Rainbow Reels", "Gold Oasis", "Golden Dragon", "SixSixSix", "Cursed Crypt", "Bouncy Bombs", "Big Bass Mission Fishin'"];
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
         const randomizedNames = shuffle([...slotNames]);
         const grid = document.getElementById('grid');
         let htmlContent = '';
 
-        // Генерируем ровно 154 карты (11 x 14)
         for (let i = 0; i < 154; i++) {
             const name = randomizedNames[i % randomizedNames.length];
             htmlContent += `
