@@ -100,15 +100,25 @@
         
         @keyframes lev { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
         
-      .inner { 
-            position: relative; width: 100%; height: 100%; 
-            transition: 0.8s; transform-style: preserve-3d; border-radius: 20px;
+     .inner { 
+            position: relative; 
+            width: 100%; 
+            height: 100%; 
+            transition: 0.8s; 
+            transform-style: preserve-3d; 
+            border-radius: 20px;
             
-            /* БОЛЕЕ ПЛОТНОЕ И КОНТУРНОЕ СВЕЧЕНИЕ */
+            /* ФОРСИРУЕМ ВИДЕОКАРТУ (Убираем баг с яркостью) */
+            will-change: box-shadow, transform;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            transform: translateZ(0); /* Создает новый слой отрисовки */
+
+            /* НАШЕ ПЛОТНОЕ СВЕЧЕНИЕ */
             box-shadow: 
-                0 15px 50px #000,                       /* Глубокая тень для отделения от фона */
-                0 0 15px 5px rgba(197, 160, 89, 1),     /* Слой 1: Плотная золотая кайма */
-                0 0 35px 8px rgba(197, 160, 89, 0.6);   /* Слой 2: Мягкий, но компактный ореол */
+                0 15px 50px #000,
+                0 0 15px 5px rgba(197, 160, 89, 1), 
+                0 0 35px 8px rgba(197, 160, 89, 0.6);
         }
 
         .card.open .inner { transform: rotateY(180deg); }
