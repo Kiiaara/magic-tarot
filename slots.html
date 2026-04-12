@@ -66,47 +66,49 @@
         
         .card.open .inner { transform: rotateY(180deg); }
 
-       /* ИСПРАВЛЕННОЕ СВЕЧЕНИЕ (БЕЗ БЕЛОЙ ОБВОДКИ И БЕЗ ГЛЮКОВ) */
+        /* СВЕЧЕНИЕ (БЕЗ КОНФЛИКТОВ С ПОВОРОТОМ) */
         .card.hot-glow .inner {
-            /* Убрал белый бордер, оставляем только золотую тень */
             box-shadow: 0 0 25px 8px rgba(197, 160, 89, 0.8), 
                         inset 0 0 15px rgba(197, 160, 89, 0.6);
-            /* Анимация теперь только для ТЕНИ, она не трогает поворот */
             animation: pulse-only-glow 2s infinite ease-in-out;
         }
 
         @keyframes pulse-only-glow {
-            0%, 100% { 
-                box-shadow: 0 0 25px 8px rgba(197, 160, 89, 0.8); 
-            }
-            50% { 
-                /* Увеличиваем только размах тени */
-                box-shadow: 0 0 45px 15px rgba(197, 160, 89, 1); 
-            }
+            0%, 100% { box-shadow: 0 0 25px 8px rgba(197, 160, 89, 0.8); }
+            50% { box-shadow: 0 0 45px 15px rgba(197, 160, 89, 1); }
         }
         
-       .f, .back { 
+        .f, .back { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            /* Скрываем заднюю сторону, когда она отвернута */
-            backface-visibility: hidden; 
-            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden; -webkit-backface-visibility: hidden;
             border-radius: 6px; border: 1.5px solid #c5a059; 
             display: flex; align-items: center; justify-content: center;
         }
         
         .f { 
-            z-index: 2; /* Лицо всегда сверху */
-            transform: rotateY(0deg);
+            z-index: 2; transform: rotateY(0deg);
             background-color: rgba(0, 0, 0, 0.7); 
             background-image: url('разворот.webp'); background-size: cover;
             background-position: center; background-repeat: no-repeat;
             background-blend-mode: darken;
         }
 
+        /* ЗЕБРА: Каждый второй элемент светлее */
+        .card:nth-child(even) .f { 
+            background-color: rgba(0, 0, 0, 0.3); 
+            background-blend-mode: normal; 
+        }
+
+        /* ЗНАЧОК ❂ В ЦЕНТРЕ */
+        .f::after {
+            content: '❂'; font-size: 22px; color: #c5a059;
+            text-shadow: 0 0 10px #c5a059, 0 0 20px #c5a059; 
+            position: absolute; z-index: 3;
+        }
+        
         .back { 
-            z-index: 1; /* Спина под лицом */
-            background: #000; color: #fff; 
-            transform: rotateY(180deg); /* Спина изначально перевернута */
+            z-index: 1; background: #000; color: #fff; 
+            transform: rotateY(180deg);
             padding: 5px; box-sizing: border-box;
             box-shadow: inset 0 0 15px rgba(197, 160, 89, 0.5);
         }
@@ -169,7 +171,6 @@
 
         const grid = document.getElementById('grid');
 
-        // Генерируем карточки
         for (let i = 0; i < 154; i++) {
             const name = slotNames[i % slotNames.length];
             const cardHTML = `
@@ -185,7 +186,6 @@
             grid.innerHTML += cardHTML;
         }
 
-        // Рандомная подсветка
         const allCards = document.querySelectorAll('.card');
         const cardArray = Array.from(allCards);
         for (let i = cardArray.length - 1; i > 0; i--) {
