@@ -52,28 +52,29 @@
             100% { transform: translate(var(--dx), var(--dy)); opacity: 0; }
         }
 
+       /* ЗАГОЛОВОК СТРАНИЦЫ */
         .main-header {
-            position: absolute; top: 60px; z-index: 150;
-            color: #c5a059; font-size: 38px; /* Немного увеличил размер текста */
-            text-transform: none; /* Каллиграфия лучше смотрится в обычном регистре */
-            letter-spacing: 2px; text-align: center;
+            position: absolute; 
+            top: 20px; /* БЫЛО 60px — подняли выше */
+            z-index: 150;
+            color: #c5a059; 
+            font-size: 38px;
+            text-transform: none; 
+            letter-spacing: 2px; 
+            text-align: center;
             text-shadow: 0 0 20px rgba(197, 160, 89, 0.7);
             pointer-events: none;
-            /* Делаем буквы тоньше за счет прозрачной обводки */
--webkit-text-stroke: 0.2px rgba(197, 160, 89, 0.5); 
-letter-spacing: 1px; /* Добавь немного расстояния между буквами, чтобы они не слипались */
+            -webkit-text-stroke: 0.2px rgba(197, 160, 89, 0.5); 
+            letter-spacing: 1px;
         }
 
-        /* СТИЛЬ ДЛЯ УВЕЛИЧЕННЫХ ЗНАЧКОВ */
-        .main-header span {
-            font-size: 56px; 
-            vertical-align: middle; 
-            margin: 0 15px;
-            display: inline-block;
-        }
-        
+        /* Адаптив для мобилок */
         @media (max-width: 768px) {
-            .main-header { font-size: 24px; top: 40px; padding: 0 20px; }
+            .main-header { 
+                font-size: 24px; 
+                top: 15px; /* БЫЛО 40px — на мобилках тоже подняли */
+                padding: 0 20px; 
+            }
             .main-header span { font-size: 32px; }
         }
 
