@@ -2,9 +2,10 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Magic Tarot — Final Production</title>
     <style>
-        /* 1. ПОДКЛЮЧАЕМ НОВЫЙ ШРИФТ */
+        /* 1. ПОДКЛЮЧАЕМ ШРИФТ */
         @font-face {
             font-family: 'AlgeriaTwo';
             src: url('fonts/algeriatwo.ttf') format('truetype');
@@ -18,7 +19,6 @@
             background: #05010c url('bg.webp') no-repeat center center fixed;
             background-size: cover;
             display: flex; justify-content: center; align-items: center;
-            /* ПРИМЕНЯЕМ НОВЫЙ ШРИФТ */
             font-family: 'AlgeriaTwo', serif;
         }
 
@@ -29,12 +29,37 @@
             pointer-events: none;
         }
 
+        /* КНОПКА УПРАВЛЕНИЯ ЗВУКОМ */
+        .music-control-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #c5a059;
+            color: #c5a059;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 15px rgba(197, 160, 89, 0.4);
+            transition: 0.3s;
+        }
+        .music-control-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(197, 160, 89, 0.8);
+        }
+
         #sparkle-box {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 50; pointer-events: none; overflow: hidden;
         }
 
-        /* --- ФИНАЛЬНОЕ РЕШЕНИЕ ДЛЯ СВЕТЛЯЧКОВ (SVG) --- */
         .sparkle {
             position: absolute; 
             background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3CradialGradient id='g'%3E%3Cstop offset='15%25' stop-color='white'/%3E%3Cstop offset='45%25' stop-color='%23c5a059'/%3E%3Cstop offset='100%25' stop-color='transparent'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='50' fill='url(%23g)'/%3E%3C/svg%3E") no-repeat center !important;
@@ -52,22 +77,19 @@
             100% { transform: translate(var(--dx), var(--dy)); opacity: 0; }
         }
 
-        /* ЗАГОЛОВОК СТРАНИЦЫ — ПОДНЯЛИ ВЫШЕ */
         .main-header {
             position: absolute; 
-            top: 10px; /* Заголовок теперь высоко */
+            top: 10px; 
             z-index: 150;
             color: #c5a059; 
             font-size: 52px;
-            font-family: 'AlgeriaTwo', serif;
-            text-transform: uppercase; /* Algerian обычно круто смотрится в капсе */
+            text-transform: uppercase;
             letter-spacing: 4px; 
             text-align: center;
             text-shadow: 0 0 20px rgba(197, 160, 89, 0.6);
             pointer-events: none;
         }
 
-        /* ЗНАЧКИ ᛃ */
         .main-header span {
             font-size: 64px; 
             vertical-align: middle; 
@@ -76,43 +98,36 @@
         }
         
         @media (max-width: 768px) {
-            /* 1. Сжимаем заголовок и запрещаем перенос */
             .main-header { 
-                font-size: 20px !important; /* Уменьшаем, чтобы влезло в ряд */
+                font-size: 20px !important; 
                 top: 10px; 
                 padding: 0 10px;
                 width: 100%;
                 box-sizing: border-box;
-                white-space: nowrap; /* Жестко в одну строку */
+                white-space: nowrap;
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
-
-            /* 2. Уменьшаем значки ᛃ пропорционально тексту */
-            .main-header span { 
-                font-size: 28px !important; 
-                margin: 0 8px; 
-            }
-
-            /* 3. Сумма на карте на мобилке тоже должна быть чуть скромнее */
+            .main-header span { font-size: 28px !important; margin: 0 8px; }
             .sum { font-size: 42px; } 
-
-            /* 4. Отодвигаем карты вниз от заголовка */
             .wrapper {
-                margin-top: 60px; /* Создаем зазор, чтобы хедер не "лежал" на картах */
-                gap: 20px; /* Уменьшаем расстояние между картами, чтобы влезли */
-                flex-direction: column; /* Карты встанут одна под другой — так удобнее на тачскрине */
-                transform: scale(0.85); /* Чуть уменьшаем масштаб всей группы карт */
+                margin-top: 60px;
+                gap: 20px;
+                flex-direction: column;
+                transform: scale(0.85);
             }
-
-            /* 5. Настраиваем кнопку */
             .magic-btn {
                 font-size: 20px;
                 padding: 15px 40px;
                 bottom: 15px;
-                width: 80%; /* Кнопка почти во всю ширину — по ней легче попасть */
+                width: 80%;
                 text-align: center;
+            }
+            .music-control-btn {
+                top: auto;
+                bottom: 20px;
+                right: 20px;
             }
         }
 
@@ -125,15 +140,13 @@
         
         @keyframes lev { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
         
- .inner { 
+        .inner { 
             position: relative; 
             width: 100%; 
             height: 100%; 
             transition: 0.8s; 
             transform-style: preserve-3d; 
             border-radius: 20px;
-            
-            /* ГАРАНТИРУЕМ СВЕЧЕНИЕ (нормальное состояние) */
             outline: 2px solid rgba(255, 255, 255, 0.9);
             outline-offset: -2px;
             box-shadow: 
@@ -141,20 +154,14 @@
                 inset 0 0 20px 2px #fff,
                 0 0 35px 15px rgba(197, 160, 89, 1), 
                 0 0 70px 25px rgba(197, 160, 89, 0.5);
-
-            /* GPU И ПОРЯДОК СЛОЕВ */
             will-change: transform, box-shadow;
             transform: translateZ(0); 
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
         }
 
-        /* ИСПРАВЛЕННЫЙ ПОВОРОТ: принудительно возвращаем свечение после переворота */
         .card.open .inner { 
-            /* translateZ(1px) выносит карту "над" видеослоем, чтобы тень не пропала */
             transform: rotateY(180deg) translateZ(1px); 
-            
-            /* Дублируем свечение, чтобы браузер точно его отрисовал */
             outline: 2px solid rgba(255, 255, 255, 0.9);
             box-shadow: 
                 0 0 15px 3px #fff,
@@ -163,50 +170,26 @@
                 0 0 70px 25px rgba(197, 160, 89, 0.5);
         }
         
-       /* ОБЩИЕ СТИЛИ ДЛЯ ОБЕИХ СТОРОН */
         .f, .back { 
             position: absolute; 
-            width: 100%; 
-            height: 100%; 
-            backface-visibility: hidden; 
-            border-radius: 20px; 
-            
-            /* ВОЗВРАЩАЕМ РАМКУ (Золотой контур самой карты) */
-            border: 3px solid #c5a059; 
-            box-sizing: border-box;
-
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            align-items: center; 
-            
-            /* Ускорение отрисовки */
+            width: 100%; height: 100%; 
+            backface-visibility: hidden; border-radius: 20px; 
+            border: 3px solid #c5a059; display: flex; 
+            flex-direction: column; justify-content: center; align-items: center; 
             transform: translateZ(0);
         }
 
-        /* ПЕРЕДНЯЯ СТОРОНА (ОБЛОЖКА) */
         .f { 
-            z-index: 2; 
-            transform: rotateY(0deg);
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover;
-            
-            /* ВОЗВРАЩАЕМ ЗАТЕМНЕНИЕ */
-            background-color: rgba(0, 0, 0, 0.5); 
-            background-blend-mode: darken; 
+            z-index: 2; transform: rotateY(0deg);
+            background-repeat: no-repeat; background-position: center; background-size: cover;
+            background-color: rgba(0, 0, 0, 0.5); background-blend-mode: darken; 
         }
 
-        /* ЗАДНЯЯ СТОРОНА (РЕЗУЛЬТАТ) */
         .back { 
             background: #000 url('разворот.webp') no-repeat center center; 
-            background-size: cover; 
-            color: #fff; 
+            background-size: cover; color: #fff; 
             transform: rotateY(180deg); 
-            
-            /* ВОЗВРАЩАЕМ ВНУТРЕННЮЮ ТЕНЬ И ЗАТЕМНЕНИЕ */
-            background-color: rgba(0, 0, 0, 0.6); 
-            background-blend-mode: darken;
+            background-color: rgba(0, 0, 0, 0.6); background-blend-mode: darken;
             box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(197, 160, 89, 0.3);
         }
         
@@ -214,55 +197,35 @@
         .card:nth-child(2) .f { background: url('2 обложка.webp') no-repeat center center; background-size: cover; }
         .card:nth-child(3) .f { background: url('4 обложка.webp') no-repeat center center; background-size: cover; }
 
-        /* СУММА ВЫИГРЫША */
-       .sum { 
-            font-family: 'AlgeriaTwo', serif;
-            /* УВЕЛИЧИВАЕМ: было 48px, пробуем 72px */
-            font-size: 56px; 
-            font-weight: bold; 
-            color: #fff; 
+        .sum { 
+            font-size: 56px; font-weight: bold; color: #fff; 
             text-shadow: 0 0 15px #c5a059, 0 0 30px #c5a059; 
         }
 
-       /* КНОПКА (УВЕЛИЧЕННАЯ) */
         .magic-btn {
-            position: fixed; 
-            bottom: 30px; 
-            z-index: 200; 
-            
-            /* УВЕЛИЧИВАЕМ ПАДДИНГИ (внутренние отступы) */
-            padding: 20px 50px; 
-            
-            background: rgba(0, 0, 0, 0.85); 
-            color: #c5a059; 
-            text-decoration: none;
-            font-family: 'AlgeriaTwo', serif;
-            
-            /* УВЕЛИЧИВАЕМ ШРИФТ */
-            font-size: 30px; 
-            font-weight: bold; 
-            letter-spacing: 3px; 
-            
-            border: 2px solid #c5a059;
-            border-radius: 60px; /* Скругление под новый размер */
-            
-            /* УСИЛЕННОЕ СВЕЧЕНИЕ */
+            position: fixed; bottom: 30px; z-index: 200; padding: 20px 50px;
+            background: rgba(0, 0, 0, 0.85); color: #c5a059; text-decoration: none;
+            font-size: 30px; font-weight: bold; letter-spacing: 3px; 
+            border: 2px solid #c5a059; border-radius: 60px;
             box-shadow: 0 0 30px rgba(197, 160, 89, 0.5);
-            
             transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            cursor: pointer;
-            white-space: nowrap; /* Чтобы текст не прыгал на две строки */
+            cursor: pointer; white-space: nowrap;
         }
-
-        .magic-btn:hover { 
-            background: #c5a059; 
-            color: #000; 
-            box-shadow: 0 0 60px rgba(197, 160, 89, 0.9); 
-            transform: scale(1.05) translateY(-5px); /* Кнопка чуть подпрыгивает при наведении */
-        }
+        .magic-btn:hover { background: #c5a059; color: #000; box-shadow: 0 0 60px rgba(197, 160, 89, 0.9); transform: scale(1.05) translateY(-5px); }
     </style>
 </head>
-<body onclick="document.getElementById('v').play()">
+<body onclick="startInteraction()">
+
+    <audio id="bg-music" loop>
+        <source src="magic-ambient.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="flip-sound">
+        <source src="flip-magic.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="music-control" class="music-control-btn" onclick="toggleMusic(event)">
+        <span id="music-icon">🔇</span>
+    </button>
 
     <video id="v" autoplay muted loop playsinline class="video-layer">
         <source src="1.mp4" type="video/mp4">
@@ -279,14 +242,41 @@
     </div>
 
     <script>
-        function flip(c) {
-            if (c.classList.contains('open')) return;
-            const res = ["30 000 ₽", "50 000 ₽", "100 000 ₽", "300 000 ₽"];
-            c.querySelector('.sum').innerText = res[Math.floor(Math.random() * res.length)];
-            c.classList.add('open');
+        const bgMusic = document.getElementById('bg-music');
+        const musicIcon = document.getElementById('music-icon');
+        const flipSnd = document.getElementById('flip-sound');
+
+        // Разблокировка видео при первом клике (требование браузеров)
+        function startInteraction() {
             document.getElementById('v').play();
         }
 
+        // Переключатель музыки
+        function toggleMusic(event) {
+            event.stopPropagation(); // Чтобы не сработал клик по body
+            if (bgMusic.paused) {
+                bgMusic.volume = 0.4;
+                bgMusic.play();
+                musicIcon.innerText = '🔊';
+            } else {
+                bgMusic.pause();
+                musicIcon.innerText = '🔇';
+            }
+        }
+
+        function flip(c) {
+            if (c.classList.contains('open')) return;
+            
+            // Звук магии
+            flipSnd.currentTime = 0;
+            flipSnd.play();
+
+            const res = ["30 000 ₽", "50 000 ₽", "100 000 ₽", "300 000 ₽"];
+            c.querySelector('.sum').innerText = res[Math.floor(Math.random() * res.length)];
+            c.classList.add('open');
+        }
+
+        // Частицы
         const box = document.getElementById('sparkle-box');
         for (let i = 0; i < 60; i++) {
             const s = document.createElement('div');
