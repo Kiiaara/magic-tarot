@@ -58,26 +58,32 @@
             top: 20px; /* Заголовок теперь высоко */
             z-index: 150;
             color: #c5a059; 
-            font-size: 36px;
+            font-size: 52px;
             font-family: 'AlgeriaTwo', serif;
             text-transform: uppercase; /* Algerian обычно круто смотрится в капсе */
-            letter-spacing: 3px; 
+            letter-spacing: 4px; 
             text-align: center;
-            text-shadow: 0 0 15px rgba(197, 160, 89, 0.6);
+            text-shadow: 0 0 20px rgba(197, 160, 89, 0.6);
             pointer-events: none;
         }
 
         /* ЗНАЧКИ ᛃ */
         .main-header span {
-            font-size: 48px; 
+            font-size: 64px; 
             vertical-align: middle; 
-            margin: 0 10px;
+            margin: 0 15px;
             display: inline-block;
         }
         
         @media (max-width: 768px) {
-            .main-header { font-size: 22px; top: 15px; padding: 0 20px; }
-            .main-header span { font-size: 28px; }
+            .main-header { 
+                font-size: 28px; /* Было 22px */
+                top: 15px; 
+                padding: 0 20px; 
+            }
+            .main-header span { font-size: 36px; } /* Было 28px */
+            
+            .sum { font-size: 50px; } /* Было 48px */
         }
 
         .wrapper { display: flex; gap: 40px; z-index: 100; position: relative; }
@@ -116,9 +122,12 @@
         .card:nth-child(3) .f { background: url('4 обложка.webp') no-repeat center center; background-size: cover; }
 
         /* СУММА ВЫИГРЫША */
-        .sum { 
+       .sum { 
             font-family: 'AlgeriaTwo', serif;
-            font-size: 48px; font-weight: bold; color: #fff; 
+            /* УВЕЛИЧИВАЕМ: было 48px, пробуем 72px */
+            font-size: 72px; 
+            font-weight: bold; 
+            color: #fff; 
             text-shadow: 0 0 15px #c5a059, 0 0 30px #c5a059; 
         }
 
