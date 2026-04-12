@@ -52,7 +52,14 @@
             text-shadow: 0 0 20px rgba(197, 160, 89, 0.7);
             pointer-events: none;
         }
-
+/* УВЕЛИЧИВАЕМ ТОЛЬКО СИМВОЛ ᛃ */
+        .main-header span {
+            font-size: 46px; /* Размер самого значка */
+            vertical-align: middle; /* Чтобы он не "улетел" вверх или вниз */
+            margin: 0 10px; /* Немного отодвигаем от текста */
+            display: inline-block; /* Чтобы трансформы и отступы работали корректно */
+        }
+        
         @media (max-width: 768px) {
             .main-header { font-size: 20px; top: 40px; padding: 0 20px; }
         }
