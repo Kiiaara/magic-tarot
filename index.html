@@ -133,14 +133,13 @@
             transform-style: preserve-3d; 
             border-radius: 20px;
             
-            /* ФОРСИРУЕМ ОТРИСОВКУ (Изолируем слой) */
-            isolation: isolate; /* ГАРАНТИРУЕТ, что тени будут считаться отдельно от фона */
+            /* GPU УСКОРЕНИЕ (без изоляции) */
+            will-change: transform, box-shadow;
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
             
-            /* Создаем 3D-слой, который браузер не сможет проигнорировать */
-            transform: translate3d(0,0,0); 
-            will-change: transform, box-shadow;
+            /* Удерживаем слой над видео */
+            transform: translateZ(0); 
 
             /* ОБВОДКА И СВЕЧЕНИЕ */
             outline: 2px solid rgba(255, 255, 255, 0.9);
@@ -151,6 +150,11 @@
                 inset 0 0 20px 2px #fff,
                 0 0 35px 15px rgba(197, 160, 89, 1), 
                 0 0 70px 25px rgba(197, 160, 89, 0.5);
+        }
+
+        /* ИСПРАВЛЕННЫЙ ПОВОРОТ: добавляем translateZ, чтобы карта не пропадала */
+        .card.open .inner { 
+            transform: translateZ(0) rotateY(180deg); 
         }
 
         .card.open .inner { transform: rotateY(180deg); }
