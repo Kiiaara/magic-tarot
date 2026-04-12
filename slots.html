@@ -91,12 +91,22 @@
 
         .slots-grid { 
             position: relative; z-index: 100;
-            margin-top: 150px; display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); 
-            gap: 8px; padding: 20px; width: 100%; box-sizing: border-box;
+            margin-top: 150px; 
+            display: grid; 
+            /* ЖЕСТКО 11 КОЛОНОК */
+            grid-template-columns: repeat(11, 1fr); 
+            gap: 6px; /* Чуть уменьшили зазор, чтобы всё влезло */
+            padding: 20px; 
+            width: 100%; 
+            box-sizing: border-box;
         }
 
-        .card { width: 100%; height: 75px; perspective: 1000px; cursor: pointer; }
+        .card { 
+            width: 100%; 
+            height: 70px; /* Немного уменьшили высоту для компактности */
+            perspective: 1000px; 
+            cursor: pointer; 
+        }
 
         .inner { 
             position: relative; width: 100%; height: 100%; 
@@ -158,10 +168,15 @@
             box-shadow: inset 0 0 15px rgba(197, 160, 89, 0.5);
         }
 
-        .slot-name { 
-            font-size: 13px; font-weight: bold; color: #c5a059;
-            text-shadow: 0 0 5px #c5a059; text-align: center; word-wrap: break-word;
+       .slot-name { 
+            font-size: 10px; /* Уменьшили шрифт, так как колонки стали уже */
+            font-weight: bold; 
+            color: #c5a059;
+            text-shadow: 0 0 5px #c5a059; 
+            text-align: center; 
+            word-wrap: break-word;
             line-height: 1.1;
+            padding: 2px;
         }
 
         @media (max-width: 768px) {
