@@ -33,7 +33,28 @@
             50% { opacity: 0.8; } 
             to { transform: translate(var(--x), var(--y)); opacity: 0; } 
         }
+/* ЗАГОЛОВОК СТРАНИЦЫ */
+        .main-header {
+            position: absolute;
+            top: 60px; /* Отступ от верхнего края */
+            z-index: 150;
+            color: #c5a059;
+            font-size: 32px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-align: center;
+            text-shadow: 0 0 20px rgba(197, 160, 89, 0.7);
+            pointer-events: none; /* Чтобы заголовок не мешал кликам */
+        }
 
+        /* Адаптив для мобилок */
+        @media (max-width: 768px) {
+            .main-header {
+                font-size: 20px;
+                top: 40px;
+                padding: 0 20px;
+            }
+        }
         /* КАРТЫ */
         .wrapper { display: flex; gap: 40px; z-index: 100; position: relative; }
         .card { width: 300px; height: 460px; perspective: 1200px; cursor: pointer; animation: lev 6s infinite ease-in-out; }
@@ -121,7 +142,10 @@
         <source src="1.mp4" type="video/mp4">
     </video>
 
+    <h1 class="main-header">ᛃ УЗНАЙ СВОЙ БАЛАНС ᛃ</h1>
+
     <div id="sparkle-box"></div>
+    ...
 
     <div class="wrapper">
         <div class="card" onclick="flip(this)"><div class="inner"><div class="f"></div><div class="back"><div class="sum"></div></div></div></div>
