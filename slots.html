@@ -166,7 +166,7 @@
 
     <div class="slots-grid" id="grid"></div>
 
-    <script>
+   <script>
         const slotNames = [
             "Wanted Dead or a Wild", "Le Bandit", "RIP City", "Chaos Crew 2", "Hand of Anubis", 
             "Gladiator Legends", "Rotten", "Undead Fortune", "Dork Unit", "Beam Boys", 
@@ -203,11 +203,24 @@
             "SixSixSix", "Cursed Crypt", "Bouncy Bombs", "Big Bass Mission Fishin'"
         ];
 
-        const grid = document.getElementById('grid');
+        // 1. ФУНКЦИЯ ПЕРЕМЕШИВАНИЯ
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
 
+        // 2. ПЕРЕМЕШИВАЕМ ИМЕНА ПЕРЕД ОТРИСОВКОЙ
+        const randomizedNames = shuffle([...slotNames]);
+        const grid = document.getElementById('grid');
+        let htmlContent = '';
+
+        // 3. СОЗДАЕМ КАРТОЧКИ С УЖЕ РАНДОМНЫМИ ИМЕНАМИ
         for (let i = 0; i < 154; i++) {
-            const name = slotNames[i % slotNames.length];
-            const cardHTML = `
+            const name = randomizedNames[i % randomizedNames.length];
+            htmlContent += `
                 <div class="card" onclick="this.classList.toggle('open')">
                     <div class="inner">
                         <div class="f"></div>
@@ -217,16 +230,15 @@
                     </div>
                 </div>
             `;
-            grid.innerHTML += cardHTML;
         }
+        grid.innerHTML = htmlContent;
 
+        // 4. ДОБАВЛЯЕМ ГОРЯЩЕЕ СВЕЧЕНИЕ СЛУЧАЙНЫМ КАРТАМ
         const allCards = document.querySelectorAll('.card');
-        const cardArray = Array.from(allCards);
-        for (let i = cardArray.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [cardArray[i], cardArray[j]] = [cardArray[j], cardArray[i]];
-        }
-        cardArray.slice(0, 20).forEach(card => card.classList.add('hot-glow'));
+        const shuffledIndices = shuffle(Array.from(Array(allCards.length).keys()));
+        shuffledIndices.slice(0, 20).forEach(index => {
+            allCards[index].classList.add('hot-glow');
+        });
     </script>
 </body>
 </html>
