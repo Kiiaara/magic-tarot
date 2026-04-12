@@ -100,16 +100,15 @@
         
         @keyframes lev { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
         
-       .inner { 
+      .inner { 
             position: relative; width: 100%; height: 100%; 
             transition: 0.8s; transform-style: preserve-3d; border-radius: 20px;
             
-            /* МОЩНОЕ ТРЕХСЛОЙНОЕ СВЕЧЕНИЕ */
+            /* БОЛЕЕ ПЛОТНОЕ И КОНТУРНОЕ СВЕЧЕНИЕ */
             box-shadow: 
-                0 15px 60px #000,                        /* Глубокая тень для объема */
-                0 0 30px 10px rgba(197, 160, 89, 1),     /* Слой 1: Плотное ядро (Alpha 1.0) */
-                0 0 70px 20px rgba(197, 160, 89, 0.6),   /* Слой 2: Средний ореол */
-                0 0 120px 40px rgba(197, 160, 89, 0.3);  /* Слой 3: Мягкое заполнение фона */
+                0 15px 50px #000,                       /* Глубокая тень для отделения от фона */
+                0 0 15px 5px rgba(197, 160, 89, 1),     /* Слой 1: Плотная золотая кайма */
+                0 0 35px 8px rgba(197, 160, 89, 0.6);   /* Слой 2: Мягкий, но компактный ореол */
         }
 
         .card.open .inner { transform: rotateY(180deg); }
