@@ -47,7 +47,7 @@
         /* КАРТОЧКА: Теперь горизонтальная плитка */
         .card { 
             width: 100%; 
-            height: 80px; /* Высота плитки */
+            height: 70px; /* Высота плитки */
             perspective: 1000px; cursor: pointer; 
         }
         
@@ -66,10 +66,23 @@
             display: flex; align-items: center; justify-content: center;
         }
         
+       /* Лицевая сторона (Обложка) */
         .f { 
-            background: #111 url('разворот.webp') center/cover no-repeat; 
-            filter: brightness(1.2) contrast(1.1);
+            background: #000 url('разворот.webp') center/cover no-repeat; 
+            /* ЗАТЕМНЕНИЕ: уменьшаем яркость до 0.6 или 0.7 */
+            filter: brightness(0.6) contrast(1.2);
             z-index: 2; transform: rotateY(0deg);
+            
+            position: relative;
+        }
+        
+        /* ЗНАЧОК ПОСЕРЕДИНЕ ОБЛОЖКИ */
+        .f::after {
+            content: '❂'; /* Сюда можно вставить любой символ из списка выше */
+            font-size: 20px;
+            color: #c5a059;
+            text-shadow: 0 0 10px #c5a059;
+            opacity: 0.7; /* Делаем значок чуть приглушенным */
         }
         
         .back { 
