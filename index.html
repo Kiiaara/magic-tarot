@@ -4,13 +4,22 @@
     <meta charset="UTF-8">
     <title>Magic Tarot — Final Production</title>
     <style>
+        /* 1. ПОДКЛЮЧАЕМ ТВОЙ ШРИФТ */
+        @font-face {
+            font-family: 'Calligrapher';
+            src: url('fonts/Calligrapher Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
             overflow: hidden;
             background: #05010c url('bg.webp') no-repeat center center fixed;
             background-size: cover;
             display: flex; justify-content: center; align-items: center;
-            font-family: 'Georgia', serif;
+            /* УСТАНАВЛИВАЕМ НОВЫЙ ШРИФТ КАК ОСНОВНОЙ */
+            font-family: 'Calligrapher', cursive;
         }
 
         .video-layer {
@@ -28,12 +37,10 @@
         /* --- ФИНАЛЬНОЕ РЕШЕНИЕ ДЛЯ СВЕТЛЯЧКОВ (SVG) --- */
         .sparkle {
             position: absolute; 
-            /* Используем векторную графику: она НИКОГДА не будет черной */
             background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3CradialGradient id='g'%3E%3Cstop offset='15%25' stop-color='white'/%3E%3Cstop offset='45%25' stop-color='%23c5a059'/%3E%3Cstop offset='100%25' stop-color='transparent'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='50' fill='url(%23g)'/%3E%3C/svg%3E") no-repeat center !important;
             background-size: contain;
             pointer-events: none;
             opacity: 0;
-            /* Добавляем мягкое внешнее свечение фильтром */
             filter: drop-shadow(0 0 5px rgba(197, 160, 89, 0.6));
             animation: magic-fly linear infinite;
         }
@@ -47,21 +54,24 @@
 
         .main-header {
             position: absolute; top: 60px; z-index: 150;
-            color: #c5a059; font-size: 32px; text-transform: uppercase;
-            letter-spacing: 4px; text-align: center;
+            color: #c5a059; font-size: 38px; /* Немного увеличил размер текста */
+            text-transform: none; /* Каллиграфия лучше смотрится в обычном регистре */
+            letter-spacing: 2px; text-align: center;
             text-shadow: 0 0 20px rgba(197, 160, 89, 0.7);
             pointer-events: none;
         }
-/* УВЕЛИЧИВАЕМ ТОЛЬКО СИМВОЛ ᛃ */
+
+        /* СТИЛЬ ДЛЯ УВЕЛИЧЕННЫХ ЗНАЧКОВ */
         .main-header span {
-            font-size: 46px; /* Размер самого значка */
-            vertical-align: middle; /* Чтобы он не "улетел" вверх или вниз */
-            margin: 0 10px; /* Немного отодвигаем от текста */
-            display: inline-block; /* Чтобы трансформы и отступы работали корректно */
+            font-size: 56px; 
+            vertical-align: middle; 
+            margin: 0 15px;
+            display: inline-block;
         }
         
         @media (max-width: 768px) {
-            .main-header { font-size: 20px; top: 40px; padding: 0 20px; }
+            .main-header { font-size: 24px; top: 40px; padding: 0 20px; }
+            .main-header span { font-size: 32px; }
         }
 
         .wrapper { display: flex; gap: 40px; z-index: 100; position: relative; }
@@ -99,11 +109,16 @@
         .card:nth-child(2) .f { background: url('2 обложка.webp') no-repeat center center; background-size: cover; }
         .card:nth-child(3) .f { background: url('4 обложка.webp') no-repeat center center; background-size: cover; }
 
-        .sum { font-size: 54px; font-weight: bold; color: #fff; text-shadow: 0 0 15px #c5a059, 0 0 30px #c5a059; }
+        .sum { 
+            font-family: 'Calligrapher', cursive;
+            font-size: 54px; font-weight: bold; color: #fff; 
+            text-shadow: 0 0 15px #c5a059, 0 0 30px #c5a059; 
+        }
 
         .magic-btn {
             position: fixed; bottom: 30px; z-index: 200; padding: 15px 30px;
             background: rgba(0, 0, 0, 0.8); color: #c5a059; text-decoration: none;
+            font-family: 'Calligrapher', cursive;
             font-weight: bold; letter-spacing: 2px; border: 2px solid #c5a059;
             border-radius: 50px; box-shadow: 0 0 20px rgba(197, 160, 89, 0.4);
             transition: 0.3s; cursor: pointer;
@@ -117,7 +132,7 @@
         <source src="1.mp4" type="video/mp4">
     </video>
 
-    <h1 class="main-header">ᛃ УЗНАЙ СВОЙ БАЛАНС ᛃ</h1>
+    <h1 class="main-header"><span>ᛃ</span> Узнай свой баланс <span>ᛃ</span></h1>
 
     <div id="sparkle-box"></div>
     
@@ -140,26 +155,15 @@
         for (let i = 0; i < 60; i++) {
             const s = document.createElement('div');
             s.className = 'sparkle';
-            
-            // Размер частиц
             const size = Math.random() * 12 + 8;
-            s.style.width = size + 'px'; 
-            s.style.height = size + 'px';
-            
-            // Рандомный старт
-            s.style.left = Math.random() * 100 + '%'; 
-            s.style.top = Math.random() * 100 + '%';
-            
-            // Вектор полета
+            s.style.width = size + 'px'; s.style.height = size + 'px';
+            s.style.left = Math.random() * 100 + '%'; s.style.top = Math.random() * 100 + '%';
             const moveX = (Math.random() - 0.5) * 600 + 'px';
             const moveY = (Math.random() - 0.5) * 600 + 'px';
-            
             s.style.setProperty('--dx', moveX);
             s.style.setProperty('--dy', moveY);
-            
             s.style.animationDuration = (Math.random() * 8 + 4) + 's';
             s.style.animationDelay = (Math.random() * 5) + 's';
-            
             box.appendChild(s);
         }
     </script>
