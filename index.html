@@ -125,7 +125,7 @@
         
         @keyframes lev { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
         
-     .inner { 
+    .inner { 
             position: relative; 
             width: 100%; 
             height: 100%; 
@@ -133,18 +133,22 @@
             transform-style: preserve-3d; 
             border-radius: 20px;
             
-            /* ФОРСИРУЕМ ВИДЕОКАРТУ (Убираем баг с яркостью) */
+            /* ГАРАНТИРОВАННАЯ ОБВОДКА: outline не исчезает при зуме */
+            outline: 2px solid rgba(255, 255, 255, 0.9);
+            outline-offset: -2px; /* Вдавливаем внутрь, чтобы не ломать скругление */
+
+            /* GPU УСКОРЕНИЕ */
             will-change: box-shadow, transform;
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
-            transform: translateZ(0); /* Создает новый слой отрисовки */
+            transform: translateZ(0);
 
-           /* УЛЬТРА-ЯРКОЕ МАГИЧЕСКОЕ СВЕЧЕНИЕ */
-box-shadow: 
-    0 0 10px 2px #fff,                       /* ХАК: Белое ядро (создает эффект свечения изнутри) */
-    0 0 20px 10px rgba(197, 160, 89, 1),     /* Плотный золотой контур */
-    0 0 50px 20px rgba(197, 160, 89, 0.8),   /* Яркий средний ореол */
-    0 0 55px 25px rgba(197, 160, 89, 0.4);  /* Дальнее мягкое сияние */
+            /* УЛЬТРА-ЯРКОЕ СВЕЧЕНИЕ (подкрутили плотность ядра) */
+            box-shadow: 
+                0 0 12px 3px #fff,                      /* Увеличили ядро до 3px, чтобы не пропадало */
+                inset 0 0 20px 2px #fff,                /* Внутреннее свечение тоже плотнее */
+                0 0 35px 15px rgba(197, 160, 89, 1),    /* Золото */
+                0 0 70px 25px rgba(197, 160, 89, 0.5);  /* Аура */
         }
 
         .card.open .inner { transform: rotateY(180deg); }
