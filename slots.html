@@ -19,26 +19,43 @@
             pointer-events: none;
         }
 
+        /* ФИКСИРОВАННЫЙ ХЕДЕР */
+        .header-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 500; /* Самый высокий слой, чтобы быть над картами */
+            padding-top: 20px;
+            /* Эффект размытия, чтобы карты красиво уходили под заголовок */
+            background: rgba(5, 1, 12, 0.5); 
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+        }
+
         .header-title { 
             position: relative; z-index: 10; color: #c5a059; 
-            margin: 20px 0 10px 0; text-shadow: 0 0 20px #c5a059; 
+            margin: 0 0 10px 0; text-shadow: 0 0 20px #c5a059; 
             font-size: 26px; text-transform: uppercase; letter-spacing: 2px;
         }
 
         .magic-btn-back {
-            position: relative; z-index: 200; margin-bottom: 20px;
-            padding: 12px 25px; background: rgba(0, 0, 0, 0.8);
-            color: #c5a059; text-decoration: none; font-size: 14px;
+            position: relative; z-index: 200; margin-bottom: 15px;
+            padding: 10px 25px; background: rgba(0, 0, 0, 0.8);
+            color: #c5a059; text-decoration: none; font-size: 13px;
             font-weight: bold; border: 2px solid #c5a059; border-radius: 50px;
             box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); transition: 0.3s;
         }
-        .magic-btn-back:hover { background: #c5a059; color: #000; transform: scale(1.05); }
 
-        /* СЕТКА: Растягиваем на 100% и делаем широкие ячейки */
+        /* КОРРЕКТИРОВКА СЕТКИ: Добавляем отступ сверху, чтобы шапка не закрывала первый ряд */
         .slots-grid { 
             position: relative; z-index: 100;
+            margin-top: 140px; /* Отступ под высоту шапки */
             display: grid; 
-            /* Минимум 120px ширины для плитки */
             grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); 
             gap: 8px; padding: 20px; width: 100%; 
             box-sizing: border-box;
@@ -116,8 +133,10 @@
         <source src="1.mp4" type="video/mp4">
     </video>
 
-    <h1 class="header-title">❂ВЫБЕРИ ИГРУ❂</h1>
+    <div class="header-fixed">
+    <h1 class="header-title">❂ ВЫБЕРИ ИГРУ ❂</h1>
     <a href="index.html" class="magic-btn-back">ВЕРНУТЬСЯ К ПРЕДСКАЗАНИЯМ</a>
+</div>
 
     <div class="slots-grid" id="grid"></div>
 
