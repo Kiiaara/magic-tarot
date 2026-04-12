@@ -85,31 +85,30 @@
             }
         }
         
-        .f, .back { 
+       .f, .back { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            backface-visibility: hidden; -webkit-backface-visibility: hidden;
+            /* Скрываем заднюю сторону, когда она отвернута */
+            backface-visibility: hidden; 
+            -webkit-backface-visibility: hidden;
             border-radius: 6px; border: 1.5px solid #c5a059; 
             display: flex; align-items: center; justify-content: center;
         }
         
         .f { 
+            z-index: 2; /* Лицо всегда сверху */
+            transform: rotateY(0deg);
             background-color: rgba(0, 0, 0, 0.7); 
             background-image: url('разворот.webp'); background-size: cover;
             background-position: center; background-repeat: no-repeat;
-            background-blend-mode: darken; z-index: 2; transform: rotateY(0deg);
+            background-blend-mode: darken;
         }
 
-        .card:nth-child(even) .f { background-color: rgba(0, 0, 0, 0.3); background-blend-mode: normal; }
-
-        .f::after {
-            content: '❂'; font-size: 22px; color: #c5a059;
-            text-shadow: 0 0 10px #c5a059, 0 0 20px #c5a059; position: absolute;
-        }
-        
         .back { 
-            background: #000; color: #fff; transform: rotateY(180deg);
+            z-index: 1; /* Спина под лицом */
+            background: #000; color: #fff; 
+            transform: rotateY(180deg); /* Спина изначально перевернута */
             padding: 5px; box-sizing: border-box;
-            box-shadow: inset 0 0 15px rgba(197, 160, 89, 0.5); z-index: 1;
+            box-shadow: inset 0 0 15px rgba(197, 160, 89, 0.5);
         }
         
         .slot-name { 
