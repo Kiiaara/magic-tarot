@@ -44,8 +44,7 @@
             font-size: 24px;
             cursor: pointer;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            justify-content: center; align-items: center;
             backdrop-filter: blur(5px);
             box-shadow: 0 0 15px rgba(197, 160, 89, 0.4);
             transition: 0.3s;
@@ -105,9 +104,7 @@
                 width: 100%;
                 box-sizing: border-box;
                 white-space: nowrap;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+                display: flex; align-items: center; justify-content: center;
             }
             .main-header span { font-size: 28px !important; margin: 0 8px; }
             .sum { font-size: 42px; } 
@@ -124,11 +121,7 @@
                 width: 80%;
                 text-align: center;
             }
-            .music-control-btn {
-                top: auto;
-                bottom: 20px;
-                right: 20px;
-            }
+            .music-control-btn { top: auto; bottom: 20px; right: 20px; }
         }
 
         .wrapper { display: flex; gap: 40px; z-index: 100; position: relative; }
@@ -246,12 +239,10 @@
         const musicIcon = document.getElementById('music-icon');
         const flipSnd = document.getElementById('flip-sound');
 
-        // Разблокировка видео при первом клике
         function startInteraction() {
             document.getElementById('v').play();
         }
 
-        // Переключатель музыки
         function toggleMusic(event) {
             event.stopPropagation(); 
             if (bgMusic.paused) {
@@ -267,9 +258,10 @@
         function flip(c) {
             if (c.classList.contains('open')) return;
             
-            // Звук магии: Ускоряем воспроизведение
+            // Звук магии: Ускоряем и делаем тише
             flipSnd.currentTime = 0;
-            flipSnd.playbackRate = 2; // ЗДЕСЬ МЫ УСКОРИЛИ ЗВУК
+            flipSnd.playbackRate = 2;
+            flipSnd.volume = 0.2; // ГРОМКОСТЬ ПОПРАВЛЕНА ЗДЕСЬ
             flipSnd.play();
 
             const res = ["30 000 ₽", "50 000 ₽", "100 000 ₽", "300 000 ₽"];
@@ -277,7 +269,7 @@
             c.classList.add('open');
         }
 
-        // Светлячки
+        // Частицы
         const box = document.getElementById('sparkle-box');
         for (let i = 0; i < 60; i++) {
             const s = document.createElement('div');
