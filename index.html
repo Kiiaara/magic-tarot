@@ -125,7 +125,7 @@
         
         @keyframes lev { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
         
-    .inner { 
+   .inner { 
             position: relative; 
             width: 100%; 
             height: 100%; 
@@ -133,21 +133,24 @@
             transform-style: preserve-3d; 
             border-radius: 20px;
             
-            /* ГАРАНТИРОВАННАЯ ОБВОДКА: outline не исчезает при зуме */
-            outline: 2px solid rgba(255, 255, 255, 0.9);
-            outline-offset: -2px; /* Вдавливаем внутрь, чтобы не ломать скругление */
-
-            /* GPU УСКОРЕНИЕ */
-            will-change: box-shadow, transform;
+            /* ФОРСИРУЕМ ОТРИСОВКУ (Изолируем слой) */
+            isolation: isolate; /* ГАРАНТИРУЕТ, что тени будут считаться отдельно от фона */
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
-            transform: translateZ(0);
+            
+            /* Создаем 3D-слой, который браузер не сможет проигнорировать */
+            transform: translate3d(0,0,0); 
+            will-change: transform, box-shadow;
 
-            /* УЛЬТРА-ЯРКОЕ СВЕЧЕНИЕ (подкрутили плотность ядра) */
+            /* ОБВОДКА И СВЕЧЕНИЕ */
+            outline: 2px solid rgba(255, 255, 255, 0.9);
+            outline-offset: -2px;
+
             box-shadow: 
-                0 0 12px 3px #fff,                      /* Увеличили ядро до 3px, чтобы не пропадало */
-                inset 0 0 20px 2px #fff,                /* Внутреннее свечение тоже плотнее */
-                0 0 35px 15px rgba(197, 160, 89, 1),    /* Золото */
+                0 0 15px 3px #fff,
+                inset 0 0 20px 2px #fff,
+                0 0 35px 15px rgba(197, 160, 89, 1), 
+                0 0 70px 25px rgba(197, 160, 89, 0.5);
         }
 
         .card.open .inner { transform: rotateY(180deg); }
