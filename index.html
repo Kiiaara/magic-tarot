@@ -229,15 +229,28 @@
     <div id="sparkle-box"></div>
     
     <div class="wrapper">
-        <div class="card" onclick="flip(this)"><div class="inner"><div class="f"></div><div class="back"><div class="sum"></div></div></div></div>
-        <div class="card" onclick="flip(this)"><div class="inner"><div class="f"></div><div class="back"><div class="sum"></div></div></div></div>
-        <div class="card" onclick="flip(this)"><div class="inner"><div class="f"></div><div class="back"><div class="sum"></div></div></div></div>
+        <div class="card" id="card-0" onclick="flip(this, 0)"><div class="inner"><div class="f"></div><div class="back"><div class="sum"></div></div></div></div>
+        <div class="card" id="card-1" onclick="flip(this, 1)"><div class="inner"><div class="f"></div><div class="back"><div class="sum"></div></div></div></div>
+        <div class="card" id="card-2" onclick="flip(this, 2)"><div class="inner"><div class="f"></div><div class="back"><div class="sum"></div></div></div></div>
     </div>
 
     <script>
         const bgMusic = document.getElementById('bg-music');
         const musicIcon = document.getElementById('music-icon');
         const flipSnd = document.getElementById('flip-sound');
+
+        // 1. ФУНКЦИЯ ПЕРЕМЕШИВАНИЯ
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // 2. ГЕНЕРИРУЕМ УНИКАЛЬНЫЕ ПРИЗЫ ПРИ ЗАГРУЗКЕ
+        const allPrizes = ["30 000 ₽", "50 000 ₽", "100 000 ₽", "300 000 ₽", "500 000 ₽", "750 000 ₽", "1 000 000 ₽", "1 250 000 ₽", "1 500 000 ₽", "2 000 000 ₽"];
+        const sessionPrizes = shuffle([...allPrizes]); // Перемешиваем копию массива
 
         function startInteraction() {
             document.getElementById('v').play();
@@ -255,21 +268,21 @@
             }
         }
 
-        function flip(c) {
+        // 3. ОБНОВЛЕННАЯ ФУНКЦИЯ ПЕРЕВОРОТА
+        function flip(c, index) {
             if (c.classList.contains('open')) return;
             
-            // Звук магии: Ускоряем и делаем тише
             flipSnd.currentTime = 0;
             flipSnd.playbackRate = 2;
-            flipSnd.volume = 0.2; // ГРОМКОСТЬ ПОПРАВЛЕНА ЗДЕСЬ
+            flipSnd.volume = 0.2; 
             flipSnd.play();
 
-            const res = ["30 000 ₽", "50 000 ₽", "100 000 ₽", "300 000 ₽"];
-            c.querySelector('.sum').innerText = res[Math.floor(Math.random() * res.length)];
+            // Берем приз из заранее перемешанного списка по индексу карты
+            c.querySelector('.sum').innerText = sessionPrizes[index];
             c.classList.add('open');
         }
 
-        // Частицы
+        // Светлячки
         const box = document.getElementById('sparkle-box');
         for (let i = 0; i < 60; i++) {
             const s = document.createElement('div');
