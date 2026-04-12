@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Magic Slots — Final Production</title>
+    <title>Magic Slots — Final Release</title>
     <style>
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
@@ -24,9 +24,9 @@
             position: fixed; top: 0; left: 0; width: 100%;
             display: flex; flex-direction: column; align-items: center;
             z-index: 500; padding-top: 20px;
-            background: rgba(5, 1, 12, 0.6); 
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(197, 160, 89, 0.3);
+            background: rgba(5, 1, 12, 0.5); 
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
         }
 
         .header-title { 
@@ -49,94 +49,103 @@
             transform: scale(1.1); cursor: pointer;
         }
 
-        /* СЕТКА */
         .slots-grid { 
             position: relative; z-index: 100;
-            margin-top: 160px; /* Увеличил отступ под хедер */
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
-            gap: 12px; padding: 20px; width: 95%; max-width: 1400px;
-            box-sizing: border-box;
-            justify-content: center;
+            margin-top: 140px; display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); 
+            gap: 8px; padding: 20px; width: 100%; box-sizing: border-box;
         }
 
-        .card { width: 100%; height: 80px; perspective: 1000px; cursor: pointer; }
-        
+        .card { width: 100%; height: 70px; perspective: 1000px; cursor: pointer; }
+
         .inner { 
             position: relative; width: 100%; height: 100%; 
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
             transform-style: preserve-3d;
-            border-radius: 8px;
-            /* Легкое базовое свечение для всех карт */
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5), 0 0 10px rgba(197, 160, 89, 0.2);
         }
-        
+
         .card.open .inner { transform: rotateY(180deg); }
 
-        /* ЯРКОЕ СВЕЧЕНИЕ ДЛЯ 20 РАНДОМНЫХ КАРТ */
+        /* СВЕЧЕНИЕ (БЕЗ КОНФЛИКТОВ С ПОВОРОТОМ) */
         .card.hot-glow .inner {
-            box-shadow: 0 0 25px 5px rgba(197, 160, 89, 0.8), 
-                        inset 0 0 15px rgba(197, 160, 89, 0.5);
-            animation: pulse-glow-only 2s infinite ease-in-out;
+            box-shadow: 0 0 25px 8px rgba(197, 160, 89, 0.8), 
+                        inset 0 0 15px rgba(197, 160, 89, 0.6);
+            animation: pulse-only-glow 2s infinite ease-in-out;
         }
 
-        @keyframes pulse-glow-only {
-            0%, 100% { box-shadow: 0 0 20px 5px rgba(197, 160, 89, 0.7); }
-            50% { box-shadow: 0 0 40px 12px rgba(197, 160, 89, 1); }
+        @keyframes pulse-only-glow {
+            0%, 100% { box-shadow: 0 0 25px 8px rgba(197, 160, 89, 0.8); }
+            50% { box-shadow: 0 0 45px 15px rgba(197, 160, 89, 1); }
         }
-        
+
         .f, .back { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
             backface-visibility: hidden; -webkit-backface-visibility: hidden;
-            border-radius: 8px; border: 1.5px solid #c5a059; 
+            border-radius: 6px; border: 1.5px solid #c5a059; 
             display: flex; align-items: center; justify-content: center;
         }
-        
-        /* ЛИЦО (ОБЛОЖКА) */
+
         .f { 
             z-index: 2; transform: rotateY(0deg);
-            background-color: rgba(0, 0, 0, 0.6); /* Чуть светлее, чтобы не было "черного центра" */
+            background-color: rgba(0, 0, 0, 0.7); 
             background-image: url('разворот.webp'); background-size: cover;
             background-position: center; background-repeat: no-repeat;
-            background-blend-mode: multiply; /* Поменял darken на multiply для глубины */
+            background-blend-mode: darken;
         }
 
-        /* ЗЕБРА: Чередование яркости */
+        /* ЗЕБРА: Каждый второй элемент светлее */
         .card:nth-child(even) .f { 
-            background-color: rgba(0, 0, 0, 0.2); 
+            background-color: rgba(0, 0, 0, 0.3); 
             background-blend-mode: normal; 
         }
 
-        /* ЗНАЧОК (НЕОНОВЫЙ) */
+       /* --- ИСПРАВЛЕННЫЙ, СВЕТЯЩИЙСЯ ЗНАЧОК ☽ --- */
         .f::after {
-            content: '⚚'; /* Твой символ. Можно сменить на ☽ */
-            font-size: 30px; color: #fff;
+            content: '☽'; /* Твой выбранный символ */
+            content: '⚚'; /* Твой выбранный символ */
+            font-size: 28px; /* Немного увеличим для акцента */
+
+            /* МЕНЯЕМ цвет текста на белый для эффекта "накала" */
+            color: #fff; 
+
+            /* МОЩНОЕ МНОГОСЛОЙНОЕ СВЕЧЕНИЕ (Золотая аура) */
             text-shadow: 
-                0 0 5px #fff,
-                0 0 15px #c5a059, 
-                0 0 30px #c5a059;
+                0 0 5px #fff,           /* Белое ядро */
+                0 0 10px #c5a059,       /* Внутреннее золото */
+                0 0 20px #c5a059,       /* Основное золото */
+                0 0 30px #c5a059,       /* Внешняя аура */
+                0 0 40px #c5a059;       /* Дальнее свечение */
+
             position: absolute;
             z-index: 3;
-            animation: icon-float 3s infinite ease-in-out;
+
+            /* ДОБАВЛЯЕМ мягкую пульсацию только для значка */
+            animation: symbol-breathe 4s infinite ease-in-out;
         }
 
-        @keyframes icon-float {
-            0%, 100% { filter: brightness(1); opacity: 0.8; }
-            50% { filter: brightness(1.5); opacity: 1; }
+        /* Анимация "дыхания" для Луны */
+        @keyframes symbol-breathe {
+            0%, 100% {
+                opacity: 0.8;
+                filter: brightness(1);
+            }
+            50% {
+                opacity: 1;
+                /* Усиливаем яркость в пике */
+                filter: brightness(1.3);
+            }
         }
-        
+
         .back { 
             z-index: 1; background: #000; color: #fff; 
             transform: rotateY(180deg);
-            padding: 8px; box-sizing: border-box;
+            padding: 5px; box-sizing: border-box;
             box-shadow: inset 0 0 15px rgba(197, 160, 89, 0.5);
         }
-        
+
         .slot-name { 
             font-size: 11px; font-weight: bold; color: #c5a059;
-            text-shadow: 0 0 8px rgba(197, 160, 89, 0.8); 
-            text-align: center; word-wrap: break-word;
-            line-height: 1.2;
+            text-shadow: 0 0 5px #c5a059; text-align: center; word-wrap: break-word;
         }
     </style>
 </head>
@@ -192,7 +201,6 @@
 
         const grid = document.getElementById('grid');
 
-        // Создаем карточки
         for (let i = 0; i < 154; i++) {
             const name = slotNames[i % slotNames.length];
             const cardHTML = `
@@ -208,7 +216,6 @@
             grid.innerHTML += cardHTML;
         }
 
-        // Рандомная подсветка 20 карт
         const allCards = document.querySelectorAll('.card');
         const cardArray = Array.from(allCards);
         for (let i = cardArray.length - 1; i > 0; i--) {
