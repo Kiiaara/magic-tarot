@@ -66,17 +66,23 @@
         
         .card.open .inner { transform: rotateY(180deg); }
 
-        /* ИСПРАВЛЕННОЕ СВЕЧЕНИЕ (БЕЗ SCALE) */
+       /* ИСПРАВЛЕННОЕ СВЕЧЕНИЕ (БЕЗ БЕЛОЙ ОБВОДКИ И БЕЗ ГЛЮКОВ) */
         .card.hot-glow .inner {
+            /* Убрал белый бордер, оставляем только золотую тень */
             box-shadow: 0 0 25px 8px rgba(197, 160, 89, 0.8), 
                         inset 0 0 15px rgba(197, 160, 89, 0.6);
-            border: 2px solid #fff; 
-            animation: pulse-glow-clean 2s infinite ease-in-out;
+            /* Анимация теперь только для ТЕНИ, она не трогает поворот */
+            animation: pulse-only-glow 2s infinite ease-in-out;
         }
 
-        @keyframes pulse-glow-clean {
-            0%, 100% { box-shadow: 0 0 25px 8px rgba(197, 160, 89, 0.8); filter: brightness(1); }
-            50% { box-shadow: 0 0 45px 15px rgba(197, 160, 89, 1); filter: brightness(1.2); }
+        @keyframes pulse-only-glow {
+            0%, 100% { 
+                box-shadow: 0 0 25px 8px rgba(197, 160, 89, 0.8); 
+            }
+            50% { 
+                /* Увеличиваем только размах тени */
+                box-shadow: 0 0 45px 15px rgba(197, 160, 89, 1); 
+            }
         }
         
         .f, .back { 
