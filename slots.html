@@ -168,15 +168,32 @@
             box-shadow: inset 0 0 15px rgba(197, 160, 89, 0.5);
         }
 
-       .slot-name { 
-            font-size: 10px; /* Уменьшили шрифт, так как колонки стали уже */
+       /* 2. ПРАВИМ ШРИФТ */
+        .slot-name { 
+            font-family: 'AlgeriaTwo', serif;
+            font-size: 14px; /* Увеличили (было 10-13px) */
             font-weight: bold; 
             color: #c5a059;
-            text-shadow: 0 0 5px #c5a059; 
+            
+            /* УБИРАЕМ СВЕЧЕНИЕ (закомментировал, чтобы потом легко вернуть) */
+            text-shadow: none; 
+            /* text-shadow: 0 0 5px #c5a059; */ 
+
             text-align: center; 
+            
+            /* ВКЛЮЧАЕМ ПЕРЕНОС ТЕКСТА */
             word-wrap: break-word;
-            line-height: 1.1;
-            padding: 2px;
+            overflow-wrap: break-word;
+            white-space: normal; /* Разрешаем перенос */
+            
+            line-height: 1.1; /* Плотный интервал, чтобы строки не разлетались */
+            padding: 5px; /* Отступы от краев рамки */
+            
+            /* Центрируем текст по вертикали внутри карточки */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
         }
 
         @media (max-width: 768px) {
