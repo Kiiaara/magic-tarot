@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Magic Slots — Final Release</title>
     <style>
-        /* 1. ПОДКЛЮЧАЕМ НОВЫЙ ШРИФТ */
+        /* 1. ПОДКЛЮЧАЕМ ШРИФТ */
         @font-face {
             font-family: 'AlgeriaTwo';
             src: url('fonts/algeriatwo.ttf') format('truetype');
@@ -17,7 +17,6 @@
             margin: 0; padding: 0; width: 100%; height: 100%;
             background: #05010c url('bg.webp') no-repeat center center fixed;
             background-size: cover; 
-            /* ПРИМЕНЯЕМ AlgeriaTwo КАК ОСНОВНОЙ */
             font-family: 'AlgeriaTwo', serif;
             display: flex; flex-direction: column; align-items: center;
             color: #fff; overflow-x: hidden;
@@ -29,11 +28,33 @@
             pointer-events: none;
         }
 
+        /* КНОПКА УПРАВЛЕНИЯ ЗВУКОМ */
+        .music-control-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #c5a059;
+            color: #c5a059;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 15px rgba(197, 160, 89, 0.4);
+            transition: 0.3s;
+        }
+
         /* ФИКСИРОВАННЫЙ ХЕДЕР */
         .header-fixed {
             position: fixed; top: 0; left: 0; width: 100%;
             display: flex; flex-direction: column; align-items: center;
-            z-index: 500; padding-top: 15px; /* Немного приподняли */
+            z-index: 500; padding-top: 15px;
             background: rgba(5, 1, 12, 0.6); 
             backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(197, 160, 89, 0.2);
@@ -42,11 +63,10 @@
         .header-title { 
             position: relative; z-index: 10; color: #c5a059; 
             margin: 0 0 10px 0; text-shadow: 0 0 20px #c5a059; 
-            font-size: 36px; /* Увеличили заголовок */
+            font-size: 36px;
             text-transform: uppercase; letter-spacing: 3px;
         }
 
-        /* УВЕЛИЧЕННЫЕ ЗНАЧКИ В ХЕДЕРЕ */
         .header-title span {
             font-size: 48px;
             vertical-align: middle;
@@ -60,7 +80,6 @@
             color: #c5a059; text-decoration: none; font-size: 14px;
             font-weight: bold; border: 2px solid #c5a059; border-radius: 50px;
             box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); transition: 0.3s;
-            font-family: 'AlgeriaTwo', serif; /* Шрифт для кнопки */
             letter-spacing: 1px;
         }
 
@@ -140,42 +159,36 @@
         }
 
         .slot-name { 
-            font-family: 'AlgeriaTwo', serif; /* Шрифт для названий слотов */
             font-size: 13px; font-weight: bold; color: #c5a059;
             text-shadow: 0 0 5px #c5a059; text-align: center; word-wrap: break-word;
             line-height: 1.1;
         }
 
-       @media (max-width: 768px) {
-            /* 1. Уменьшаем отступ сверху в самом хедере */
-            .header-fixed { 
-                padding-top: 10px; 
-            }
-
-            /* 2. Сжимаем заголовок, чтобы он встал в ОДНУ строку */
+        @media (max-width: 768px) {
+            .header-fixed { padding-top: 10px; }
             .header-title { 
                 font-size: 18px !important; 
-                white-space: nowrap; /* Запрещаем перенос текста */
-                display: flex;
-                align-items: center;
-                justify-content: center;
+                white-space: nowrap; 
+                display: flex; align-items: center; justify-content: center;
             }
-
-            /* 3. Уменьшаем значки ᛃ специально для мобилок */
-            .header-title span { 
-                font-size: 24px !important; 
-                margin: 0 8px !important; 
-            }
-
-            /* 4. Сильнее отодвигаем сетку, чтобы карты не прятались под хедером */
-            .slots-grid { 
-                margin-top: 165px !important; 
-                padding: 10px;
-                gap: 6px; /* Немного сужаем зазоры, чтобы влезло больше колонок */
-            }
+            .header-title span { font-size: 24px !important; margin: 0 8px !important; }
+            .slots-grid { margin-top: 165px !important; padding: 10px; gap: 6px; }
+            .music-control-btn { top: auto; bottom: 20px; right: 20px; }
+        }
     </style>
 </head>
-<body onclick="document.getElementById('v').play()">
+<body onclick="startInteraction()">
+
+    <audio id="bg-music" loop>
+        <source src="magic-ambient.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="flip-sound">
+        <source src="flip-magic.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="music-control" class="music-control-btn" onclick="toggleMusic(event)">
+        <span id="music-icon">🔇</span>
+    </button>
 
     <video id="v" autoplay muted loop playsinline class="video-layer">
         <source src="1.mp4" type="video/mp4">
@@ -188,7 +201,11 @@
 
     <div class="slots-grid" id="grid"></div>
 
-   <script>
+    <script>
+        const bgMusic = document.getElementById('bg-music');
+        const musicIcon = document.getElementById('music-icon');
+        const flipSnd = document.getElementById('flip-sound');
+
         const slotNames = [
             "Wanted Dead or a Wild", "Le Bandit", "RIP City", "Chaos Crew 2", "Hand of Anubis", 
             "Gladiator Legends", "Rotten", "Undead Fortune", "Dork Unit", "Beam Boys", 
@@ -225,7 +242,6 @@
             "SixSixSix", "Cursed Crypt", "Bouncy Bombs", "Big Bass Mission Fishin'"
         ];
 
-        // 1. ФУНКЦИЯ ПЕРЕМЕШИВАНИЯ
         function shuffle(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -234,16 +250,38 @@
             return array;
         }
 
-        // 2. ПЕРЕМЕШИВАЕМ ИМЕНА ПЕРЕД ОТРИСОВКОЙ
+        function startInteraction() {
+            document.getElementById('v').play();
+        }
+
+        function toggleMusic(event) {
+            event.stopPropagation();
+            if (bgMusic.paused) {
+                bgMusic.volume = 0.2; // ГРОМКОСТЬ 0.2
+                bgMusic.play();
+                musicIcon.innerText = '🔊';
+            } else {
+                bgMusic.pause();
+                musicIcon.innerText = '🔇';
+            }
+        }
+
+        // Функция переворота со звуком
+        window.flipCard = function(el) {
+            flipSnd.currentTime = 0;
+            flipSnd.playbackRate = 2; // УСКОРЕНИЕ ЗВУКА
+            flipSnd.play();
+            el.classList.toggle('open');
+        }
+
         const randomizedNames = shuffle([...slotNames]);
         const grid = document.getElementById('grid');
         let htmlContent = '';
 
-        // 3. СОЗДАЕМ КАРТОЧКИ С УЖЕ РАНДОМНЫМИ ИМЕНАМИ
         for (let i = 0; i < 154; i++) {
             const name = randomizedNames[i % randomizedNames.length];
             htmlContent += `
-                <div class="card" onclick="this.classList.toggle('open')">
+                <div class="card" onclick="flipCard(this)">
                     <div class="inner">
                         <div class="f"></div>
                         <div class="back">
@@ -255,7 +293,6 @@
         }
         grid.innerHTML = htmlContent;
 
-        // 4. ДОБАВЛЯЕМ ГОРЯЩЕЕ СВЕЧЕНИЕ СЛУЧАЙНЫМ КАРТАМ
         const allCards = document.querySelectorAll('.card');
         const shuffledIndices = shuffle(Array.from(Array(allCards.length).keys()));
         shuffledIndices.slice(0, 20).forEach(index => {
