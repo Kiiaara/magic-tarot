@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Magic Slots — Horizontal Edition</title>
+    <title>Magic Slots — Final Release</title>
     <style>
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
@@ -21,19 +21,11 @@
 
         /* ФИКСИРОВАННЫЙ ХЕДЕР */
         .header-fixed {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            z-index: 500; /* Самый высокий слой, чтобы быть над картами */
-            padding-top: 20px;
-            /* Эффект размытия, чтобы карты красиво уходили под заголовок */
+            position: fixed; top: 0; left: 0; width: 100%;
+            display: flex; flex-direction: column; align-items: center;
+            z-index: 500; padding-top: 20px;
             background: rgba(5, 1, 12, 0.5); 
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(197, 160, 89, 0.2);
         }
 
@@ -51,36 +43,20 @@
             box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); transition: 0.3s;
         }
 
-        /* ДОБАВЛЯЕМ ЭТОТ БЛОК */
         .magic-btn-back:hover {
-            background: #c5a059; /* Кнопка заливается золотом */
-            color: #000;         /* Текст становится черным для контраста */
-            
-            /* ТО САМОЕ СВЕЧЕНИЕ: мягкое золотое облако */
+            background: #c5a059; color: #000;
             box-shadow: 0 0 40px rgba(197, 160, 89, 0.8); 
-            
-            /* УВЕЛИЧЕНИЕ: кнопка плавно «растет» при наведении */
-            transform: scale(1.1); 
-            
-            cursor: pointer;
+            transform: scale(1.1); cursor: pointer;
         }
 
-        /* КОРРЕКТИРОВКА СЕТКИ: Добавляем отступ сверху, чтобы шапка не закрывала первый ряд */
         .slots-grid { 
             position: relative; z-index: 100;
-            margin-top: 140px; /* Отступ под высоту шапки */
-            display: grid; 
+            margin-top: 140px; display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); 
-            gap: 8px; padding: 20px; width: 100%; 
-            box-sizing: border-box;
+            gap: 8px; padding: 20px; width: 100%; box-sizing: border-box;
         }
 
-        /* КАРТОЧКА: Теперь горизонтальная плитка */
-        .card { 
-            width: 100%; 
-            height: 70px; /* Высота плитки */
-            perspective: 1000px; cursor: pointer; 
-        }
+        .card { width: 100%; height: 70px; perspective: 1000px; cursor: pointer; }
         
         .inner { 
             position: relative; width: 100%; height: 100%; 
@@ -90,20 +66,17 @@
         
         .card.open .inner { transform: rotateY(180deg); }
 
-        /* КЛАСС ДЛЯ ЯРКОГО СВЕЧЕНИЯ */
+        /* ИСПРАВЛЕННОЕ СВЕЧЕНИЕ (БЕЗ SCALE) */
         .card.hot-glow .inner {
-            /* Внешнее неоновое свечение */
             box-shadow: 0 0 25px 8px rgba(197, 160, 89, 0.8), 
                         inset 0 0 15px rgba(197, 160, 89, 0.6);
-            /* Делаем рамку чуть светлее, чтобы она "горела" */
-            border-color: #fff; 
-            /* Небольшая пульсация для живости */
-            animation: pulse-glow 2s infinite ease-in-out;
+            border: 2px solid #fff; 
+            animation: pulse-glow-clean 2s infinite ease-in-out;
         }
 
-        @keyframes pulse-glow {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.02); box-shadow: 0 0 35px 12px rgba(197, 160, 89, 0.9); }
+        @keyframes pulse-glow-clean {
+            0%, 100% { box-shadow: 0 0 25px 8px rgba(197, 160, 89, 0.8); filter: brightness(1); }
+            50% { box-shadow: 0 0 45px 15px rgba(197, 160, 89, 1); filter: brightness(1.2); }
         }
         
         .f, .back { 
@@ -113,57 +86,30 @@
             display: flex; align-items: center; justify-content: center;
         }
         
-      /* Лицевая сторона (Обложка) */
         .f { 
-            /* МЕНЯЕМ: Добавляем черный цвет фона для смешивания */
             background-color: rgba(0, 0, 0, 0.7); 
-            background-image: url('разворот.webp');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            
-            /* ВКЛЮЧАЕМ СМЕШИВАНИЕ: Это затемнит только лес */
-            background-blend-mode: darken; 
+            background-image: url('разворот.webp'); background-size: cover;
+            background-position: center; background-repeat: no-repeat;
+            background-blend-mode: darken; z-index: 2; transform: rotateY(0deg);
+        }
 
-            /* УДАЛЯЕМ filter: brightness, чтобы значок не тускнел */
-            z-index: 2; 
-            transform: rotateY(0deg);
-            position: relative;
-        }
-        /* --- ЭФФЕКТ "ЗЕБРЫ" ДЛЯ ОБЛОЖЕК --- */
-        
-        /* Выбираем лицевую сторону ( .f ) только у четных карточек ( :nth-child(even) ) */
-        .card:nth-child(even) .f {
-            /* Уменьшаем плотность черного наложения с 0.7 до 0.3 */
-            background-color: rgba(0, 0, 0, 0.3); 
-            
-            /* Убираем режим смешивания 'darken', чтобы картинка была светлой и чистой */
-            background-blend-mode: normal; 
-        }
-        /* ЗНАЧОК ПОСЕРЕДИНЕ (Теперь максимально яркий) */
+        .card:nth-child(even) .f { background-color: rgba(0, 0, 0, 0.3); background-blend-mode: normal; }
+
         .f::after {
-            content: '❂'; 
-            font-size: 22px; /* Чуть увеличил для акцента */
-            color: #c5a059;
-            /* УСИЛИВАЕМ СВЕЧЕНИЕ: Добавил второй слой тени */
-            text-shadow: 0 0 10px #c5a059, 0 0 20px #c5a059; 
-            opacity: 1; /* Ставим полную непрозрачность */
-            position: absolute; /* Гарантируем центровку */
+            content: '❂'; font-size: 22px; color: #c5a059;
+            text-shadow: 0 0 10px #c5a059, 0 0 20px #c5a059; position: absolute;
         }
         
         .back { 
-            background: #000; color: #fff; 
-            transform: rotateY(180deg);
+            background: #000; color: #fff; transform: rotateY(180deg);
             padding: 5px; box-sizing: border-box;
-            box-shadow: inset 0 0 15px rgba(197, 160, 89, 0.5);
-            z-index: 1;
+            box-shadow: inset 0 0 15px rgba(197, 160, 89, 0.5); z-index: 1;
         }
         
         .slot-name { 
             font-size: 11px; font-weight: bold; color: #c5a059;
-            text-shadow: 0 0 5px #c5a059; text-align: center;
-            word-wrap: break-word;
-                   }
+            text-shadow: 0 0 5px #c5a059; text-align: center; word-wrap: break-word;
+        }
     </style>
 </head>
 <body onclick="document.getElementById('v').play()">
@@ -173,55 +119,52 @@
     </video>
 
     <div class="header-fixed">
-    <h1 class="header-title">ᛃ СДЕЛАЙ СВОЙ ВЫБОР ᛃ</h1>
-    <a href="index.html" class="magic-btn-back">ВЕРНУТЬСЯ К ПРЕДСКАЗАНИЯМ</a>
-</div>
+        <h1 class="header-title">ᛃ СДЕЛАЙ СВОЙ ВЫБОР ᛃ</h1>
+        <a href="index.html" class="magic-btn-back">ВЕРНУТЬСЯ К ПРЕДСКАЗАНИЯМ</a>
+    </div>
 
     <div class="slots-grid" id="grid"></div>
 
     <script>
-       const slotNames = [
-    // --- HACKSAW GAMING ---
-    "Wanted Dead or a Wild", "Le Bandit", "RIP City", "Chaos Crew 2", "Hand of Anubis", 
-    "Gladiator Legends", "Rotten", "Undead Fortune", "Dork Unit", "Beam Boys", 
-    "Evil Eyes", "Duel at Dawn", "Fist of Destruction", "Cursed Seas", "Bloodthirst", 
-    "2 Wild 2 Die", "Fear the Dark", "Benny the Beer", "Fred's Food Truck", "Toshi Video Club", 
-    "Beast Below", "Orb of Destiny", "Le Viking", "Stick'em", "Xpander", 
-    "Keep 'em", "Stack 'em", "Bow of Artemis", "Angel vs Sinner", "Mystery Mice", 
-    "Forging Wilds", "Gem Elevator", "Slayers Inc", "Itero", "Alpha Eagle", 
-    "Vending Machine", "Tai the Toad", "Booze Bash", "Twisted Lab", "Hop 'n' Pop", 
-    "The Count", "Time Spinners", "Eye of the Panda", "Frank's Farm", "Keep 'em Cool", 
-    "Drop 'em", "Xmas Drop", "Buffalo Stack'n'Sync", "Ronin Stackways", "Donny Dough", 
-    "Danny Dollar", "Feel the Beat", "Aztec Twist", "Break Bones", "Cubes", 
-    "Cubes 2", "Cash Quest", "Dark Summoning", "Forest Fortune", "Wings of Horus", 
-    "Double Rainbow", "Gronk's Gems", "Chaos Crew", "Mayan Stackways", "Warrior Ways", 
-    "Fruit Duel", "Marlin Masters", "Wishbringer", "Aiko and the Wind Spirit", "Stormy Witch",
+        const slotNames = [
+            "Wanted Dead or a Wild", "Le Bandit", "RIP City", "Chaos Crew 2", "Hand of Anubis", 
+            "Gladiator Legends", "Rotten", "Undead Fortune", "Dork Unit", "Beam Boys", 
+            "Evil Eyes", "Duel at Dawn", "Fist of Destruction", "Cursed Seas", "Bloodthirst", 
+            "2 Wild 2 Die", "Fear the Dark", "Benny the Beer", "Fred's Food Truck", "Toshi Video Club", 
+            "Beast Below", "Orb of Destiny", "Le Viking", "Stick'em", "Xpander", 
+            "Keep 'em", "Stack 'em", "Bow of Artemis", "Angel vs Sinner", "Mystery Mice", 
+            "Forging Wilds", "Gem Elevator", "Slayers Inc", "Itero", "Alpha Eagle", 
+            "Vending Machine", "Tai the Toad", "Booze Bash", "Twisted Lab", "Hop 'n' Pop", 
+            "The Count", "Time Spinners", "Eye of the Panda", "Frank's Farm", "Keep 'em Cool", 
+            "Drop 'em", "Xmas Drop", "Buffalo Stack'n'Sync", "Ronin Stackways", "Donny Dough", 
+            "Danny Dollar", "Feel the Beat", "Aztec Twist", "Break Bones", "Cubes", 
+            "Cubes 2", "Cash Quest", "Dark Summoning", "Forest Fortune", "Wings of Horus", 
+            "Double Rainbow", "Gronk's Gems", "Chaos Crew", "Mayan Stackways", "Warrior Ways", 
+            "Fruit Duel", "Marlin Masters", "Wishbringer", "Aiko and the Wind Spirit", "Stormy Witch",
+            "Gates of Olympus 1000", "Sugar Rush 1000", "Sweet Bonanza 1000", "Starlight Princess 1000", "Zeus vs Hades", 
+            "Wisdom of Athena 1000", "The Dog House Megaways", "The Dog House Multihold", "Big Bass Splash", "Big Bass Floats My Boat", 
+            "Gems Bonanza", "Madame Destiny Megaways", "Wild West Gold", "Cleocatra", "Forge of Olympus", 
+            "Juicy Fruits", "Fruit Party 2", "Release the Bison", "Rise of Pyramids", "Fire Portals", 
+            "Big Burger", "Candy Corner", "Moleionaire", "Trees of Treasure", "Loki's Riches", 
+            "Gods of Giza", "The Red Queen", "Goblin Heist", "Wild Wild Riches Luck of the Irish", "Star Bounty", 
+            "Drago Jewels of Fortune", "Release the Kraken 2", "Buffalo King Megaways", "Great Rhino Megaways", "Sword of Ares", 
+            "Big Bass Amazon Xtreme", "Pub Kings", "Fat Panda", "Wisdom of Athena", "Badge Blitz", 
+            "Oodles of Noodles", "Congo Cash XL", "Big Bass Vegas", "Sumo Supreme", "Yeti Quest", 
+            "Dragon Gold 88", "Jackpot Hunter", "Samurai Code", "Crank it Up", "Sweet Kingdom", 
+            "Hand of Midas 2", "Buffalo King Untamed", "Medusa's Stone", "Devilicious", "Wildies", 
+            "Heroic Spins", "Starlight Princess Pachi", "Dwarf & Dragon", "Heart of Cleopatra", "Fruity Treats", 
+            "Candy Blitz Bombs", "Barnyard Megaways", "Ice Lobster", "Aztec Powernudge", "Ripe Rewards", 
+            "The Dog House Dog or Alive", "Gears of Horus", "Wheel o' Gold", "Mighty Munching Melons", "Strawberry Cocktail", 
+            "The Alter Ego", "Red Hot Luck", "Good Luck & Good Fortune", "Year of the Dragon King", "Castle of Fire", 
+            "The Big Dawgs", "Blade & Fangs", "The Wild Gang", "Nile Fortune", "Timber Stacks", 
+            "Sugar Supreme", "Viking Forge", "Infective Wild", "Tundra's Fortune", "Demon Pots", 
+            "Twilight Princess", "Gravity Bonanza", "Rainbow Reels", "Gold Oasis", "Golden Dragon", 
+            "SixSixSix", "Cursed Crypt", "Bouncy Bombs", "Big Bass Mission Fishin'"
+        ];
 
-    // --- PRAGMATIC PLAY ---
-    "Gates of Olympus 1000", "Sugar Rush 1000", "Sweet Bonanza 1000", "Starlight Princess 1000", "Zeus vs Hades", 
-    "Wisdom of Athena 1000", "The Dog House Megaways", "The Dog House Multihold", "Big Bass Splash", "Big Bass Floats My Boat", 
-    "Gems Bonanza", "Madame Destiny Megaways", "Wild West Gold", "Cleocatra", "Forge of Olympus", 
-    "Juicy Fruits", "Fruit Party 2", "Release the Bison", "Rise of Pyramids", "Fire Portals", 
-    "Big Burger", "Candy Corner", "Moleionaire", "Trees of Treasure", "Loki's Riches", 
-    "Gods of Giza", "The Red Queen", "Goblin Heist", "Wild Wild Riches Luck of the Irish", "Star Bounty", 
-    "Drago Jewels of Fortune", "Release the Kraken 2", "Buffalo King Megaways", "Great Rhino Megaways", "Sword of Ares", 
-    "Big Bass Amazon Xtreme", "Pub Kings", "Fat Panda", "Wisdom of Athena", "Badge Blitz", 
-    "Oodles of Noodles", "Congo Cash XL", "Big Bass Vegas", "Sumo Supreme", "Yeti Quest", 
-    "Dragon Gold 88", "Jackpot Hunter", "Samurai Code", "Crank it Up", "Sweet Kingdom", 
-    "Hand of Midas 2", "Buffalo King Untamed", "Medusa's Stone", "Devilicious", "Wildies", 
-    "Heroic Spins", "Starlight Princess Pachi", "Dwarf & Dragon", "Heart of Cleopatra", "Fruity Treats", 
-    "Candy Blitz Bombs", "Barnyard Megaways", "Ice Lobster", "Aztec Powernudge", "Ripe Rewards", 
-    "The Dog House Dog or Alive", "Gears of Horus", "Wheel o' Gold", "Mighty Munching Melons", "Strawberry Cocktail", 
-    "The Alter Ego", "Red Hot Luck", "Good Luck & Good Fortune", "Year of the Dragon King", "Castle of Fire", 
-    "The Big Dawgs", "Blade & Fangs", "The Wild Gang", "Nile Fortune", "Timber Stacks", 
-    "Sugar Supreme", "Viking Forge", "Infective Wild", "Tundra's Fortune", "Demon Pots", 
-    "Twilight Princess", "Gravity Bonanza", "Rainbow Reels", "Gold Oasis", "Golden Dragon", 
-    "SixSixSix", "Cursed Crypt", "Bouncy Bombs", "Big Bass Mission Fishin'"
-];
+        const grid = document.getElementById('grid');
 
-       const grid = document.getElementById('grid');
-
-        // 1. Сначала создаем все 154 карточки
+        // Генерируем карточки
         for (let i = 0; i < 154; i++) {
             const name = slotNames[i % slotNames.length];
             const cardHTML = `
@@ -237,21 +180,14 @@
             grid.innerHTML += cardHTML;
         }
 
-        // 2. ВСТАВЛЯЕМ СЮДА (сразу после цикла)
-        // Логика подсвечивания 20 случайных карт
+        // Рандомная подсветка
         const allCards = document.querySelectorAll('.card');
         const cardArray = Array.from(allCards);
-        
-        // Перемешиваем карточки
         for (let i = cardArray.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [cardArray[i], cardArray[j]] = [cardArray[j], cardArray[i]];
         }
-        
-        // Берем первые 20 и заставляем их светиться
-        cardArray.slice(0, 20).forEach(card => {
-            card.classList.add('hot-glow');
-        });
+        cardArray.slice(0, 20).forEach(card => card.classList.add('hot-glow'));
     </script>
 </body>
 </html>
