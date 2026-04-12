@@ -27,23 +27,38 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 50; /* Между видео (1) и картами (100) */
+            z-index: 2; /* Над видео (1), но под картами (100) */
             pointer-events: none;
             overflow: hidden;
         }
-        /* СВЕТЛЯЧКИ */
-       /* ОБНОВЛЕННЫЕ КРУПНЫЕ СВЕТЛЯЧКИ */
+
+        /* САМИ СВЕТЛЯЧКИ (Крупные и яркие) */
         .sparkle {
             position: absolute; 
             background: #fff; 
             border-radius: 50%;
-            /* Увеличиваем радиус свечения */
-            box-shadow: 0 0 15px 5px #c5a059, 0 0 30px 10px rgba(197, 160, 89, 0.5);
-            z-index: 5; 
+            /* Белое ядро + многослойное золотое свечение (чтобы не было черного центра) */
+            box-shadow: 
+                0 0 10px #fff, 
+                0 0 20px #c5a059, 
+                0 0 40px rgba(197, 160, 89, 0.8);
             pointer-events: none;
             animation: fly linear infinite;
-            /* Добавим легкое размытие самим частицам для мягкости */
-            filter: blur(1px); 
+            filter: blur(0.5px); /* Легкое размытие для естественности */
+        }
+
+        @keyframes fly { 
+            0% { 
+                transform: translate(0, 0); 
+                opacity: 0; 
+            } 
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { 
+                /* Движение к заданным в JS координатам */
+                transform: translate(var(--x), var(--y)); 
+                opacity: 0; 
+            } 
         }
 /* ЗАГОЛОВОК СТРАНИЦЫ */
         .main-header {
@@ -177,16 +192,32 @@
             document.getElementById('v').play();
         }
 
-        const box = document.getElementById('sparkle-box');
-        for (let i = 0; i < 45; i++) {
+       const box = document.getElementById('sparkle-box');
+        // Увеличим количество для красоты
+        for (let i = 0; i < 60; i++) {
             const s = document.createElement('div');
             s.className = 'sparkle';
+            
+            // Размер как ты просила (от 5 до 13px)
             const size = Math.random() * 8 + 5;
-            s.style.width = size + 'px'; s.style.height = size + 'px';
-            s.style.left = Math.random() * 100 + '%'; s.style.top = Math.random() * 100 + '%';
-            s.style.setProperty('--x', (Math.random() - 0.5) * 500 + 'px');
-            s.style.setProperty('--y', (Math.random() - 0.5) * 500 + 'px');
-            s.style.animationDuration = (Math.random() * 6 + 4) + 's';
+            s.style.width = size + 'px'; 
+            s.style.height = size + 'px';
+            
+            // Начальная позиция рандомно по всему экрану
+            s.style.left = Math.random() * 100 + '%'; 
+            s.style.top = Math.random() * 100 + '%';
+            
+            // Дистанция полета (куда лететь)
+            const destinationX = (Math.random() - 0.5) * 600 + 'px';
+            const destinationY = (Math.random() - 0.5) * 600 + 'px';
+            
+            s.style.setProperty('--x', destinationX);
+            s.style.setProperty('--y', destinationY);
+            
+            // Плавность и задержка
+            s.style.animationDuration = (Math.random() * 10 + 5) + 's';
+            s.style.animationDelay = (Math.random() * 5) + 's';
+            
             box.appendChild(s);
         }
     </script>
