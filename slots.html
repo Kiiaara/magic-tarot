@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Magic Slots — Final Release</title>
     <style>
-        /* 1. ПОДКЛЮЧАЕМ ШРИФТ */
+        /* 1. ПОДКЛЮЧАЕМ НОВЫЙ ШРИФТ */
         @font-face {
             font-family: 'AlgeriaTwo';
             src: url('fonts/algeriatwo.ttf') format('truetype');
@@ -257,7 +257,7 @@
         function toggleMusic(event) {
             event.stopPropagation();
             if (bgMusic.paused) {
-                bgMusic.volume = 0.2; // ГРОМКОСТЬ 0.2
+                bgMusic.volume = 0.2; 
                 bgMusic.play();
                 musicIcon.innerText = '🔊';
             } else {
@@ -266,10 +266,16 @@
             }
         }
 
-        // Функция переворота со звуком
+        // --- ГРОМКОСТЬ ПОПРАВЛЕНА ТУТ ---
         window.flipCard = function(el) {
+            if (el.classList.contains('open')) return;
+
             flipSnd.currentTime = 0;
-            flipSnd.playbackRate = 2; // УСКОРЕНИЕ ЗВУКА
+            flipSnd.playbackRate = 2; 
+            
+            // Установил на 0.2 (20%). Если хочешь тише — ставь 0.1
+            flipSnd.volume = 0.2; 
+            
             flipSnd.play();
             el.classList.toggle('open');
         }
