@@ -146,11 +146,33 @@
             line-height: 1.1;
         }
 
-        @media (max-width: 768px) {
-            .header-title { font-size: 24px; }
-            .header-title span { font-size: 32px; }
-            .slots-grid { margin-top: 130px; }
-        }
+       @media (max-width: 768px) {
+            /* 1. Уменьшаем отступ сверху в самом хедере */
+            .header-fixed { 
+                padding-top: 10px; 
+            }
+
+            /* 2. Сжимаем заголовок, чтобы он встал в ОДНУ строку */
+            .header-title { 
+                font-size: 18px !important; 
+                white-space: nowrap; /* Запрещаем перенос текста */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* 3. Уменьшаем значки ᛃ специально для мобилок */
+            .header-title span { 
+                font-size: 24px !important; 
+                margin: 0 8px !important; 
+            }
+
+            /* 4. Сильнее отодвигаем сетку, чтобы карты не прятались под хедером */
+            .slots-grid { 
+                margin-top: 165px !important; 
+                padding: 10px;
+                gap: 6px; /* Немного сужаем зазоры, чтобы влезло больше колонок */
+            }
     </style>
 </head>
 <body onclick="document.getElementById('v').play()">
