@@ -39,54 +39,53 @@
         }
         .magic-btn-back:hover { background: #c5a059; color: #000; transform: scale(1.05); }
 
+       /* 1. СЕТКА: делаем её максимально плотной */
         .slots-grid { 
             position: relative; z-index: 100;
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); 
-            gap: 15px; padding: 20px; width: 95%; max-width: 1200px;
+            display: grid; 
+            /* Авто-заполнение очень маленькими колонками по 45 пикселей */
+            grid-template-columns: repeat(auto-fill, minmax(45px, 1fr)); 
+            gap: 4px; /* Минимальный зазор между плитками */
+            padding: 10px; 
+            width: 98%; 
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
-        /* --- КАРТЫ С ФИКСАЦИЕЙ ЦЕНТРА --- */
-        .card { width: 120px; height: 160px; perspective: 1000px; cursor: pointer; }
-        
+        /* 2. КАРТОЧКИ: теперь это мини-плитки */
+        .card { 
+            width: 45px; 
+            height: 60px; 
+            perspective: 1000px; 
+            cursor: pointer; 
+        }
+
         .inner { 
             position: relative; width: 100%; height: 100%; 
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
-            transform-style: preserve-3d; border-radius: 10px; 
+            transition: transform 0.5s ease; 
+            transform-style: preserve-3d; 
+            border-radius: 4px; 
         }
-        
-        /* Фикс сдвига: вращаем строго вокруг центра */
-        .card.open .inner { transform: rotateY(180deg); }
-        
+
         .f, .back { 
-            position: absolute; top: 0; left: 0; /* Фиксация позиции */
+            position: absolute; top: 0; left: 0;
             width: 100%; height: 100%; 
-            backface-visibility: hidden; -webkit-backface-visibility: hidden;
-            border-radius: 10px; border: 1.5px solid #c5a059; 
-            display: flex; align-items: center; justify-content: center; text-align: center;
+            backface-visibility: hidden;
+            border-radius: 4px; 
+            border: 1px solid #c5a059; /* Тонкая рамка */
+            display: flex; align-items: center; justify-content: center;
         }
-        
-        .f { 
-            background: #111 url('разворот.webp') center/cover; 
-            filter: brightness(1.2) contrast(1.1);
-            z-index: 2;
-            transform: rotateY(0deg);
-        }
-        
-        .back { 
-            background: #000; color: #fff; 
-            transform: rotateY(180deg); /* Повернута изначально */
-            padding: 10px; box-sizing: border-box;
-            box-shadow: inset 0 0 15px rgba(197, 160, 89, 0.3);
-            z-index: 1;
-        }
-        
-        /* --- ТЕКСТ БЕЗ ЗЕРКАЛЬНОСТИ --- */
+
+        /* 3. ШРИФТ: делаем его микроскопическим, чтобы влез в плитку */
         .slot-name { 
-            font-size: 13px; font-weight: bold; color: #c5a059;
-            text-shadow: 0 0 5px #c5a059; 
+            font-size: 7px; /* Очень мелкий шрифт */
+            font-weight: bold; 
+            color: #c5a059;
+            text-shadow: 0 0 3px #c5a059; 
             word-wrap: break-word;
-            /* Убираем все старые трансформации текста, он встанет сам */
-            transform: none; 
+            line-height: 1;
+            padding: 2px;
+            transform: scaleX(-1); /* Оставляем фикс зеркальности */
         }
     </style>
 </head>
