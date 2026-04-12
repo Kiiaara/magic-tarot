@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Magic Tarot — Final Production</title>
     <style>
-        /* 1. ПОДКЛЮЧАЕМ ШРИФТ */
+        /* 1. ПОДКЛЮЧАЕМ НОВЫЙ ШРИФТ */
         @font-face {
             font-family: 'AlgeriaTwo';
             src: url('fonts/algeriatwo.ttf') format('truetype');
@@ -246,14 +246,14 @@
         const musicIcon = document.getElementById('music-icon');
         const flipSnd = document.getElementById('flip-sound');
 
-        // Разблокировка видео при первом клике (требование браузеров)
+        // Разблокировка видео при первом клике
         function startInteraction() {
             document.getElementById('v').play();
         }
 
         // Переключатель музыки
         function toggleMusic(event) {
-            event.stopPropagation(); // Чтобы не сработал клик по body
+            event.stopPropagation(); 
             if (bgMusic.paused) {
                 bgMusic.volume = 0.4;
                 bgMusic.play();
@@ -267,8 +267,9 @@
         function flip(c) {
             if (c.classList.contains('open')) return;
             
-            // Звук магии
+            // Звук магии: Ускоряем воспроизведение
             flipSnd.currentTime = 0;
+            flipSnd.playbackRate = 1.5; // ЗДЕСЬ МЫ УСКОРИЛИ ЗВУК
             flipSnd.play();
 
             const res = ["30 000 ₽", "50 000 ₽", "100 000 ₽", "300 000 ₽"];
@@ -276,7 +277,7 @@
             c.classList.add('open');
         }
 
-        // Частицы
+        // Светлячки
         const box = document.getElementById('sparkle-box');
         for (let i = 0; i < 60; i++) {
             const s = document.createElement('div');
