@@ -5,10 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Magic Slots — Final Release</title>
     <style>
+        /* 1. ПОДКЛЮЧАЕМ НОВЫЙ ШРИФТ */
+        @font-face {
+            font-family: 'AlgeriaTwo';
+            src: url('fonts/algeriatwo.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
             background: #05010c url('bg.webp') no-repeat center center fixed;
-            background-size: cover; font-family: 'Georgia', serif;
+            background-size: cover; 
+            /* ПРИМЕНЯЕМ AlgeriaTwo КАК ОСНОВНОЙ */
+            font-family: 'AlgeriaTwo', serif;
             display: flex; flex-direction: column; align-items: center;
             color: #fff; overflow-x: hidden;
         }
@@ -23,8 +33,8 @@
         .header-fixed {
             position: fixed; top: 0; left: 0; width: 100%;
             display: flex; flex-direction: column; align-items: center;
-            z-index: 500; padding-top: 20px;
-            background: rgba(5, 1, 12, 0.5); 
+            z-index: 500; padding-top: 15px; /* Немного приподняли */
+            background: rgba(5, 1, 12, 0.6); 
             backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(197, 160, 89, 0.2);
         }
@@ -32,15 +42,26 @@
         .header-title { 
             position: relative; z-index: 10; color: #c5a059; 
             margin: 0 0 10px 0; text-shadow: 0 0 20px #c5a059; 
-            font-size: 26px; text-transform: uppercase; letter-spacing: 2px;
+            font-size: 36px; /* Увеличили заголовок */
+            text-transform: uppercase; letter-spacing: 3px;
+        }
+
+        /* УВЕЛИЧЕННЫЕ ЗНАЧКИ В ХЕДЕРЕ */
+        .header-title span {
+            font-size: 48px;
+            vertical-align: middle;
+            margin: 0 10px;
+            display: inline-block;
         }
 
         .magic-btn-back {
             position: relative; z-index: 200; margin-bottom: 15px;
             padding: 10px 25px; background: rgba(0, 0, 0, 0.8);
-            color: #c5a059; text-decoration: none; font-size: 13px;
+            color: #c5a059; text-decoration: none; font-size: 14px;
             font-weight: bold; border: 2px solid #c5a059; border-radius: 50px;
             box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); transition: 0.3s;
+            font-family: 'AlgeriaTwo', serif; /* Шрифт для кнопки */
+            letter-spacing: 1px;
         }
 
         .magic-btn-back:hover {
@@ -51,22 +72,22 @@
 
         .slots-grid { 
             position: relative; z-index: 100;
-            margin-top: 140px; display: grid; 
+            margin-top: 150px; display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); 
             gap: 8px; padding: 20px; width: 100%; box-sizing: border-box;
         }
 
-        .card { width: 100%; height: 70px; perspective: 1000px; cursor: pointer; }
+        .card { width: 100%; height: 75px; perspective: 1000px; cursor: pointer; }
 
         .inner { 
             position: relative; width: 100%; height: 100%; 
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
             transform-style: preserve-3d;
+            border-radius: 6px;
         }
 
         .card.open .inner { transform: rotateY(180deg); }
 
-        /* СВЕЧЕНИЕ (БЕЗ КОНФЛИКТОВ С ПОВОРОТОМ) */
         .card.hot-glow .inner {
             box-shadow: 0 0 25px 8px rgba(197, 160, 89, 0.8), 
                         inset 0 0 15px rgba(197, 160, 89, 0.6);
@@ -93,47 +114,22 @@
             background-blend-mode: darken;
         }
 
-        /* ЗЕБРА: Каждый второй элемент светлее */
         .card:nth-child(even) .f { 
             background-color: rgba(0, 0, 0, 0.3); 
             background-blend-mode: normal; 
         }
 
-       /* --- ИСПРАВЛЕННЫЙ, СВЕТЯЩИЙСЯ ЗНАЧОК ☽ --- */
         .f::after {
-            content: '☽'; /* Твой выбранный символ */
-            content: '⚚'; /* Твой выбранный символ */
-            font-size: 28px; /* Немного увеличим для акцента */
-
-            /* МЕНЯЕМ цвет текста на белый для эффекта "накала" */
-            color: #fff; 
-
-            /* МОЩНОЕ МНОГОСЛОЙНОЕ СВЕЧЕНИЕ (Золотая аура) */
-            text-shadow: 
-                0 0 5px #fff,           /* Белое ядро */
-                0 0 10px #c5a059,       /* Внутреннее золото */
-                0 0 20px #c5a059,       /* Основное золото */
-                0 0 30px #c5a059,       /* Внешняя аура */
-                0 0 40px #c5a059;       /* Дальнее свечение */
-
-            position: absolute;
-            z-index: 3;
-
-            /* ДОБАВЛЯЕМ мягкую пульсацию только для значка */
+            content: '⚚'; 
+            font-size: 28px; color: #fff; 
+            text-shadow: 0 0 5px #fff, 0 0 10px #c5a059, 0 0 20px #c5a059;
+            position: absolute; z-index: 3;
             animation: symbol-breathe 4s infinite ease-in-out;
         }
 
-        /* Анимация "дыхания" для Луны */
         @keyframes symbol-breathe {
-            0%, 100% {
-                opacity: 0.8;
-                filter: brightness(1);
-            }
-            50% {
-                opacity: 1;
-                /* Усиливаем яркость в пике */
-                filter: brightness(1.3);
-            }
+            0%, 100% { opacity: 0.8; filter: brightness(1); }
+            50% { opacity: 1; filter: brightness(1.3); }
         }
 
         .back { 
@@ -144,8 +140,16 @@
         }
 
         .slot-name { 
-            font-size: 11px; font-weight: bold; color: #c5a059;
+            font-family: 'AlgeriaTwo', serif; /* Шрифт для названий слотов */
+            font-size: 13px; font-weight: bold; color: #c5a059;
             text-shadow: 0 0 5px #c5a059; text-align: center; word-wrap: break-word;
+            line-height: 1.1;
+        }
+
+        @media (max-width: 768px) {
+            .header-title { font-size: 24px; }
+            .header-title span { font-size: 32px; }
+            .slots-grid { margin-top: 130px; }
         }
     </style>
 </head>
@@ -156,8 +160,8 @@
     </video>
 
     <div class="header-fixed">
-        <h1 class="header-title">ᛃ СДЕЛАЙ СВОЙ ВЫБОР ᛃ</h1>
-        <a href="index.html" class="magic-btn-back">ВЕРНУТЬСЯ К ПРЕДСКАЗАНИЯМ</a>
+        <h1 class="header-title"><span>ᛃ</span> Сделай свой выбор <span>ᛃ</span></h1>
+        <a href="index.html" class="magic-btn-back">Вернуться к предсказаниям</a>
     </div>
 
     <div class="slots-grid" id="grid"></div>
