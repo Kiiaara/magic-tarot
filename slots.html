@@ -99,11 +99,40 @@
             background-blend-mode: normal; 
         }
 
-        /* ЗНАЧОК ❂ В ЦЕНТРЕ */
+       /* --- ИСПРАВЛЕННЫЙ, СВЕТЯЩИЙСЯ ЗНАЧОК ☽ --- */
         .f::after {
-            content: '☽'; font-size: 22px; color: #c5a059;
-            text-shadow: 0 0 10px #c5a059, 0 0 20px #c5a059; 
-            position: absolute; z-index: 3;
+            content: '☽'; /* Твой выбранный символ */
+            font-size: 28px; /* Немного увеличим для акцента */
+            
+            /* МЕНЯЕМ цвет текста на белый для эффекта "накала" */
+            color: #fff; 
+            
+            /* МОЩНОЕ МНОГОСЛОЙНОЕ СВЕЧЕНИЕ (Золотая аура) */
+            text-shadow: 
+                0 0 5px #fff,           /* Белое ядро */
+                0 0 10px #c5a059,       /* Внутреннее золото */
+                0 0 20px #c5a059,       /* Основное золото */
+                0 0 30px #c5a059,       /* Внешняя аура */
+                0 0 40px #c5a059;       /* Дальнее свечение */
+                
+            position: absolute;
+            z-index: 3;
+            
+            /* ДОБАВЛЯЕМ мягкую пульсацию только для значка */
+            animation: symbol-breathe 4s infinite ease-in-out;
+        }
+
+        /* Анимация "дыхания" для Луны */
+        @keyframes symbol-breathe {
+            0%, 100% {
+                opacity: 0.8;
+                filter: brightness(1);
+            }
+            50% {
+                opacity: 1;
+                /* Усиливаем яркость в пике */
+                filter: brightness(1.3);
+            }
         }
         
         .back { 
