@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Magic Slots — Final Release</title>
     <style>
-        /* 1. ПОДКЛЮЧАЕМ НОВЫЙ ШРИФТ */
+        /* 1. ПОДКЛЮЧАЕМ ШРИФТ */
         @font-face {
             font-family: 'AlgeriaTwo';
             src: url('fonts/algeriatwo.ttf') format('truetype');
@@ -28,7 +28,7 @@
             pointer-events: none;
         }
 
-        /* КНОПКА УПРАВЛЕНИЯ ЗВУКОМ */
+        /* КНОПКА УПРАВЛЕНИЯ ЗВУКОМ (SVG) */
         .music-control-btn {
             position: fixed;
             top: 20px;
@@ -39,15 +39,25 @@
             border-radius: 50%;
             background: rgba(0, 0, 0, 0.6);
             border: 2px solid #c5a059;
-            color: #c5a059;
-            font-size: 24px;
             cursor: pointer;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            justify-content: center; align-items: center;
             backdrop-filter: blur(5px);
             box-shadow: 0 0 15px rgba(197, 160, 89, 0.4);
             transition: 0.3s;
+        }
+        
+        .music-control-btn svg {
+            width: 24px;
+            height: 24px;
+            stroke: #c5a059;
+            filter: drop-shadow(0 0 5px rgba(197, 160, 89, 0.8));
+            transition: 0.3s;
+        }
+
+        .music-control-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(197, 160, 89, 0.8);
         }
 
         /* ФИКСИРОВАННЫЙ ХЕДЕР */
@@ -83,19 +93,13 @@
             letter-spacing: 1px;
         }
 
-        .magic-btn-back:hover {
-            background: #c5a059; color: #000;
-            box-shadow: 0 0 40px rgba(197, 160, 89, 0.8); 
-            transform: scale(1.1); cursor: pointer;
-        }
-
+        /* СЕТКА: ЖЕСТКО 11 КОЛОНОК (даст 14 полных строк для 154 карт) */
         .slots-grid { 
             position: relative; z-index: 100;
-            margin-top: 150px; 
+            margin-top: 160px; 
             display: grid; 
-            /* ЖЕСТКО 11 КОЛОНОК */
             grid-template-columns: repeat(11, 1fr); 
-            gap: 6px; /* Чуть уменьшили зазор, чтобы всё влезло */
+            gap: 6px; 
             padding: 20px; 
             width: 100%; 
             box-sizing: border-box;
@@ -103,7 +107,7 @@
 
         .card { 
             width: 100%; 
-            height: 70px; /* Немного уменьшили высоту для компактности */
+            height: 90px; /* Увеличили высоту для читаемости текста */
             perspective: 1000px; 
             cursor: pointer; 
         }
@@ -156,11 +160,6 @@
             animation: symbol-breathe 4s infinite ease-in-out;
         }
 
-        @keyframes symbol-breathe {
-            0%, 100% { opacity: 0.8; filter: brightness(1); }
-            50% { opacity: 1; filter: brightness(1.3); }
-        }
-
         .back { 
             z-index: 1; background: #000; color: #fff; 
             transform: rotateY(180deg);
@@ -168,28 +167,17 @@
             box-shadow: inset 0 0 15px rgba(197, 160, 89, 0.5);
         }
 
-       /* 2. ПРАВИМ ШРИФТ */
+        /* УВЕЛИЧЕННЫЙ ШРИФТ И ПЕРЕНОСЫ */
         .slot-name { 
-            font-family: 'AlgeriaTwo', serif;
-            font-size: 14px; /* Увеличили (было 10-13px) */
+            font-size: 14px; 
             font-weight: bold; 
             color: #c5a059;
-            
-            /* УБИРАЕМ СВЕЧЕНИЕ (закомментировал, чтобы потом легко вернуть) */
-            text-shadow: none; 
-            /* text-shadow: 0 0 5px #c5a059; */ 
-
             text-align: center; 
-            
-            /* ВКЛЮЧАЕМ ПЕРЕНОС ТЕКСТА */
             word-wrap: break-word;
             overflow-wrap: break-word;
-            white-space: normal; /* Разрешаем перенос */
-            
-            line-height: 1.1; /* Плотный интервал, чтобы строки не разлетались */
-            padding: 5px; /* Отступы от краев рамки */
-            
-            /* Центрируем текст по вертикали внутри карточки */
+            white-space: normal; 
+            line-height: 1.1;
+            text-shadow: none; /* Убрали тени для четкости */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -204,7 +192,13 @@
                 display: flex; align-items: center; justify-content: center;
             }
             .header-title span { font-size: 24px !important; margin: 0 8px !important; }
-            .slots-grid { margin-top: 165px !important; padding: 10px; gap: 6px; }
+            .slots-grid { 
+                grid-template-columns: repeat(11, 1fr); /* Оставляем 11 колонок */
+                margin-top: 165px !important; 
+                padding: 5px; gap: 3px; 
+            }
+            .card { height: 60px; }
+            .slot-name { font-size: 8px; }
             .music-control-btn { top: auto; bottom: 20px; right: 20px; }
         }
     </style>
@@ -219,7 +213,10 @@
     </audio>
 
     <button id="music-control" class="music-control-btn" onclick="toggleMusic(event)">
-        <span id="music-icon">🔇</span>
+        <div id="icon-container">
+            <svg id="svg-mute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+            <svg id="svg-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+        </div>
     </button>
 
     <video id="v" autoplay muted loop playsinline class="video-layer">
@@ -235,7 +232,6 @@
 
     <script>
         const bgMusic = document.getElementById('bg-music');
-        const musicIcon = document.getElementById('music-icon');
         const flipSnd = document.getElementById('flip-sound');
 
         const slotNames = [
@@ -288,26 +284,25 @@
 
         function toggleMusic(event) {
             event.stopPropagation();
+            const svgOn = document.getElementById('svg-on');
+            const svgMute = document.getElementById('svg-mute');
             if (bgMusic.paused) {
                 bgMusic.volume = 0.2; 
                 bgMusic.play();
-                musicIcon.innerText = '🔊';
+                svgOn.style.display = 'block';
+                svgMute.style.display = 'none';
             } else {
                 bgMusic.pause();
-                musicIcon.innerText = '🔇';
+                svgOn.style.display = 'none';
+                svgMute.style.display = 'block';
             }
         }
 
-        // --- ГРОМКОСТЬ ПОПРАВЛЕНА ТУТ ---
         window.flipCard = function(el) {
             if (el.classList.contains('open')) return;
-
             flipSnd.currentTime = 0;
             flipSnd.playbackRate = 2; 
-            
-            // Установил на 0.2 (20%). Если хочешь тише — ставь 0.1
             flipSnd.volume = 0.3; 
-            
             flipSnd.play();
             el.classList.toggle('open');
         }
@@ -316,6 +311,7 @@
         const grid = document.getElementById('grid');
         let htmlContent = '';
 
+        // Генерируем ровно 154 карты (11 x 14)
         for (let i = 0; i < 154; i++) {
             const name = randomizedNames[i % randomizedNames.length];
             htmlContent += `
