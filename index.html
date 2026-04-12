@@ -23,56 +23,39 @@
 
         /* КОНТЕЙНЕР ДЛЯ СВЕТЛЯЧКОВ */
         #sparkle-box {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 50; /* Между видео и картами */
-            pointer-events: none;
-            overflow: hidden;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 50; pointer-events: none; overflow: hidden;
         }
 
-        /* САМИ СВЕТЛЯЧКИ (Яркие и живые) */
+        /* ИСПРАВЛЕННЫЕ СВЕТЛЯЧКИ (ЧЕРЕЗ ГРАДИЕНТ) */
         .sparkle {
             position: absolute; 
-            background: #ffffff !important; /* Чистый белый центр */
             border-radius: 50%;
-            /* Мощное золотое свечение без черных пятен */
-            box-shadow: 
-                0 0 10px 2px #ffffff, 
-                0 0 20px 5px #c5a059, 
-                0 0 40px 10px rgba(197, 160, 89, 0.6);
+            /* Белое ядро плавно переходит в золотой неон и в прозрачность */
+            background: radial-gradient(circle, 
+                #ffffff 0%, 
+                #c5a059 40%, 
+                rgba(197, 160, 89, 0.4) 70%, 
+                transparent 100%) !important;
+            /* Дополнительный мягкий ореол */
+            filter: drop-shadow(0 0 5px #c5a059);
             pointer-events: none;
             opacity: 0;
-            /* Важно: длительность берется из JS */
-            animation: move-sparkle linear infinite;
+            animation: magic-fly linear infinite;
         }
 
-        @keyframes move-sparkle {
-            0% { 
-                transform: translate(0, 0); 
-                opacity: 0; 
-            }
+        @keyframes magic-fly {
+            0% { transform: translate(0, 0); opacity: 0; }
             15% { opacity: 1; }
             85% { opacity: 1; }
-            100% { 
-                /* Летим к координатам, которые сгенерировал скрипт */
-                transform: translate(var(--x), var(--y)); 
-                opacity: 0; 
-            }
+            100% { transform: translate(var(--dx), var(--dy)); opacity: 0; }
         }
 
         /* ЗАГОЛОВОК */
         .main-header {
-            position: absolute;
-            top: 60px;
-            z-index: 150;
-            color: #c5a059;
-            font-size: 32px;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            text-align: center;
+            position: absolute; top: 60px; z-index: 150;
+            color: #c5a059; font-size: 32px; text-transform: uppercase;
+            letter-spacing: 4px; text-align: center;
             text-shadow: 0 0 20px rgba(197, 160, 89, 0.7);
             pointer-events: none;
         }
@@ -135,7 +118,7 @@
         <source src="1.mp4" type="video/mp4">
     </video>
 
-    <h1 class="main-header">ᛃ УЗНАЙ СВОЙ БАЛАНС ᛃ</h1>
+    <h1 class="main-header">❂ УЗНАЙ СВОЙ БАЛАНС ❂</h1>
 
     <div id="sparkle-box"></div>
     
@@ -159,24 +142,23 @@
             const s = document.createElement('div');
             s.className = 'sparkle';
             
-            // Крупный размер (как ты просила)
-            const size = Math.random() * 8 + 6;
+            // Крупный размер
+            const size = Math.random() * 10 + 6;
             s.style.width = size + 'px'; 
             s.style.height = size + 'px';
             
-            // Рандомный старт по всему экрану
+            // Рандомный старт
             s.style.left = Math.random() * 100 + '%'; 
             s.style.top = Math.random() * 100 + '%';
             
-            // Вектор полета
-            const dx = (Math.random() - 0.5) * 400 + 'px';
-            const dy = (Math.random() - 0.5) * 400 + 'px';
+            // Вектор полета (новые имена переменных, чтобы избежать кэша)
+            const moveX = (Math.random() - 0.5) * 500 + 'px';
+            const moveY = (Math.random() - 0.5) * 500 + 'px';
             
-            s.style.setProperty('--x', dx);
-            s.style.setProperty('--y', dy);
+            s.style.setProperty('--dx', moveX);
+            s.style.setProperty('--dy', moveY);
             
-            // Плавная анимация
-            s.style.animationDuration = (Math.random() * 8 + 4) + 's';
+            s.style.animationDuration = (Math.random() * 7 + 4) + 's';
             s.style.animationDelay = (Math.random() * 5) + 's';
             
             box.appendChild(s);
