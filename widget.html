@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Procurement Widget Large</title>
+    <title>Procurement Widget Fixed</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
     <style>
         body {
@@ -17,72 +17,70 @@
         }
 
         .widget-card {
-            background: rgba(10, 10, 10, 0.92); /* Чуть плотнее фон */
-            padding: 40px 55px; /* Увеличили внутренние отступы */
+            background: rgba(10, 10, 10, 0.95); 
+            padding: 30px 45px;
             border-radius: 25px;
             border: 1px solid rgba(255, 255, 255, 0.12);
             box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(15px);
-            min-width: 500px; /* Сделали плашку шире под крупный текст */
+            /* Увеличили ширину, чтобы миллионы не вылетали */
+            width: 700px; 
         }
 
         .row {
             display: flex;
-            justify-content: space-between;
-            align-items: baseline; /* Выравнивание по базовой линии текста */
-            margin-bottom: 25px;
+            /* Прижимаем всё к левому краю, чтобы уменьшить расстояние */
+            justify-content: flex-start; 
+            align-items: baseline;
+            margin-bottom: 10px;
         }
 
         .row:last-child { margin-bottom: 0; }
 
         .label {
-            font-size: 26px; /* Крупнее метки */
+            font-size: 22px;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             color: #bbb;
             font-weight: 700;
+            /* Фиксированная ширина для подписей, чтобы цифры стояли в колонку */
+            width: 200px; 
+            flex-shrink: 0;
         }
 
         .value {
-            font-size: 54px; /* Массивные цифры */
+            font-size: 54px;
             font-weight: 900;
-            line-height: 1;
+            line-height: 1.2;
+            /* Запрещаем перенос символа рубля */
+            white-space: nowrap; 
         }
 
-        /* Анимированная желтая сумма */
         #purchased {
             color: #FFD700;
-            text-shadow: 0 0 8px rgba(255, 215, 0, 0.4); /* Деликатное свечение */
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
             animation: breathe 3s ease-in-out infinite;
             display: inline-block;
         }
 
         @keyframes breathe {
-            0%, 100% {
-                transform: scale(1);
-                text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
-            }
-            50% {
-                transform: scale(1.03); /* Легкое увеличение */
-                text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
-            }
+            0%, 100% { transform: scale(1); text-shadow: 0 0 8px rgba(255, 215, 0, 0.3); }
+            50% { transform: scale(1.02); text-shadow: 0 0 15px rgba(255, 215, 0, 0.6); }
         }
 
-        .manual-value {
-            color: #ffffff;
-        }
+        .manual-value { color: #ffffff; }
     </style>
 </head>
 <body>
 
 <div class="widget-card">
     <div class="row">
-        <span class="label">СТАРТОВЫЙ БАЛАНС:</span>
+        <span class="label">Стартовый баланс:</span>
         <span class="value manual-value">2 000 000 ₽</span>
     </div>
     
-    <div class="row" style="margin-top: 10px;">
-        <span class="label">БОНУСКИ:</span>
+    <div class="row">
+        <span class="label">Бонуски:</span>
         <span id="purchased" class="value">0 ₽</span>
     </div>
 </div>
