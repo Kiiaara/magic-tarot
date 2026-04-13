@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Procurement Widget Glow</title>
+    <title>Procurement Widget Compact Glow</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
     <style>
         body {
@@ -18,62 +18,56 @@
 
         .widget-card {
             background: rgba(10, 10, 10, 0.95); 
-            padding: 30px 45px;
-            
-            /* ВОТ ТУТ СКРУГЛЕНИЕ И ПОДСВЕТКА КРАЕВ */
+            padding: 25px 40px; /* Компактные внутренние поля */
             border-radius: 35px; 
-            border: 2px solid rgba(255, 215, 0, 0.3); /* Тонкая золотая рамка */
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2); /* Внешнее свечение всей плашки */
-            
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
             backdrop-filter: blur(15px);
-            display: inline-block;
             
-            /* Анимация для всей рамки */
+            /* Гибкая колонка */
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            
             animation: borderBreathe 3s ease-in-out infinite;
         }
 
-        /* АНИМАЦИЯ ПОДСВЕТКИ КРАЕВ */
         @keyframes borderBreathe {
-            0%, 100% { 
-                border-color: rgba(255, 215, 0, 0.2); 
-                box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
-            }
-            50% { 
-                border-color: rgba(255, 215, 0, 0.6); 
-                box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
-            }
+            0%, 100% { border-color: rgba(255, 215, 0, 0.2); box-shadow: 0 0 15px rgba(255, 215, 0, 0.1); }
+            50% { border-color: rgba(255, 215, 0, 0.6); box-shadow: 0 0 30px rgba(255, 215, 0, 0.3); }
         }
 
         .row {
             display: flex;
-            align-items: center;
-            margin-bottom: 25px;
+            align-items: baseline; /* Чтобы буквы и цифры стояли на одной линии */
+            margin-bottom: 10px;
+            width: 100%;
         }
 
         .row:last-child { margin-bottom: 0; }
 
         .label {
-            font-size: 34px; 
+            font-size: 32px; /* Крупные буквы */
             text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #ddd;
             font-weight: 700;
-            width: 420px; 
-            text-align: center;
-            margin-right: 20px;
+            color: #ddd;
+            
+            /* Расстояние между текстом и цифрами */
+            margin-right: 25px; 
+            text-align: right;
+            flex: 1; /* Прижимает текст к середине */
         }
 
         .value-container {
-            width: 380px; 
-            text-align: center;
+            flex: 1; /* Прижимает цифры к середине */
+            text-align: left;
         }
 
         .value {
-            font-size: 56px;
+            font-size: 50px; /* Крупные цифры */
             font-weight: 900;
             line-height: 1;
             white-space: nowrap;
-            display: inline-block;
         }
 
         #purchased {
@@ -82,7 +76,6 @@
             animation: textBreathe 3s ease-in-out infinite;
         }
 
-        /* Раздельная анимация для текста */
         @keyframes textBreathe {
             0%, 100% { transform: scale(1); text-shadow: 0 0 8px rgba(255, 215, 0, 0.3); }
             50% { transform: scale(1.03); text-shadow: 0 0 20px rgba(255, 215, 0, 0.7); }
@@ -115,6 +108,7 @@
             const response = await fetch('https://kiiaara.store/webhook/get-stats');
             const data = await response.json();
             const total = data.total || 0;
+            // Убрали ₽ из вывода скрипта
             document.getElementById('purchased').innerText = total.toLocaleString('ru-RU');
         } catch (error) {
             console.error('Ошибка:', error);
