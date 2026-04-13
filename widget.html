@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Procurement Widget Perfect Center</title>
+    <title>Procurement Widget Glow</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
     <style>
         body {
@@ -18,42 +18,58 @@
 
         .widget-card {
             background: rgba(10, 10, 10, 0.95); 
-            padding: 40px 60px;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8);
+            padding: 45px 65px;
+            
+            /* ВОТ ТУТ СКРУГЛЕНИЕ И ПОДСВЕТКА КРАЕВ */
+            border-radius: 35px; 
+            border: 2px solid rgba(255, 215, 0, 0.3); /* Тонкая золотая рамка */
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2); /* Внешнее свечение всей плашки */
+            
             backdrop-filter: blur(15px);
             display: inline-block;
+            
+            /* Анимация для всей рамки */
+            animation: borderBreathe 3s ease-in-out infinite;
+        }
+
+        /* АНИМАЦИЯ ПОДСВЕТКИ КРАЕВ */
+        @keyframes borderBreathe {
+            0%, 100% { 
+                border-color: rgba(255, 215, 0, 0.2); 
+                box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
+            }
+            50% { 
+                border-color: rgba(255, 215, 0, 0.6); 
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            }
         }
 
         .row {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .row:last-child { margin-bottom: 0; }
 
-        /* КОЛОНКА С БУКВАМИ (Центровка слов) */
         .label {
             font-size: 30px; 
             text-transform: uppercase;
             letter-spacing: 2px;
-            color: #ccc;
+            color: #ddd;
             font-weight: 700;
-            width: 400px; /* Ширина колонки для слов */
-            text-align: center; /* СЛОВА ТЕПЕРЬ ДРУГ ПОД ДРУГОМ ПО ЦЕНТРУ */
+            width: 420px; 
+            text-align: center;
             margin-right: 20px;
         }
 
-        /* КОЛОНКА С ЦИФРАМИ (Центровка цифр) */
         .value-container {
-            width: 350px; /* Ширина колонки для цифр */
-            text-align: center; /* ЦИФРЫ ТЕПЕРЬ ДРУГ ПОД ДРУГОМ ПО ЦЕНТРУ */
+            width: 380px; 
+            text-align: center;
         }
 
         .value {
-            font-size: 54px;
+            font-size: 56px;
             font-weight: 900;
             line-height: 1;
             white-space: nowrap;
@@ -62,13 +78,14 @@
 
         #purchased {
             color: #FFD700;
-            text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
-            animation: breathe 3s ease-in-out infinite;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+            animation: textBreathe 3s ease-in-out infinite;
         }
 
-        @keyframes breathe {
+        /* Раздельная анимация для текста */
+        @keyframes textBreathe {
             0%, 100% { transform: scale(1); text-shadow: 0 0 8px rgba(255, 215, 0, 0.3); }
-            50% { transform: scale(1.02); text-shadow: 0 0 15px rgba(255, 215, 0, 0.6); }
+            50% { transform: scale(1.03); text-shadow: 0 0 20px rgba(255, 215, 0, 0.7); }
         }
 
         .manual-value { color: #ffffff; }
