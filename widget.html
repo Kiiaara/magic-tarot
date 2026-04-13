@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Procurement Widget Fixed Column</title>
+    <title>Procurement Widget Final Center</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
     <style>
         body {
@@ -17,11 +17,11 @@
         }
 
         .widget-card {
-            background: rgba(10, 10, 10, 0.95); 
-            padding: 30px 50px;
+            background: rgba(10, 10, 10, 0.96); 
+            padding: 35px 50px;
             border-radius: 35px; 
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+            border: 2px solid rgba(255, 215, 0, 0.4);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.25);
             backdrop-filter: blur(15px);
             display: inline-block;
             animation: borderBreathe 3s ease-in-out infinite;
@@ -29,32 +29,32 @@
 
         @keyframes borderBreathe {
             0%, 100% { border-color: rgba(255, 215, 0, 0.2); box-shadow: 0 0 15px rgba(255, 215, 0, 0.1); }
-            50% { border-color: rgba(255, 215, 0, 0.6); box-shadow: 0 0 30px rgba(255, 215, 0, 0.3); }
+            50% { border-color: rgba(255, 215, 0, 0.6); box-shadow: 0 0 35px rgba(255, 215, 0, 0.35); }
         }
 
         .row {
             display: flex;
-            align-items: center;
-            margin-bottom: 10px;
+            align-items: center; /* Центровка цифр по высоте букв */
+            margin-bottom: 20px;
         }
 
         .row:last-child { margin-bottom: 0; }
 
-        /* КОЛОНКА С БУКВАМИ: фиксируем ширину и выравниваем по левому краю */
-        .label {
+        /* ЛЕВАЯ КОЛОНКА (СЛОВА) */
+        .label-cell {
+            width: 450px; /* Фиксируем ширину для слов */
+            text-align: center; /* СЛОВА ВЫРОВНЕНЫ ПО ЦЕНТРУ */
             font-size: 32px; 
             text-transform: uppercase;
             font-weight: 700;
             color: #ddd;
-            width: 380px; /* Фиксированная ширина для слов */
-            text-align: left; /* Слова прижаты к левому краю */
             white-space: nowrap;
         }
 
-        /* КОЛОНКА С ЦИФРАМИ: тоже фиксируем ширину */
-        .value-container {
-            width: 300px; /* Фиксированная ширина для цифр */
-            text-align: left; /* Цифры прижаты к левому краю своей колонки */
+        /* ПРАВАЯ КОЛОНКА (ЦИФРЫ) */
+        .value-cell {
+            width: 400px; /* Фиксируем ширину для цифр */
+            text-align: center; /* ЦИФРЫ ВЫРОВНЕНЫ ПО ЦЕНТРУ */
         }
 
         .value {
@@ -62,18 +62,18 @@
             font-weight: 900;
             line-height: 1;
             white-space: nowrap;
-            display: block;
+            display: inline-block;
         }
 
         #purchased {
             color: #FFD700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+            text-shadow: 0 0 12px rgba(255, 215, 0, 0.5);
             animation: textBreathe 3s ease-in-out infinite;
         }
 
         @keyframes textBreathe {
             0%, 100% { transform: scale(1); text-shadow: 0 0 8px rgba(255, 215, 0, 0.3); }
-            50% { transform: scale(1.02); text-shadow: 0 0 20px rgba(255, 215, 0, 0.7); }
+            50% { transform: scale(1.02); text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
         }
 
         .manual-value { color: #ffffff; }
@@ -83,15 +83,15 @@
 
 <div class="widget-card">
     <div class="row">
-        <div class="label">Стартовый баланс:</div>
-        <div class="value-container">
+        <div class="label-cell">Стартовый баланс:</div>
+        <div class="value-cell">
             <span class="value manual-value">2 000 000</span>
         </div>
     </div>
     
     <div class="row">
-        <div class="label">Бонуски:</div>
-        <div class="value-container">
+        <div class="label-cell">Бонуски:</div>
+        <div class="value-cell">
             <span id="purchased" class="value">0</span>
         </div>
     </div>
