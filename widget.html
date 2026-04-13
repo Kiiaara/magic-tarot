@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Procurement Widget Perfect Grid</title>
+    <title>Procurement Widget Fixed Column</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
     <style>
         body {
@@ -18,7 +18,7 @@
 
         .widget-card {
             background: rgba(10, 10, 10, 0.95); 
-            padding: 35px 50px;
+            padding: 30px 50px;
             border-radius: 35px; 
             border: 2px solid rgba(255, 215, 0, 0.3);
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
@@ -33,27 +33,28 @@
         }
 
         .row {
-            display: grid;
-            /* Делаем две колонки: левая подстраивается под самый длинный текст, правая под цифры */
-            grid-template-columns: auto auto; 
-            gap: 30px; /* ЭТО ЗАЗОР МЕЖДУ СЛОВАМИ И ЦИФРАМИ */
+            display: flex;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .row:last-child { margin-bottom: 0; }
 
+        /* КОЛОНКА С БУКВАМИ: фиксируем ширину и выравниваем по левому краю */
         .label {
             font-size: 32px; 
             text-transform: uppercase;
             font-weight: 700;
             color: #ddd;
-            text-align: right; /* Прижимаем слова к центру */
+            width: 380px; /* Фиксированная ширина для слов */
+            text-align: left; /* Слова прижаты к левому краю */
             white-space: nowrap;
         }
 
+        /* КОЛОНКА С ЦИФРАМИ: тоже фиксируем ширину */
         .value-container {
-            text-align: left; /* Прижимаем цифры к центру */
+            width: 300px; /* Фиксированная ширина для цифр */
+            text-align: left; /* Цифры прижаты к левому краю своей колонки */
         }
 
         .value {
