@@ -233,36 +233,42 @@ const slotNames = [
     "Gold Oasis", "Frozen Tropics", "Cyclops Smash", "Candy Blitz", "Diamond Cascade", 
     "Sky Bounty", "Sweet Bonanza", "Gates of Olympus"];
         
-        const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
+     // --- 1. ФУНКЦИЯ ПЕРЕМЕШИВАНИЯ (теперь всё на месте) ---
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
         }
+        return array;
+    }
 
-        const randomizedNames = shuffle([...slotNames]);
-        const grid = document.getElementById('grid');
-        let htmlContent = '';
+    // --- 2. ГЕНЕРАЦИЯ КАРТОЧЕК ---
+    const randomizedNames = shuffle([...slotNames]);
+    const grid = document.getElementById('grid');
+    let htmlContent = '';
 
-        for (let i = 0; i < 154; i++) {
-            const name = randomizedNames[i % randomizedNames.length];
-            htmlContent += `
-                <div class="card" onclick="flipCard(this)">
-                    <div class="inner">
-                        <div class="f"></div>
-                        <div class="back">
-                            <div class="slot-name">${name}</div>
-                        </div>
+    for (let i = 0; i < 154; i++) {
+        // Берем имя из перемешанного списка
+        const name = randomizedNames[i % randomizedNames.length];
+        htmlContent += `
+            <div class="card" onclick="flipCard(this)">
+                <div class="inner">
+                    <div class="f"></div>
+                    <div class="back">
+                        <div class="slot-name">${name}</div>
                     </div>
                 </div>
-            `;
-        }
-        grid.innerHTML = htmlContent;
+            </div>
+        `;
+    }
+    grid.innerHTML = htmlContent;
 
-        const allCards = document.querySelectorAll('.card');
-        const shuffledIndices = shuffle(Array.from(Array(allCards.length).keys()));
-        shuffledIndices.slice(0, 20).forEach(index => {
-            allCards[index].classList.add('hot-glow');
-        });
+    // --- 3. ПОДСВЕТКА HOT-КАРТОЧЕК ---
+    const allCards = document.querySelectorAll('.card');
+    const shuffledIndices = shuffle(Array.from(Array(allCards.length).keys()));
+    shuffledIndices.slice(0, 20).forEach(index => {
+        allCards[index].classList.add('hot-glow');
+    });
     </script>
 </body>
 </html>
