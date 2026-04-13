@@ -51,41 +51,26 @@
 
         /* --- ВОТ ТУТ МАГИЯ АНИМАЦИИ --- */
 
-        /* Стиль для динамической суммы (Закуплено) */
+       /* Обновленный стиль: меньше шума, больше четкости */
         #purchased {
-            color: #FFD700; /* Чистый золотой/жёлтый */
+            color: #FFD700; /* Золотой остается */
             
-            /* Желтая подсветка (неон) */
-            text-shadow: 
-                0 0 5px rgba(255, 215, 0, 0.8),
-                0 0 10px rgba(255, 215, 0, 0.6),
-                0 0 20px rgba(255, 215, 0, 0.4);
+            /* Оставляем только один аккуратный слой тени */
+            text-shadow: 0 0 6px rgba(255, 215, 0, 0.5); 
             
-            /* Подключаем анимацию "дыхания" */
             animation: breathe 3s ease-in-out infinite;
-            display: inline-block; /* Чтобы трансформация работала корректно */
+            display: inline-block;
         }
 
-        /* Определение анимации "дыхания" */
         @keyframes breathe {
-            0% {
-                transform: scale(1); /* Обычный размер */
-                text-shadow: 
-                    0 0 5px rgba(255, 215, 0, 0.8),
-                    0 0 10px rgba(255, 215, 0, 0.6);
+            0%, 100% {
+                transform: scale(1);
+                text-shadow: 0 0 6px rgba(255, 215, 0, 0.4);
             }
             50% {
-                transform: scale(1.03); /* Чуть больше (на 3%) */
-                text-shadow: 
-                    0 0 10px rgba(255, 215, 0, 1), /* Ярче свечение */
-                    0 0 20px rgba(255, 215, 0, 0.8),
-                    0 0 30px rgba(255, 215, 0, 0.6);
-            }
-            100% {
-                transform: scale(1); /* Снова обычный размер */
-                text-shadow: 
-                    0 0 5px rgba(255, 215, 0, 0.8),
-                    0 0 10px rgba(255, 215, 0, 0.6);
+                transform: scale(1.02); /* Уменьшили амплитуду до 2% */
+                /* На пике свечение теперь не "взрывается", а лишь слегка густеет */
+                text-shadow: 0 0 12px rgba(255, 215, 0, 0.7);
             }
         }
 
@@ -102,7 +87,7 @@
 <div class="widget-card">
     <div class="row">
         <span class="label">Было:</span>
-        <span class="value manual-value">50 000 ₽</span>
+        <span class="value manual-value">2 000 000 ₽</span>
     </div>
     
     <div class="row">
