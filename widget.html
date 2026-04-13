@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Procurement Widget Final Compact</title>
+    <title>Procurement Widget Perfect Grid</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
     <style>
         body {
@@ -18,13 +18,11 @@
 
         .widget-card {
             background: rgba(10, 10, 10, 0.95); 
-            padding: 30px 40px;
+            padding: 35px 50px;
             border-radius: 35px; 
             border: 2px solid rgba(255, 215, 0, 0.3);
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
             backdrop-filter: blur(15px);
-            
-            /* Фиксируем общую ширину плашки, чтобы она не "гуляла" */
             display: inline-block;
             animation: borderBreathe 3s ease-in-out infinite;
         }
@@ -35,8 +33,11 @@
         }
 
         .row {
-            display: flex;
-            align-items: center; /* Центрируем цифры строго посередине букв */
+            display: grid;
+            /* Делаем две колонки: левая подстраивается под самый длинный текст, правая под цифры */
+            grid-template-columns: auto auto; 
+            gap: 30px; /* ЭТО ЗАЗОР МЕЖДУ СЛОВАМИ И ЦИФРАМИ */
+            align-items: center;
             margin-bottom: 15px;
         }
 
@@ -47,21 +48,16 @@
             text-transform: uppercase;
             font-weight: 700;
             color: #ddd;
-            
-            /* Фиксированная ширина для слов — подбираем так, чтобы не было дыр */
-            width: 320px; 
-            text-align: right;
-            margin-right: 25px; /* Зазор между текстом и цифрами */
+            text-align: right; /* Прижимаем слова к центру */
+            white-space: nowrap;
         }
 
         .value-container {
-            /* Фиксированная ширина для цифр — чтобы они стояли ровно */
-            width: 250px; 
-            text-align: left;
+            text-align: left; /* Прижимаем цифры к центру */
         }
 
         .value {
-            font-size: 50px; 
+            font-size: 54px; 
             font-weight: 900;
             line-height: 1;
             white-space: nowrap;
@@ -76,7 +72,7 @@
 
         @keyframes textBreathe {
             0%, 100% { transform: scale(1); text-shadow: 0 0 8px rgba(255, 215, 0, 0.3); }
-            50% { transform: scale(1.03); text-shadow: 0 0 20px rgba(255, 215, 0, 0.7); }
+            50% { transform: scale(1.02); text-shadow: 0 0 20px rgba(255, 215, 0, 0.7); }
         }
 
         .manual-value { color: #ffffff; }
