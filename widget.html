@@ -20,17 +20,23 @@
             background: rgba(10, 10, 10, 0.96); 
             padding: 35px 50px;
             border-radius: 35px; 
-            border: 3px solid rgba(255, 215, 0, 0.4);
+            border: 2px solid rgba(255, 215, 0, 0.4);
             box-shadow: 0 0 25px rgba(255, 215, 0, 0.25);
             backdrop-filter: blur(15px);
             display: inline-block;
             animation: borderBreathe 3s ease-in-out infinite;
         }
 
+       /* ОБНОВЛЕННАЯ АНИМАЦИЯ: Ярче и шире */
         @keyframes borderBreathe {
-            0%, 100% { border-color: rgba(255, 215, 0, 0.2); box-shadow: 0 0 15px rgba(255, 215, 0, 0.1); }
-            50% { border-color: rgba(255, 215, 0, 0.6); box-shadow: 0 0 35px rgba(255, 215, 0, 0.35); }
-        }
+            0%, 100% { 
+                border-color: rgba(255, 215, 0, 0.4); 
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            }
+            50% { 
+                border-color: rgba(255, 215, 0, 0.9); /* Почти непрозрачная рамка на пике */
+                box-shadow: 0 0 50px rgba(255, 215, 0, 0.7), /* Мощное внешнее свечение */
+            }
 
         .row {
             display: flex;
