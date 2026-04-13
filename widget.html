@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Procurement Widget Final Center</title>
+    <title>Procurement Widget Final FIXED</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
     <style>
         body {
@@ -16,11 +16,11 @@
             color: white;
         }
 
-       .widget-card {
+        .widget-card {
             background: rgba(10, 10, 10, 0.96); 
-            padding: 35px 50px;
+            padding: 40px 60px;
             border-radius: 35px; 
-            /* Сделал рамку чуть толще (4px) и ярче изначально */
+            /* ЯРКАЯ ТОЛСТАЯ РАМКА */
             border: 4px solid rgba(255, 215, 0, 0.5); 
             box-shadow: 0 0 30px rgba(255, 215, 0, 0.4); 
             backdrop-filter: blur(15px);
@@ -28,44 +28,45 @@
             animation: borderBreathe 3s ease-in-out infinite;
         }
 
-       /* ОБНОВЛЕННАЯ АНИМАЦИЯ: Ярче и шире */
+        /* МОЩНОЕ СВЕЧЕНИЕ РАМКИ */
         @keyframes borderBreathe {
             0%, 100% { 
                 border-color: rgba(255, 215, 0, 0.4); 
                 box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
             }
             50% { 
-                border-color: rgba(255, 215, 0, 0.9); /* Почти непрозрачная рамка на пике */
-                box-shadow: 0 0 50px rgba(255, 215, 0, 0.7), /* Мощное внешнее свечение */
+                border-color: rgba(255, 215, 0, 0.9); 
+                box-shadow: 0 0 60px rgba(255, 215, 0, 0.7), inset 0 0 15px rgba(255, 215, 0, 0.3);
             }
+        }
 
         .row {
             display: flex;
-            align-items: center; /* Центровка цифр по высоте букв */
-            margin-bottom: 20px;
+            align-items: center; 
+            margin-bottom: 25px;
         }
 
         .row:last-child { margin-bottom: 0; }
 
-        /* ЛЕВАЯ КОЛОНКА (СЛОВА) */
+        /* ЛЕВАЯ КОЛОНКА (СЛОВА) - ЦЕНТРИРОВАНА */
         .label-cell {
-            width: 450px; /* Фиксируем ширину для слов */
-            text-align: center; /* СЛОВА ВЫРОВНЕНЫ ПО ЦЕНТРУ */
-            font-size: 32px; 
+            width: 450px; 
+            text-align: center; 
+            font-size: 34px; /* КРУПНЫЕ БУКВЫ */
             text-transform: uppercase;
             font-weight: 700;
             color: #ddd;
             white-space: nowrap;
         }
 
-        /* ПРАВАЯ КОЛОНКА (ЦИФРЫ) */
+        /* ПРАВАЯ КОЛОНКА (ЦИФРЫ) - ЦЕНТРИРОВАНА */
         .value-cell {
-            width: 400px; /* Фиксируем ширину для цифр */
-            text-align: center; /* ЦИФРЫ ВЫРОВНЕНЫ ПО ЦЕНТРУ */
+            width: 400px; 
+            text-align: center; 
         }
 
         .value {
-            font-size: 54px; 
+            font-size: 56px; /* КРУПНЫЕ ЦИФРЫ */
             font-weight: 900;
             line-height: 1;
             white-space: nowrap;
@@ -74,13 +75,13 @@
 
         #purchased {
             color: #FFD700;
-            text-shadow: 0 0 12px rgba(255, 215, 0, 0.5);
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
             animation: textBreathe 3s ease-in-out infinite;
         }
 
         @keyframes textBreathe {
-            0%, 100% { transform: scale(1); text-shadow: 0 0 8px rgba(255, 215, 0, 0.3); }
-            50% { transform: scale(1.02); text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+            0%, 100% { transform: scale(1); text-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+            50% { transform: scale(1.03); text-shadow: 0 0 25px rgba(255, 215, 0, 0.8); }
         }
 
         .manual-value { color: #ffffff; }
