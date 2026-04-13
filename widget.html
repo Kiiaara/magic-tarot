@@ -16,48 +16,84 @@
             color: white;
         }
 
-        /* Основная плашка */
+        /* Основная плашка (фон) */
         .widget-card {
-            background: rgba(20, 20, 20, 0.85); /* Темный фон */
-            padding: 30px 40px;
+            background: rgba(15, 15, 15, 0.88); /* Почти черный, 88% непрозрачности */
+            padding: 30px 45px;
             border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px); /* Размытие фона видео под виджетом */
-            min-width: 350px;
+            border: 1px solid rgba(255, 255, 255, 0.08); /* Тонкая рамка */
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px); /* Сильное размытие фона видео под виджетом */
+            min-width: 380px;
         }
 
         .row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .row:last-child { margin-bottom: 0; }
 
         .label {
-            font-size: 18px;
+            font-size: 19px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #bbb;
+            letter-spacing: 2px;
+            color: #aaa; /* Светло-серый текст меток */
+            font-weight: 700;
         }
 
         .value {
-            font-size: 32px;
+            font-size: 34px;
             font-weight: 900;
         }
 
+        /* --- ВОТ ТУТ МАГИЯ АНИМАЦИИ --- */
+
         /* Стиль для динамической суммы (Закуплено) */
         #purchased {
-            background: linear-gradient(45deg, #00dbde, #fc00ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #FFD700; /* Чистый золотой/жёлтый */
+            
+            /* Желтая подсветка (неон) */
+            text-shadow: 
+                0 0 5px rgba(255, 215, 0, 0.8),
+                0 0 10px rgba(255, 215, 0, 0.6),
+                0 0 20px rgba(255, 215, 0, 0.4);
+            
+            /* Подключаем анимацию "дыхания" */
+            animation: breathe 3s ease-in-out infinite;
+            display: inline-block; /* Чтобы трансформация работала корректно */
         }
+
+        /* Определение анимации "дыхания" */
+        @keyframes breathe {
+            0% {
+                transform: scale(1); /* Обычный размер */
+                text-shadow: 
+                    0 0 5px rgba(255, 215, 0, 0.8),
+                    0 0 10px rgba(255, 215, 0, 0.6);
+            }
+            50% {
+                transform: scale(1.03); /* Чуть больше (на 3%) */
+                text-shadow: 
+                    0 0 10px rgba(255, 215, 0, 1), /* Ярче свечение */
+                    0 0 20px rgba(255, 215, 0, 0.8),
+                    0 0 30px rgba(255, 215, 0, 0.6);
+            }
+            100% {
+                transform: scale(1); /* Снова обычный размер */
+                text-shadow: 
+                    0 0 5px rgba(255, 215, 0, 0.8),
+                    0 0 10px rgba(255, 215, 0, 0.6);
+            }
+        }
+
+        /* --- КОНЕЦ МАГИИ --- */
 
         /* Стиль для ручного баланса (Было) */
         .manual-value {
-            color: #ffffff;
+            color: #ffffff; /* Белый */
         }
     </style>
 </head>
@@ -66,7 +102,7 @@
 <div class="widget-card">
     <div class="row">
         <span class="label">Было:</span>
-        <span class="value manual-value">2 000 000 ₽</span>
+        <span class="value manual-value">50 000 ₽</span>
     </div>
     
     <div class="row">
@@ -88,7 +124,9 @@
         }
     }
 
+    // Обновляем каждые 5 секунд
     setInterval(updateCounter, 5000);
+    // Запускаем первый раз сразу
     updateCounter();
 </script>
 
