@@ -58,7 +58,16 @@
             font-weight: bold; border: 2px solid #c5a059; border-radius: 50px;
             box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); transition: 0.3s;
         }
+/* ВОЗВРАЩАЕМ ЗЕБРУ */
+        .f { 
+            background-color: rgba(0, 0, 0, 0.8); 
+            background-blend-mode: darken; 
+        }
 
+        .card:nth-child(even) .f { 
+            background-color: rgba(0, 0, 0, 0.3); 
+            background-blend-mode: normal; 
+        }
         /* ОСНОВНОЙ КОНТЕЙНЕР */
         .content-wrapper {
             display: flex;
@@ -140,8 +149,8 @@
     <video id="v" autoplay muted loop playsinline class="video-layer"><source src="1.mp4" type="video/mp4"></video>
 
     <div class="header-fixed">
-        <h1 class="header-title"><span>ᛃ</span> TOP 90 SELECTION <span>ᛃ</span></h1>
-        <a href="index.html" class="magic-btn-back">Вернуться</a>
+        <h1 class="header-title"><span>ᛃ</span> ТОП 90 ИГР <span>ᛃ</span></h1>
+        <a href="index.html" class="magic-btn-back">ВЕРНУТЬСЯ К ВЫБОРУ БАЛАНСА</a>
     </div>
 
     <div class="content-wrapper">
