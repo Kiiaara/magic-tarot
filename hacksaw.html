@@ -29,7 +29,7 @@
         .header-fixed {
             position: fixed; top: 0; left: 0; width: 100%;
             display: flex; flex-direction: column; align-items: center;
-            z-index: 500; padding-top: 15px;
+            z-: 500; padding-top: 15px;
             background: rgba(5, 1, 12, 0.7); backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(197, 160, 89, 0.3);
         }
@@ -41,7 +41,7 @@
         .header-title span { font-size: 40px; vertical-align: middle; margin: 0 10px; display: inline-block; }
 
         .magic-btn-back {
-            position: relative; z-index: 200; margin-bottom: 15px;
+            position: relative; z-: 200; margin-bottom: 15px;
             padding: 10px 25px; background: rgba(0, 0, 0, 0.8);
             color: #c5a059; text-decoration: none; font-size: 14px;
             font-weight: bold; border: 2px solid #c5a059; border-radius: 50px;
@@ -50,7 +50,7 @@
 
         /* СЕТКА НА ПОЛНУЮ ШИРИНУ (11 СТОЛБЦОВ) */
         .slots-grid { 
-            position: relative; z-index: 100;
+            position: relative; z-: 100;
             margin-top: 160px;
             display: grid; 
             grid-template-columns: repeat(11, 1fr); 
@@ -96,7 +96,7 @@
 
     <div class="header-fixed">
         <h1 class="header-title"><span>ᛃ</span> Hacksaw Gaming <span>ᛃ</span></h1>
-        <a href="index.html" class="magic-btn-back">Вернуться ко всем играм</a>
+        <a href="slots.html" class="magic-btn-back">Вернуться ко всем играм</a>
     </div>
 
     <div class="slots-grid" id="grid"></div>
