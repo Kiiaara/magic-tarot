@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magic Slots — Pragmatic Play Edition</title>
+    <style>
+        @font-face {
+            font-family: 'AlgeriaTwo';
+            src: url('fonts/algeriatwo.ttf') format('truetype');
+            font-weight: normal; font-style: normal;
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background: #05010c url('bg.webp') no-repeat center center fixed;
+            background-size: cover; 
+            font-family: 'AlgeriaTwo', serif;
+            display: flex; flex-direction: column; align-items: center;
+            color: #fff; overflow-x: hidden;
+        }
+
+        .video-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; object-fit: cover; filter: brightness(0.4);
+            pointer-events: none;
+        }
+
+        .header-fixed {
+            position: fixed; top: 0; left: 0; width: 100%;
+            display: flex; flex-direction: column; align-items: center;
+            z-index: 500; padding-top: 15px;
+            background: rgba(5, 1, 12, 0.7); backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.3);
+        }
+
+        .header-title { 
+            color: #c5a059; margin: 0 0 10px 0; text-shadow: 0 0 20px #c5a059; 
+            font-size: 32px; text-transform: uppercase; letter-spacing: 3px;
+        }
+        .header-title span { font-size: 40px; vertical-align: middle; margin: 0 10px; display: inline-block; }
+
+        .magic-btn-back {
+            position: relative; z-index: 200; margin-bottom: 15px;
+            padding: 10px 25px; background: rgba(0, 0, 0, 0.8);
+            color: #c5a059; text-decoration: none; font-size: 14px;
+            font-weight: bold; border: 2px solid #c5a059; border-radius: 50px;
+            box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); transition: 0.3s;
+        }
+
+        /* СЕТКА НА 11 СТОЛБЦОВ */
+        .slots-grid { 
+            position: relative; z-index: 100;
+            margin-top: 160px;
+            display: grid; 
+            grid-template-columns: repeat(11, 1fr); 
+            gap: 6px; 
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .card { width: 100%; height: 90px; perspective: 1000px; cursor: pointer; }
+        .inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; border-radius: 6px; }
+        .card.open .inner { transform: rotateY(180deg); }
+        
+        .f, .back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 6px; border: 1.5px solid #c5a059; display: flex; align-items: center; justify-content: center; }
+        
+        /* ЗЕБРА */
+        .f { 
+            background: rgba(0, 0, 0, 0.8) url('разворот.webp') center/cover; 
+            background-blend-mode: darken; 
+        }
+        .card:nth-child(even) .f { 
+            background-color: rgba(0, 0, 0, 0.3); 
+            background-blend-mode: normal; 
+        }
+
+        .f::after { content: '⚚'; font-size: 26px; color: #fff; text-shadow: 0 0 10px #c5a059; }
+        .back { background: #000; transform: rotateY(180deg); padding: 5px; box-sizing: border-box; box-shadow: inset 0 0 15px rgba(197, 160, 89, 0.5); }
+
+        .slot-name { font-size: 10px; font-weight: bold; color: #c5a059; text-align: center; word-wrap: break-word; line-height: 1.1; text-transform: uppercase; }
+
+        @media (max-width: 768px) {
+            .slots-grid { grid-template-columns: repeat(6, 1fr); margin-top: 170px !important; }
+            .card { height: 65px; }
+            .slot-name { font-size: 8px; }
+        }
+    </style>
+</head>
+<body onclick="startInteraction()">
+
+    <audio id="bg-music" loop><source src="magic-ambient.mp3" type="audio/mpeg"></audio>
+    <audio id="flip-sound"><source src="flip-magic.mp3" type="audio/mpeg"></audio>
+    <video id="v" autoplay muted loop playsinline class="video-layer"><source src="1.mp4" type="video/mp4"></video>
+
+    <div class="header-fixed">
+        <h1 class="header-title"><span>ᛃ</span> Pragmatic Play <span>ᛃ</span></h1>
+        <a href="index.html" class="magic-btn-back">Вернуться ко всем играм</a>
+    </div>
+
+    <div class="slots-grid" id="grid"></div>
+
+    <script>
+        const bgMusic = document.getElementById('bg-music');
+        const flipSnd = document.getElementById('flip-sound');
+
+        function startInteraction() {
+            document.getElementById('v').play();
+            if (bgMusic.paused) { bgMusic.volume = 0.2; bgMusic.play(); }
+        }
+
+        window.flipCard = function(el) {
+            if (el.classList.contains('open')) return;
+            flipSnd.currentTime = 0; flipSnd.playbackRate = 2; flipSnd.volume = 0.3; flipSnd.play();
+            el.classList.add('open');
+        }
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // --- ТОЛЬКО PRAGMATIC И ТОЛЬКО С ПОКУПКОЙ БОНУСА (ИЗ ТВОЕГО СПИСКА) ---
+        const pragmaticSlots = [
+            "Gates of Olympus 1000", "Sugar Rush 1000", "Sweet Bonanza 1000", "Starlight Princess 1000", 
+            "Zeus vs Hades – Gods of War 250", "Big Bass Splash 1000", "Wisdom of Athena 1000 Xmas", 
+            "The Dog House Megaways", "The Dog House Multihold", "Big Bass Splash", "Gems Bonanza", 
+            "Madame Destiny Megaways", "Wild West Gold", "Cleocatra", "Forge of Olympus", 
+            "Juicy Fruits", "Fruit Party 2", "Release the Bison", "Rise of Pyramids", 
+            "Fire Portals", "Big Burger", "Candy Corner", "Moleionaire", "Loki's Riches", 
+            "Gods of Giza", "The Red Queen", "Goblin Heist Powernudge", "Buffalo King Megaways", 
+            "Great Rhino Megaways", "Sword of Ares", "Fat Panda", "Wisdom of Athena", 
+            "Badge Blitz", "Oodles of Noodles", "Congo Cash XL", "Big Bass Vegas Double Down Deluxe", 
+            "Mystery Mice", "Angel vs Sinner", "Gem Elevator", "Forging Wilds", 
+            "Sumo Supreme Megaways", "Yeti Quest", "Dragon Gold 88", "Bow of Artemis", 
+            "Jackpot Hunter", "Samurai Code", "Crank It Up", "Sweet Kingdom", "Hand of Midas 2", 
+            "Buffalo King Untamed Megaways", "Medusa’s Stone", "Devilicious", "Wildies", 
+            "Sweet Bonanza 1000", "Big Bass Bonanza – Reel Action", "Heroic Spins", 
+            "Starlight Princess Pachi", "Rise of Pyramids", "Dwarf & Dragon", "Heart of Cleopatra", 
+            "Fruity Treats", "Candy Blitz Bombs", "Release the Bison", "Barnyard Megahays Megaways", 
+            "Ice Lobster", "Aztec Powernudge", "Ripe Rewards", "The Dog House Dog or Alive", 
+            "Big Burger Load it up with Xtra", "Fire Portals", "Sugar Rush 1000", "Pot of Fortune", 
+            "Gears of Horus", "Wheel O'Gold", "Mighty Munching Melons", "Strawberry Cocktail", 
+            "Big Bass Floats My Boat", "The Alter Ego", "Red Hot Luck", "Good Luck & Good Fortune", 
+            "Year of the Dragon King", "Castle of Fire", "The Big Dawgs", "Blade & Fangs", 
+            "Fire Stampede", "Sugar Rush Xmas", "Big Bass Christmas Bash", "The Wild Gang", 
+            "Nile Fortune", "Timber Stacks", "Sugar Supreme Powernudge", "Viking Forge", 
+            "Starlight Princess 1000", "Big Bass Halloween", "Infective Wild", "Tundra’s Fortune", 
+            "Demon Pots", "Twilight Princess", "Gravity Bonanza", "Rainbow Reels", "Gold Oasis", 
+            "8 Golden Dragon Challenge", "Frozen Tropics", "Cyclops Smash", "Candy Blitz", 
+            "Forge of Olympus", "Diamond Cascade", "Sky Bounty", "Cash Box", "Hellvis Wild", 
+            "Spellbinding Mystery", "Heist for the Golden Nuggets", "Fat Panda", "Sticky Bees", 
+            "Jewel Rush", "Knight Hot Spotz", "Wild Bison Charge", "Excalibur Unleashed", 
+            "Gods of Giza", "The Red Queen", "Rabbit Garden", "The Knight King", "Mochimon", 
+            "Cowboy Coins", "The Dog House Multihold", "Mystery of the Orient", "Peak Power", 
+            "Club Tropicana", "Fire Archer", "Monster Superlanche", "Fury of Odin Megaways", 
+            "Bigger Bass Blizzard - Christmas", "Santa's Great Gifts", "Shield of Sparta", 
+            "Towering Fortunes", "Sword of Ares", "Big Bass - Keeping it Reel", "Candy Stars", 
+            "Firebird Spirit", "Pirate Golden Age", "Wild Hop & Drop", "Book of Golden Sands", 
+            "Octobeer Fortunes", "Black Bull", "Greedy Wolf", "Gorilla Mayhem", "Tropical Tiki", 
+            "Cosmic Cash", "Zombie Carnival", "Cleocatra", "Goblin Heist Powernudge", 
+            "Fire Strike 2", "North Guardians", "Clover Gold", "Barn Festival", "Tic Tac Take", 
+            "Wild Beach Party", "The Ultimate 5", "Colossal Cash Zone", "Gates of Valhalla", 
+            "Rock Vegas", "Gold Party", "Crystal Caverns Megaways", "Santa's Wonderland", 
+            "Big Juan", "John Hunter and the Quest for Bermuda Riches", "Day of Dead", 
+            "Mystic Chief", "Treasure Wild", "Starlight Princess", "Bigger Bass Bonanza", 
+            "Rise of Giza PowerNudge", "Fruit Party 2", "Chicken Drop", "Empty the Bank", 
+            "Phoenix Forge", "Hot Fiesta", "Juicy Fruits", "Gates of Olympus", "The Hand of Midas 2", 
+            "Congo Cash", "Drago - Jewels of Fortune", "Sweet Bonanza Xmas", "Sweet Bonanza"
+        ];
+
+        const randomizedNames = shuffle([...pragmaticSlots]);
+        const grid = document.getElementById('grid');
+        let htmlContent = '';
+
+        for (let i = 0; i < randomizedNames.length; i++) {
+            htmlContent += `
+                <div class="card" onclick="flipCard(this)">
+                    <div class="inner">
+                        <div class="f"></div>
+                        <div class="back"><div class="slot-name">${randomizedNames[i]}</div></div>
+                    </div>
+                </div>`;
+        }
+        grid.innerHTML = htmlContent;
+    </script>
+</body>
+</html>
