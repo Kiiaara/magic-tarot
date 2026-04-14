@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Magic Slots — Elite 90 Edition</title>
+    <title>Magic Slots — Elite 100 Edition</title>
     <style>
         @font-face {
             font-family: 'AlgeriaTwo';
@@ -26,7 +26,6 @@
             pointer-events: none;
         }
 
-        /* КНОПКА МУЗЫКИ */
         .music-control-btn {
             position: fixed; top: 20px; right: 20px; z-index: 1000;
             width: 65px; height: 65px; border-radius: 50%;
@@ -56,14 +55,19 @@
             transition: 0.3s;
         }
 
-        .content-wrapper { display: flex; width: 100%; margin-top: 160px; z-index: 100; padding: 0 20px; box-sizing: border-box; gap: 15px; }
-        .slots-grid { flex: 9; display: grid; grid-template-columns: repeat(9, 1fr); gap: 8px; padding: 10px; }
-        .sidebar { flex: 1.8; display: flex; flex-direction: column; gap: 30px; padding: 10px; }
+        /* КОНТЕНТ */
+        .content-wrapper { display: flex; width: 100%; margin-top: 160px; z-index: 100; padding: 0 20px; box-sizing: border-box; gap: 10px; }
+        
+        /* СЕТКА (10 СТОЛБЦОВ) */
+        .slots-grid { flex: 10; display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; padding: 10px; }
+        
+        /* САЙДБАР (УМЕНЬШЕННЫЙ) */
+        .sidebar { flex: 1.2; display: flex; flex-direction: column; gap: 50px; padding: 10px; min-width: 130px; }
 
         .provider-btn {
-            background: rgba(0, 0, 0, 0.85); border: 2px solid #c5a059; border-radius: 12px;
-            padding: 15px 5px; color: #c5a059; text-decoration: none; text-align: center;
-            font-weight: bold; text-transform: uppercase; font-size: 14px;
+            background: rgba(0, 0, 0, 0.85); border: 2px solid #c5a059; border-radius: 10px;
+            padding: 12px 5px; color: #c5a059; text-decoration: none; text-align: center;
+            font-weight: bold; text-transform: uppercase; font-size: 13px;
             transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 0 10px rgba(197, 160, 89, 0.2);
         }
@@ -72,9 +76,10 @@
         /* КАРТОЧКИ */
         .card { width: 100%; height: 100px; perspective: 1000px; cursor: pointer; }
         .inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; border-radius: 8px; }
-        .card.open .inner { transform: rotateY(180deg); }
+        
+        /* Фикс флипа: принудительно держим 180 градусов, если карта открыта */
+        .card.open .inner { transform: rotateY(180deg) !important; }
 
-        /* СВЕЧЕНИЕ (ФИКС: анимация только для закрытых карт) */
         .card.hot-glow .inner { box-shadow: 0 0 20px 5px rgba(197, 160, 89, 0.8); animation: glow-pulse 2s infinite ease-in-out; }
         .card.open.hot-glow .inner { animation: none; box-shadow: 0 0 30px 10px rgba(197, 160, 89, 0.6); }
 
@@ -82,16 +87,14 @@
 
         .f, .back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 8px; border: 1.5px solid #c5a059; display: flex; align-items: center; justify-content: center; }
         
-        /* РУБАШКА (ЗЕБРА) */
         .f { background: rgba(0, 0, 0, 0.8) url('разворот.webp') center/cover; background-blend-mode: darken; }
         .card:nth-child(even) .f { background-color: rgba(0, 0, 0, 0.3); background-blend-mode: normal; }
         .f::after { content: '⚚'; font-size: 30px; color: #fff; text-shadow: 0 0 10px #c5a059; }
 
         .back { background: #000; transform: rotateY(180deg); padding: 8px; box-sizing: border-box; box-shadow: inset 0 0 20px rgba(197, 160, 89, 0.4); }
 
-        /* ТЕКСТ СЛОТОВ */
         .slot-name { 
-            font-size: 18px; /* УВЕЛИЧЕНО */
+            font-size: 18px; 
             font-weight: bold; 
             color: #c5a059; 
             text-align: center; 
@@ -101,11 +104,15 @@
             padding: 0 5px;
         }
 
-        @media (max-width: 1024px) {
+        @media (max-width: 1200px) {
+            .slots-grid { grid-template-columns: repeat(8, 1fr); }
+        }
+
+        @media (max-width: 768px) {
             .content-wrapper { flex-direction: column; }
             .slots-grid { grid-template-columns: repeat(5, 1fr); }
             .sidebar { flex-direction: row; flex-wrap: wrap; }
-            .provider-btn { flex: 1; min-width: 120px; }
+            .provider-btn { flex: 1; min-width: 100px; }
             .slot-name { font-size: 12px; }
         }
     </style>
@@ -123,7 +130,7 @@
     <video id="v" autoplay muted loop playsinline class="video-layer"><source src="1.mp4" type="video/mp4"></video>
 
     <div class="header-fixed">
-        <h1 class="header-title"><span>ᛃ</span> ТОП 90 ИГР <span>ᛃ</span></h1>
+        <h1 class="header-title"><span>ᛃ</span> ТОП 100 ИГР <span>ᛃ</span></h1>
         <a href="index.html" class="magic-btn-back">ВЕРНУТЬСЯ К ВЫБОРУ БАЛАНСА</a>
     </div>
 
@@ -182,19 +189,25 @@
             return array;
         }
 
-        const top90Slots = [
-            "Wanted Dead or a Wild", "Le Bandit", "RIP City", "Chaos Crew II", "Hand of Anubis", "Slayers Inc", "Rotten", "Fist of Destruction", "Chaos Crew 3", "Ze Zeus", "Pray for Three", "Mayan Stackways", "Stack 'Em", "Dark Summoning", "Wings of Horus", "Mystery Motel", "Alpha Eagle", "Double Rainbow", "Gronk's Gems", "Vending Machine", "Twisted Lab", "Rusty & Curly", "Cash Crew", "Book of Time", "Temple of Torment",
-            "Gates of Olympus 1000", "Sugar Rush 1000", "Sweet Bonanza 1000", "Starlight Princess 1000", "Zeus vs Hades", "Big Bass Splash 1000", "Wisdom of Athena 1000", "The Dog House Megaways", "Gems Bonanza", "Madame Destiny Megaways", "Cleocatra", "Forge of Olympus", "Juicy Fruits", "Fruit Party 2", "Release the Bison", "Rise of Pyramids", "Fire Portals", "Candy Corner", "Moleionaire", "Gods of Giza", "Buffalo King Megaways", "Congo Cash XL", "Mystery Mice", "Angel vs Sinner", "Sumo Supreme Megaways", "Yeti Quest", "Hand of Midas 2", "Medusa’s Stone", "Devilicious", "Wildies", "Sweet Bonanza", "Starlight Princess Pachi", "Fruity Treats", "Candy Blitz Bombs", "Aztec Powernudge",
-            "Aztec Clusters", "Elvis Frog Trueways", "Bonanza Billion", "Snoop Dogg Dollars", "Gemza", "Alien Fruits 2", "Mice & Magic Wonder Spin", "Dice Bonanza", "Gemhalla", "Savage Buffalo Spirit Megaways", "Sweet Rush Megaways", "Potion Spells", "Luck and Magic", "Bone Bonanza", "Maneki 88 Gold",
+        // --- ТОП-100 С ЛЮБИМЫМИ БОНУСКАМИ ---
+        const top100Slots = [
+            // Hacksaw (29)
+            "Wanted Dead or a Wild", "Le Bandit", "RIP City", "Chaos Crew II", "Hand of Anubis", "Slayers Inc", "Rotten", "Fist of Destruction", "Chaos Crew 3", "Ze Zeus", "Pray for Three", "Mayan Stackways", "Stack 'Em", "Dark Summoning", "Wings of Horus", "Mystery Motel", "Alpha Eagle", "Double Rainbow", "Gronk's Gems", "Vending Machine", "Twisted Lab", "Rusty & Curly", "Cash Crew", "Book of Time", "Temple of Torment", "Dork Unit", "Octo Attack", "ITERO", "Keep'em Cool",
+            // Pragmatic (39)
+            "Gates of Olympus 1000", "Sugar Rush 1000", "Sweet Bonanza 1000", "Starlight Princess 1000", "Zeus vs Hades – Gods of War 250", "Big Bass Splash 1000", "Wisdom of Athena 1000 Xmas", "The Dog House Megaways", "Gems Bonanza", "Madame Destiny Megaways", "Cleocatra", "Forge of Olympus", "Juicy Fruits", "Fruit Party 2", "Release the Bison", "Rise of Pyramids", "Fire Portals", "Candy Corner", "Moleionaire", "Gods of Giza", "Buffalo King Megaways", "Congo Cash XL", "Mystery Mice", "Angel vs Sinner", "Sumo Supreme Megaways", "Yeti Quest", "Hand of Midas 2", "Medusa’s Stone", "Devilicious", "Wildies", "Sweet Bonanza", "Starlight Princess Pachi", "Fruity Treats", "Candy Blitz Bombs", "Aztec Powernudge", "Big Bass Christmas Bash", "Viking Forge", "Gravity Bonanza", "Frozen Tropics",
+            // BGaming (17)
+            "Aztec Clusters", "Elvis Frog Trueways", "Bonanza Billion", "Snoop Dogg Dollars", "Gemza", "Alien Fruits 2", "Mice & Magic Wonder Spin", "Dice Bonanza", "Gemhalla", "Savage Buffalo Spirit Megaways", "Sweet Rush Megaways", "Potion Spells", "Luck and Magic", "Bone Bonanza", "Maneki 88 Gold", "Merge Up", "Monster Hunt",
+            // Belatra (10)
             "MummyLand Treasures", "Crystals Digger", "Big Wild Buffalo", "Rise of Zeus", "Fortune Mummy", "Voodoo Coins", "Tony Gambler", "4 Secrets of Aladdin", "Richy Hog", "Dragon's Bonanza",
+            // TrueLab (5)
             "Victoria Wild West", "Sunstrike Supernova", "Guns, Love & Therapy", "Book of Truth", "Micropirates"
         ];
 
-        const randomizedNames = shuffle([...top90Slots]);
+        const randomizedNames = shuffle([...top100Slots]);
         const grid = document.getElementById('grid');
         let htmlContent = '';
 
-        for (let i = 0; i < 90; i++) {
+        for (let i = 0; i < 100; i++) {
             const name = randomizedNames[i];
             htmlContent += `
                 <div class="card" onclick="flipCard(this)">
