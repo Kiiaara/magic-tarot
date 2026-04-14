@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Magic Slots — Final Release</title>
+    <title>Magic Slots — Providers Edition</title>
     <style>
-        /* 1. ПОДКЛЮЧАЕМ ШРИФТ */
         @font-face {
             font-family: 'AlgeriaTwo';
             src: url('fonts/algeriatwo.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
+            font-weight: normal; font-style: normal;
         }
 
         body, html {
@@ -28,7 +26,6 @@
             pointer-events: none;
         }
 
-        /* КНОПКА УПРАВЛЕНИЯ ЗВУКОМ (SVG) */
         .music-control-btn {
             position: fixed; top: 20px; right: 20px; z-index: 1000;
             width: 65px; height: 65px; border-radius: 50%;
@@ -38,15 +35,9 @@
             transition: 0.3s;
         }
         
-        .music-control-btn svg {
-            width: 32px; height: 32px; stroke: #c5a059;
-            filter: drop-shadow(0 0 5px rgba(197, 160, 89, 0.8));
-            transition: 0.3s;
-        }
-
+        .music-control-btn svg { width: 32px; height: 32px; stroke: #c5a059; filter: drop-shadow(0 0 5px rgba(197, 160, 89, 0.8)); transition: 0.3s; }
         .music-control-btn:hover { transform: scale(1.1); box-shadow: 0 0 25px rgba(197, 160, 89, 0.8); }
 
-        /* ФИКСИРОВАННЫЙ ХЕДЕР */
         .header-fixed {
             position: fixed; top: 0; left: 0; width: 100%;
             display: flex; flex-direction: column; align-items: center;
@@ -61,7 +52,6 @@
             margin: 0 0 10px 0; text-shadow: 0 0 20px #c5a059; 
             font-size: 36px; text-transform: uppercase; letter-spacing: 3px;
         }
-
         .header-title span { font-size: 48px; vertical-align: middle; margin: 0 10px; display: inline-block; }
 
         .magic-btn-back {
@@ -73,11 +63,54 @@
             letter-spacing: 1px;
         }
 
-        /* СЕТКА */
+        /* КОНТЕЙНЕР ДЛЯ СЕТКИ И САЙДБАРА */
+        .content-wrapper {
+            display: flex;
+            width: 100%;
+            margin-top: 160px; /* Сдвиг под хедер */
+            z-index: 100;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        /* ОБНОВЛЕННАЯ СЕТКА (9 КОЛОНОК) */
         .slots-grid { 
-            position: relative; z-index: 100; margin-top: 160px; 
-            display: grid; grid-template-columns: repeat(11, 1fr); 
-            gap: 6px; padding: 20px; width: 100%; box-sizing: border-box;
+            flex: 9; /* Занимает больше места */
+            display: grid; 
+            grid-template-columns: repeat(9, 1fr); 
+            gap: 6px; 
+            padding: 10px;
+        }
+
+        /* ПАНЕЛЬ ПРОВАЙДЕРОВ СПРАВА */
+        .sidebar {
+            flex: 2; /* Занимает место справа */
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 10px;
+        }
+
+        .provider-btn {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #c5a059;
+            border-radius: 12px;
+            padding: 20px 10px;
+            color: #c5a059;
+            text-decoration: none;
+            text-align: center;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 16px;
+            transition: 0.3s;
+            box-shadow: 0 0 10px rgba(197, 160, 89, 0.2);
+            cursor: pointer;
+        }
+        .provider-btn:hover {
+            background: #c5a059;
+            color: #000;
+            box-shadow: 0 0 25px #c5a059;
+            transform: translateX(-5px);
         }
 
         .card { width: 100%; height: 90px; perspective: 1000px; cursor: pointer; }
@@ -93,45 +126,46 @@
         .f::after { content: '⚚'; font-size: 28px; color: #fff; text-shadow: 0 0 5px #fff, 0 0 10px #c5a059, 0 0 20px #c5a059; position: absolute; z-index: 3; }
         .back { z-index: 1; background: #000; color: #fff; transform: rotateY(180deg); padding: 5px; box-sizing: border-box; box-shadow: inset 0 0 15px rgba(197, 160, 89, 0.5); }
 
-        .slot-name { font-size: 18px; font-weight: bold; color: #c5a059; text-align: center; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; line-height: 1.1; text-shadow: none; display: flex; align-items: center; justify-content: center; height: 100%; }
+        .slot-name { font-size: 18px; font-weight: bold; color: #c5a059; text-align: center; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; line-height: 1.1; display: flex; align-items: center; justify-content: center; height: 100%; }
 
         @media (max-width: 768px) {
-            .header-fixed { padding-top: 10px; }
-            .header-title { font-size: 18px !important; white-space: nowrap; display: flex; align-items: center; justify-content: center; }
-            .header-title span { font-size: 24px !important; margin: 0 8px !important; }
-            .slots-grid { grid-template-columns: repeat(11, 1fr); margin-top: 165px !important; padding: 5px; gap: 3px; }
+            .content-wrapper { flex-direction: column; margin-top: 170px !important; }
+            .slots-grid { grid-template-columns: repeat(6, 1fr); }
+            .sidebar { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+            .provider-btn { font-size: 12px; padding: 10px; flex: 1; min-width: 100px; }
             .card { height: 60px; }
             .slot-name { font-size: 8px; }
-            .music-control-btn { top: auto; bottom: 20px; right: 20px; }
         }
     </style>
 </head>
 <body onclick="startInteraction()">
 
-    <audio id="bg-music" loop>
-        <source src="magic-ambient.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="flip-sound">
-        <source src="flip-magic.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="bg-music" loop><source src="magic-ambient.mp3" type="audio/mpeg"></audio>
+    <audio id="flip-sound"><source src="flip-magic.mp3" type="audio/mpeg"></audio>
 
     <button id="music-control" class="music-control-btn" onclick="toggleMusic(event)">
         <div id="icon-container">
-            <svg id="svg-mute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
-            <svg id="svg-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+            <svg id="svg-mute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+            <svg id="svg-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
         </div>
     </button>
 
-    <video id="v" autoplay muted loop playsinline class="video-layer">
-        <source src="1.mp4" type="video/mp4">
-    </video>
+    <video id="v" autoplay muted loop playsinline class="video-layer"><source src="1.mp4" type="video/mp4"></video>
 
     <div class="header-fixed">
         <h1 class="header-title"><span>ᛃ</span> Сделай свой выбор <span>ᛃ</span></h1>
         <a href="index.html" class="magic-btn-back">Вернуться к выбору баланса</a>
     </div>
 
-    <div class="slots-grid" id="grid"></div>
+    <div class="content-wrapper">
+        <div class="slots-grid" id="grid"></div>
+
+        <div class="sidebar">
+            <a href="belatra.html" class="provider-btn">Belatra</a>
+            <a href="bgaming.html" class="provider-btn">BGaming</a>
+            <a href="truelab.html" class="provider-btn">TrueLab</a>
+        </div>
+    </div>
 
     <script>
         const bgMusic = document.getElementById('bg-music');
@@ -142,12 +176,6 @@
         
         let musicStarted = false;
 
-        // Попытка запустить видео сразу (для Safari/iOS)
-        window.addEventListener('load', () => {
-            video.play().catch(() => console.log("Видео ждет клика"));
-        });
-
-        // Запуск музыки при первом клике по экрану
         function startInteraction() {
             video.play();
             if (!musicStarted) {
@@ -156,44 +184,39 @@
                     musicStarted = true;
                     svgOn.style.display = 'block';
                     svgMute.style.display = 'none';
-                    document.getElementById('music-control').style.boxShadow = '0 0 25px rgba(197, 160, 89, 0.9)';
-                }).catch(err => console.log("Браузер блокирует автоплей звука"));
+                });
             }
         }
 
-        // Переключатель кнопкой
-      function toggleMusic(event) {
+        function toggleMusic(event) {
             event.stopPropagation(); 
-            const svgOn = document.getElementById('svg-on');
-            const svgMute = document.getElementById('svg-mute');
-
             if (bgMusic.paused) {
-                // ВОТ ЭТА СТРОКА: принудительно ставим 0.2 при включении кнопкой
-                bgMusic.volume = 0.2; 
-                
                 bgMusic.play();
                 svgOn.style.display = 'block';
                 svgMute.style.display = 'none';
-                musicStarted = true; // Фиксируем старт
-                document.getElementById('music-control').style.boxShadow = '0 0 25px rgba(197, 160, 89, 0.9)';
             } else {
                 bgMusic.pause();
                 svgOn.style.display = 'none';
                 svgMute.style.display = 'block';
-                document.getElementById('music-control').style.boxShadow = '0 0 15px rgba(197, 160, 89, 0.4)';
             }
         }
 
         window.flipCard = function(el) {
             if (el.classList.contains('open')) return;
             flipSnd.currentTime = 0;
-            flipSnd.playbackRate = 2; 
-            flipSnd.volume = 0.3; 
-            flipSnd.play();
-            el.classList.toggle('open');
+            flipSnd.playbackRate = 2; flipSnd.volume = 0.3; flipSnd.play();
+            el.classList.add('open');
         }
 
-const slotNames = [
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        const slotNames = [
     // --- HACKSAW (из твоей выгрузки) ---
     "Wanted Dead or a Wild", "Le Bandit", "RIP City", "Chaos Crew II", "Hand of Anubis", 
     "Slayers Inc", "Rotten", "Fist of Destruction", "Chaos Crew 3", "Ze Zeus", 
@@ -207,8 +230,7 @@ const slotNames = [
     "Bash Bros", "Le King", "Eye of the Panda", "FRKN Bananas", "Keep'em Cool", 
     "Drop'em", "Xmas Drop", "Buffalo Stack'n'Sync", "2 Wild 2 Die", "Ronin Stackways", 
     "Fighter Pit", "Tiger Legends", "Magic Piggy", "Donny Dough", "Danny Dollar",
-
-    // --- PRAGMATIC (из твоей выгрузки) ---
+            // --- PRAGMATIC (из твоей выгрузки) ---
     "Gates of Olympus 1000", "Sugar Rush 1000", "Sweet Bonanza 1000", "Starlight Princess 1000", 
     "Zeus vs Hades – Gods of War 250", "Big Bass Splash 1000", "Wisdom of Athena 1000 Xmas", 
     "The Dog House Megaways", "The Dog House Multihold", "Big Bass Splash", "Gems Bonanza", 
@@ -233,43 +255,32 @@ const slotNames = [
     "Infective Wild", "Tundra’s Fortune", "Demon Pots", "Twilight Princess", 
     "Gravity Bonanza", "Rainbow Reels", "Gold Oasis", "8 Golden Dragon Challenge", 
     "Frozen Tropics", "Cyclops Smash", "Candy Blitz"];
-        
-     // --- 1. ФУНКЦИЯ ПЕРЕМЕШИВАНИЯ (теперь всё на месте) ---
-    function shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    }
 
-    // --- 2. ГЕНЕРАЦИЯ КАРТОЧЕК ---
-    const randomizedNames = shuffle([...slotNames]);
-    const grid = document.getElementById('grid');
-    let htmlContent = '';
+        const randomizedNames = shuffle([...slotNames]);
+        const grid = document.getElementById('grid');
+        let htmlContent = '';
 
-    for (let i = 0; i < 154; i++) {
-        // Берем имя из перемешанного списка
-        const name = randomizedNames[i % randomizedNames.length];
-        htmlContent += `
-            <div class="card" onclick="flipCard(this)">
-                <div class="inner">
-                    <div class="f"></div>
-                    <div class="back">
-                        <div class="slot-name">${name}</div>
+        // Генерируем карточки (уменьшил количество до 90, чтобы сетка была аккуратной при 9 колонках)
+        for (let i = 0; i < 90; i++) {
+            const name = randomizedNames[i % randomizedNames.length];
+            htmlContent += `
+                <div class="card" onclick="flipCard(this)">
+                    <div class="inner">
+                        <div class="f"></div>
+                        <div class="back">
+                            <div class="slot-name">${name}</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        `;
-    }
-    grid.innerHTML = htmlContent;
+            `;
+        }
+        grid.innerHTML = htmlContent;
 
-    // --- 3. ПОДСВЕТКА HOT-КАРТОЧЕК ---
-    const allCards = document.querySelectorAll('.card');
-    const shuffledIndices = shuffle(Array.from(Array(allCards.length).keys()));
-    shuffledIndices.slice(0, 20).forEach(index => {
-        allCards[index].classList.add('hot-glow');
-    });
+        const allCards = document.querySelectorAll('.card');
+        const shuffledIndices = shuffle(Array.from(Array(allCards.length).keys()));
+        shuffledIndices.slice(0, 15).forEach(index => {
+            allCards[index].classList.add('hot-glow');
+        });
     </script>
 </body>
 </html>
