@@ -192,38 +192,17 @@
 
         // --- ТОП-100 С ЛЮБИМЫМИ БОНУСКАМИ (СТРОГО ИЗ ТВОИХ СПИСКОВ) ---
         const top100Slots = [
-    // Hacksaw Gaming (31 слот)
-    "Wanted Dead or a Wild", "Le Bandit", "RIP City", "Chaos Crew II", "Hand of Anubis", 
-    "Slayers Inc", "Rotten", "Fist of Destruction", "Chaos Crew 3", "Ze Zeus", 
-    "Pray for Three", "Mayan Stackways", "Stack 'Em", "Keep'em", "Dark Summoning", 
-    "Forest Fortune", "Benny the Beer", "Wings of Horus", "Mystery Motel", "Life and Death", 
-    "Alpha Eagle", "Double Rainbow", "Gronk's Gems", "Vending Machine", "Twisted Lab", 
-    "Rusty & Curly", "Cash Crew", "Book of Time", "Temple of Torment", "Dork Unit", "Octo Attack",
-
-    // Pragmatic Play (43 слота)
-    "Gates of Olympus 1000", "Sugar Rush 1000", "Sweet Bonanza 1000", "Starlight Princess 1000", 
-    "Zeus vs Hades – Gods of War 250", "Big Bass Splash 1000", "Wisdom of Athena 1000 Xmas", 
-    "The Dog House Megaways", "Gems Bonanza", "Madame Destiny Megaways", "Cleocatra", 
-    "Forge of Olympus", "Juicy Fruits", "Fruit Party 2", "Release the Bison", 
-    "Rise of Pyramids", "Fire Portals", "Candy Corner", "Moleionaire", "Loki's Riches", 
-    "Gods of Giza", "Buffalo King Megaways", "Congo Cash XL", "Mystery Mice", 
-    "Angel vs Sinner", "Sumo Supreme Megaways", "Yeti Quest", "Hand of Midas 2", 
-    "Medusa’s Stone", "Devilicious", "Wildies", "Sweet Bonanza", "Starlight Princess Pachi", 
-    "Fruity Treats", "Candy Blitz Bombs", "Aztec Powernudge", "Big Bass Christmas Bash", 
-    "Viking Forge", "Gravity Bonanza", "Frozen Tropics", "Diamond Cascade", "Sky Bounty", "Hellvis Wild",
-
-    // BGaming (17 слотов)
-    "Aztec Irwin", "Elvis Frog Trueways", "Bonanza Billion", "Snoop Dogg Dollars", 
-    "Gemza", "Alien Fruits 2", "Mice & Magic Wonder Spin", "Dice Bonanza", 
-    "Gemhalla", "Savage Buffalo Spirit Megaways", "Sweet Rush Megaways", "Potion Spells", 
-    "Luck and Magic", "Bone Bonanza", "Maneki 88 Gold", "Merge Up", "Monster Hunt",
-
-    // Belatra (4 слота)
-    "MummyLand Treasures", "Crystals Digger", "Big Wild Buffalo", "Rise of Zeus",
-
-    // TrueLab (5 слотов)
-    "Victoria Wild West", "Sunstrike Supernova", "Guns, Love & Therapy", "Book of Truth", "Micropirates"
-];
+            // Hacksaw (23)
+            "Wanted Dead or a Wild", "Le Bandit", "RIP City", "Chaos Crew II", "Hand of Anubis", "Slayers Inc", "Rotten", "Fist of Destruction", "Chaos Crew 3", "Ze Zeus", "Pray for Three", "Mayan Stackways", "Stack 'Em", "Dark Summoning", "Wings of Horus", "Mystery Motel", "Double Rainbow", "Gronk's Gems", "Vending Machine", "Twisted Lab", "Rusty & Curly", "Cash Crew", "Dork Unit",
+            // Pragmatic (20)
+            "Gates of Olympus 1000", "Sugar Rush 1000", "Sweet Bonanza 1000", "Starlight Princess 1000", "Zeus vs Hades – Gods of War 250", "Big Bass Splash 1000", "Wisdom of Athena 1000 Xmas", "The Dog House Megaways", "Gems Bonanza", "Madame Destiny Megaways", "Cleocatra", "Forge of Olympus", "Juicy Fruits", "Fruit Party 2", "Release the Bison", "Rise of Pyramids", "Fire Portals", "Candy Corner", "Moleionaire", "Loki's Riches",
+            // Belatra (20)
+            "MummyLand Treasures", "Big Wild Buffalo", "Big Wild Buffalo 2", "Crystals Digger", "Rise of Zeus", "Tony Gambler", "Richy Hog", "4 Secrets of Aladdin", "Fortune Mummy", "Voodoo Coins", "Dragon's Bonanza", "Cops vs Robs", "Big Bang 2", "Ice Bass", "Digger's Fortune", "Jackpot Pagoda", "Slattors Battle - Orcs vs Elves", "Long Neck Fortune", "Goose Boom Bang", "Xing Fu Panda",
+            // TrueLab (20)
+            "Victoria Wild West", "Sunstrike Supernova", "Guns, Love & Therapy", "Book of Truth", "Micropirates", "Dr. Rock & the Riff Reactor", "Abyss of Glory", "Street Muse", "Happy Prison", "Egg Inc.", "Dr. Luck Golden Rock", "Succubus Sins", "Fruity Park", "Cat Waifu", "Riches Digger", "Frosty Rage", "Phil MemeCity", "Dr. Rock & Frozen Monkey", "Greedy Piggy", "Vituss Britva God of Random",
+            // BGaming (17)
+            "Aztec Irwin", "Elvis Frog Trueways", "Bonanza Billion", "Snoop Dogg Dollars", "Gemza", "Alien Fruits 2", "Mice & Magic Wonder Spin", "Dice Bonanza", "Gemhalla", "Savage Buffalo Spirit Megaways", "Sweet Rush Megaways", "Potion Spells", "Luck and Magic", "Bone Bonanza", "Maneki 88 Gold", "Merge Up", "Monster Hunt"
+        ];
 
         const randomizedNames = shuffle([...top100Slots]);
         const grid = document.getElementById('grid');
