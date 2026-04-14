@@ -30,26 +30,22 @@
         .music-control-btn {
             position: fixed; top: 20px; right: 20px; z-index: 1000;
             width: 65px; height: 65px; border-radius: 50%;
-            background: rgba(0, 0, 0, 0.6); border: 2px solid #c5a059;
+            background: rgba(0, 0, 0, 0.7); border: 2px solid #c5a059;
             cursor: pointer; display: flex; justify-content: center; align-items: center;
             backdrop-filter: blur(5px); box-shadow: 0 0 15px rgba(197, 160, 89, 0.4);
             transition: 0.3s;
         }
-        .music-control-btn svg { width: 32px; height: 32px; stroke: #c5a059; filter: drop-shadow(0 0 5px rgba(197, 160, 89, 0.8)); transition: 0.3s; }
-        .music-control-btn:hover { transform: scale(1.1); box-shadow: 0 0 25px rgba(197, 160, 89, 0.8); }
+        .music-control-btn svg { width: 32px; height: 32px; stroke: #c5a059; filter: drop-shadow(0 0 5px rgba(197, 160, 89, 0.8)); }
 
         .header-fixed {
             position: fixed; top: 0; left: 0; width: 100%;
             display: flex; flex-direction: column; align-items: center;
             z-index: 500; padding-top: 15px;
-            background: rgba(5, 1, 12, 0.7); backdrop-filter: blur(10px);
+            background: rgba(5, 1, 12, 0.8); backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(197, 160, 89, 0.2);
         }
 
-        .header-title { 
-            color: #c5a059; margin: 0 0 10px 0; text-shadow: 0 0 20px #c5a059; 
-            font-size: 32px; text-transform: uppercase; letter-spacing: 3px;
-        }
+        .header-title { color: #c5a059; margin: 0 0 10px 0; text-shadow: 0 0 20px #c5a059; font-size: 32px; text-transform: uppercase; letter-spacing: 3px; }
         .header-title span { font-size: 40px; vertical-align: middle; margin: 0 10px; display: inline-block; }
 
         .magic-btn-back {
@@ -57,19 +53,11 @@
             padding: 8px 20px; background: rgba(0, 0, 0, 0.8);
             color: #c5a059; text-decoration: none; font-size: 13px;
             font-weight: bold; border: 2px solid #c5a059; border-radius: 50px;
-            box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); transition: 0.3s;
+            transition: 0.3s;
         }
 
-        .f { background-color: rgba(0, 0, 0, 0.8); background-blend-mode: darken; }
-        .card:nth-child(even) .f { background-color: rgba(0, 0, 0, 0.3); background-blend-mode: normal; }
-
-        .content-wrapper {
-            display: flex; width: 100%; margin-top: 150px;
-            z-index: 100; padding: 0 20px; box-sizing: border-box; gap: 15px;
-        }
-
-        .slots-grid { flex: 9; display: grid; grid-template-columns: repeat(9, 1fr); gap: 6px; padding: 10px; }
-
+        .content-wrapper { display: flex; width: 100%; margin-top: 160px; z-index: 100; padding: 0 20px; box-sizing: border-box; gap: 15px; }
+        .slots-grid { flex: 9; display: grid; grid-template-columns: repeat(9, 1fr); gap: 8px; padding: 10px; }
         .sidebar { flex: 1.8; display: flex; flex-direction: column; gap: 30px; padding: 10px; }
 
         .provider-btn {
@@ -77,31 +65,48 @@
             padding: 15px 5px; color: #c5a059; text-decoration: none; text-align: center;
             font-weight: bold; text-transform: uppercase; font-size: 14px;
             transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); cursor: pointer;
+            box-shadow: 0 0 10px rgba(197, 160, 89, 0.2);
         }
         .provider-btn:hover { background: #c5a059; color: #000; box-shadow: 0 0 30px #c5a059; transform: scale(1.05); }
 
-        .card { width: 100%; height: 90px; perspective: 1000px; cursor: pointer; }
-        .inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; border-radius: 6px; }
+        /* КАРТОЧКИ */
+        .card { width: 100%; height: 100px; perspective: 1000px; cursor: pointer; }
+        .inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; border-radius: 8px; }
         .card.open .inner { transform: rotateY(180deg); }
+
+        /* СВЕЧЕНИЕ (ФИКС: анимация только для закрытых карт) */
+        .card.hot-glow .inner { box-shadow: 0 0 20px 5px rgba(197, 160, 89, 0.8); animation: glow-pulse 2s infinite ease-in-out; }
+        .card.open.hot-glow .inner { animation: none; box-shadow: 0 0 30px 10px rgba(197, 160, 89, 0.6); }
+
+        @keyframes glow-pulse { 0%, 100% { box-shadow: 0 0 15px 5px rgba(197, 160, 89, 0.6); } 50% { box-shadow: 0 0 30px 12px rgba(197, 160, 89, 1); } }
+
+        .f, .back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 8px; border: 1.5px solid #c5a059; display: flex; align-items: center; justify-content: center; }
         
-        /* Свечение */
-        .card.hot-glow .inner { box-shadow: 0 0 25px 8px rgba(197, 160, 89, 0.8); animation: glow-pulse 2s infinite ease-in-out; }
-        @keyframes glow-pulse { 0%, 100% { opacity: 0.8; } 50% { opacity: 1; } }
+        /* РУБАШКА (ЗЕБРА) */
+        .f { background: rgba(0, 0, 0, 0.8) url('разворот.webp') center/cover; background-blend-mode: darken; }
+        .card:nth-child(even) .f { background-color: rgba(0, 0, 0, 0.3); background-blend-mode: normal; }
+        .f::after { content: '⚚'; font-size: 30px; color: #fff; text-shadow: 0 0 10px #c5a059; }
 
-        .f, .back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 6px; border: 1.5px solid #c5a059; display: flex; align-items: center; justify-content: center; }
-        .f { background: rgba(0, 0, 0, 0.8) url('разворот.webp') center/cover; }
-        .f::after { content: '⚚'; font-size: 26px; color: #fff; text-shadow: 0 0 10px #c5a059; }
-        .back { background: #000; transform: rotateY(180deg); padding: 5px; box-sizing: border-box; box-shadow: inset 0 0 15px rgba(197, 160, 89, 0.5); }
+        .back { background: #000; transform: rotateY(180deg); padding: 8px; box-sizing: border-box; box-shadow: inset 0 0 20px rgba(197, 160, 89, 0.4); }
 
-        /* УВЕЛИЧЕННЫЙ ТЕКСТ */
-        .slot-name { font-size: 15px; font-weight: bold; color: #c5a059; text-align: center; word-wrap: break-word; line-height: 1.1; text-transform: uppercase; }
+        /* ТЕКСТ СЛОТОВ */
+        .slot-name { 
+            font-size: 18px; /* УВЕЛИЧЕНО */
+            font-weight: bold; 
+            color: #c5a059; 
+            text-align: center; 
+            word-wrap: break-word; 
+            line-height: 1.1; 
+            text-transform: uppercase;
+            padding: 0 5px;
+        }
 
         @media (max-width: 1024px) {
-            .content-wrapper { flex-direction: column; margin-top: 160px; }
-            .slots-grid { grid-template-columns: repeat(6, 1fr); }
+            .content-wrapper { flex-direction: column; }
+            .slots-grid { grid-template-columns: repeat(5, 1fr); }
             .sidebar { flex-direction: row; flex-wrap: wrap; }
-            .provider-btn { flex: 1; min-width: 120px; font-size: 12px; }
+            .provider-btn { flex: 1; min-width: 120px; }
+            .slot-name { font-size: 12px; }
         }
     </style>
 </head>
@@ -111,10 +116,8 @@
     <audio id="flip-sound"><source src="flip-magic.mp3" type="audio/mpeg"></audio>
 
     <button id="music-control" class="music-control-btn" onclick="toggleMusic(event)">
-        <div id="icon-container">
-            <svg id="svg-mute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
-            <svg id="svg-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-        </div>
+        <svg id="svg-mute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+        <svg id="svg-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
     </button>
 
     <video id="v" autoplay muted loop playsinline class="video-layer"><source src="1.mp4" type="video/mp4"></video>
@@ -145,9 +148,10 @@
             document.getElementById('v').play();
             if (bgMusic.paused) {
                 bgMusic.volume = 0.2;
-                bgMusic.play();
-                svgOn.style.display = 'block';
-                svgMute.style.display = 'none';
+                bgMusic.play().then(() => {
+                    svgOn.style.display = 'block';
+                    svgMute.style.display = 'none';
+                }).catch(e => console.log("Ждем клика"));
             }
         }
 
@@ -180,7 +184,7 @@
 
         const top90Slots = [
             "Wanted Dead or a Wild", "Le Bandit", "RIP City", "Chaos Crew II", "Hand of Anubis", "Slayers Inc", "Rotten", "Fist of Destruction", "Chaos Crew 3", "Ze Zeus", "Pray for Three", "Mayan Stackways", "Stack 'Em", "Dark Summoning", "Wings of Horus", "Mystery Motel", "Alpha Eagle", "Double Rainbow", "Gronk's Gems", "Vending Machine", "Twisted Lab", "Rusty & Curly", "Cash Crew", "Book of Time", "Temple of Torment",
-            "Gates of Olympus 1000", "Sugar Rush 1000", "Sweet Bonanza 1000", "Starlight Princess 1000", "Zeus vs Hades – Gods of War 250", "Big Bass Splash 1000", "Wisdom of Athena 1000 Xmas", "The Dog House Megaways", "Gems Bonanza", "Madame Destiny Megaways", "Cleocatra", "Forge of Olympus", "Juicy Fruits", "Fruit Party 2", "Release the Bison", "Rise of Pyramids", "Fire Portals", "Candy Corner", "Moleionaire", "Gods of Giza", "Buffalo King Megaways", "Congo Cash XL", "Mystery Mice", "Angel vs Sinner", "Sumo Supreme Megaways", "Yeti Quest", "Hand of Midas 2", "Medusa’s Stone", "Devilicious", "Wildies", "Sweet Bonanza", "Starlight Princess Pachi", "Fruity Treats", "Candy Blitz Bombs", "Aztec Powernudge",
+            "Gates of Olympus 1000", "Sugar Rush 1000", "Sweet Bonanza 1000", "Starlight Princess 1000", "Zeus vs Hades", "Big Bass Splash 1000", "Wisdom of Athena 1000", "The Dog House Megaways", "Gems Bonanza", "Madame Destiny Megaways", "Cleocatra", "Forge of Olympus", "Juicy Fruits", "Fruit Party 2", "Release the Bison", "Rise of Pyramids", "Fire Portals", "Candy Corner", "Moleionaire", "Gods of Giza", "Buffalo King Megaways", "Congo Cash XL", "Mystery Mice", "Angel vs Sinner", "Sumo Supreme Megaways", "Yeti Quest", "Hand of Midas 2", "Medusa’s Stone", "Devilicious", "Wildies", "Sweet Bonanza", "Starlight Princess Pachi", "Fruity Treats", "Candy Blitz Bombs", "Aztec Powernudge",
             "Aztec Clusters", "Elvis Frog Trueways", "Bonanza Billion", "Snoop Dogg Dollars", "Gemza", "Alien Fruits 2", "Mice & Magic Wonder Spin", "Dice Bonanza", "Gemhalla", "Savage Buffalo Spirit Megaways", "Sweet Rush Megaways", "Potion Spells", "Luck and Magic", "Bone Bonanza", "Maneki 88 Gold",
             "MummyLand Treasures", "Crystals Digger", "Big Wild Buffalo", "Rise of Zeus", "Fortune Mummy", "Voodoo Coins", "Tony Gambler", "4 Secrets of Aladdin", "Richy Hog", "Dragon's Bonanza",
             "Victoria Wild West", "Sunstrike Supernova", "Guns, Love & Therapy", "Book of Truth", "Micropirates"
