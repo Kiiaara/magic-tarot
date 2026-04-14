@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magic Slots — Belatra Edition</title>
+    <style>
+        @font-face {
+            font-family: 'AlgeriaTwo';
+            src: url('fonts/algeriatwo.ttf') format('truetype');
+            font-weight: normal; font-style: normal;
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background: #05010c url('bg.webp') no-repeat center center fixed;
+            background-size: cover; 
+            font-family: 'AlgeriaTwo', serif;
+            display: flex; flex-direction: column; align-items: center;
+            color: #fff; overflow-x: hidden;
+        }
+
+        .video-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; object-fit: cover; filter: brightness(0.4);
+            pointer-events: none;
+        }
+
+        .header-fixed {
+            position: fixed; top: 0; left: 0; width: 100%;
+            display: flex; flex-direction: column; align-items: center;
+            z-index: 500; padding-top: 15px;
+            background: rgba(5, 1, 12, 0.7); backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.3);
+        }
+
+        .header-title { 
+            color: #c5a059; margin: 0 0 10px 0; text-shadow: 0 0 20px #c5a059; 
+            font-size: 32px; text-transform: uppercase; letter-spacing: 3px;
+        }
+        .header-title span { font-size: 40px; vertical-align: middle; margin: 0 10px; display: inline-block; }
+
+        .magic-btn-back {
+            position: relative; z-index: 200; margin-bottom: 15px;
+            padding: 10px 25px; background: rgba(0, 0, 0, 0.8);
+            color: #c5a059; text-decoration: none; font-size: 14px;
+            font-weight: bold; border: 2px solid #c5a059; border-radius: 50px;
+            box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); transition: 0.3s;
+        }
+
+        /* СЕТКА НА 11 СТОЛБЦОВ */
+        .slots-grid { 
+            position: relative; z-index: 100;
+            margin-top: 160px;
+            display: grid; 
+            grid-template-columns: repeat(11, 1fr); 
+            gap: 6px; 
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .card { width: 100%; height: 90px; perspective: 1000px; cursor: pointer; }
+        .inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; border-radius: 6px; }
+        .card.open .inner { transform: rotateY(180deg); }
+        
+        .f, .back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 6px; border: 1.5px solid #c5a059; display: flex; align-items: center; justify-content: center; }
+        
+        /* ЗЕБРА */
+        .f { 
+            background: rgba(0, 0, 0, 0.8) url('разворот.webp') center/cover; 
+            background-blend-mode: darken; 
+        }
+        .card:nth-child(even) .f { 
+            background-color: rgba(0, 0, 0, 0.3); 
+            background-blend-mode: normal; 
+        }
+
+        .f::after { content: '⚚'; font-size: 26px; color: #fff; text-shadow: 0 0 10px #c5a059; }
+        .back { background: #000; transform: rotateY(180deg); padding: 5px; box-sizing: border-box; box-shadow: inset 0 0 15px rgba(197, 160, 89, 0.5); }
+
+        .slot-name { font-size: 10px; font-weight: bold; color: #c5a059; text-align: center; word-wrap: break-word; line-height: 1.1; text-transform: uppercase; }
+
+        @media (max-width: 768px) {
+            .slots-grid { grid-template-columns: repeat(6, 1fr); margin-top: 170px !important; }
+            .card { height: 65px; }
+            .slot-name { font-size: 8px; }
+        }
+    </style>
+</head>
+<body onclick="startInteraction()">
+
+    <audio id="bg-music" loop><source src="magic-ambient.mp3" type="audio/mpeg"></audio>
+    <audio id="flip-sound"><source src="flip-magic.mp3" type="audio/mpeg"></audio>
+    <video id="v" autoplay muted loop playsinline class="video-layer"><source src="1.mp4" type="video/mp4"></video>
+
+    <div class="header-fixed">
+        <h1 class="header-title"><span>ᛃ</span> Belatra <span>ᛃ</span></h1>
+        <a href="index.html" class="magic-btn-back">Вернуться ко всем играм</a>
+    </div>
+
+    <div class="slots-grid" id="grid"></div>
+
+    <script>
+        const bgMusic = document.getElementById('bg-music');
+        const flipSnd = document.getElementById('flip-sound');
+
+        function startInteraction() {
+            document.getElementById('v').play();
+            if (bgMusic.paused) { bgMusic.volume = 0.2; bgMusic.play(); }
+        }
+
+        window.flipCard = function(el) {
+            if (el.classList.contains('open')) return;
+            flipSnd.currentTime = 0; flipSnd.playbackRate = 2; flipSnd.volume = 0.3; flipSnd.play();
+            el.classList.add('open');
+        }
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // --- ТОЛЬКО BELATRA И ТОЛЬКО С ПОКУПКОЙ БОНУСА (ИЗ ТВОЕГО СПИСКА) ---
+        const belatraSlots = [
+            "MummyLand Treasures", "Big Wild Buffalo", "Big Wild Buffalo 2", "Crystals Digger", 
+            "Rise of Zeus", "Tony Gambler", "Richy Hog", "4 Secrets of Aladdin", 
+            "Fortune Mummy", "Voodoo Coins", "Dragon's Bonanza", "Cops vs Robs", 
+            "Big Bang 2", "Ice Bass", "Digger's Fortune", "Jackpot Pagoda", 
+            "Slattors Battle - Orcs vs Elves", "Long Neck Fortune", "Goose Boom Bang", 
+            "Xing Fu Panda", "Blast the Bass", "Make it Gold", "Cafe 50's", 
+            "Winter Thunder", "Tortuga CodeX", "Lucky Bandits", "Wolf Thunder", 
+            "Lucky Barrel Tavern", "Axe of Fortune", "Merry Hog", "Ice Princess", 
+            "Santa Mummy", "Golden Lantern", "Lucky Drink In Egypt", "Book of Doom", 
+            "88 Dragons Bounty", "Hot Wild Pepper", "Jewel"
+        ];
+
+        const randomizedNames = shuffle([...belatraSlots]);
+        const grid = document.getElementById('grid');
+        let htmlContent = '';
+
+        for (let i = 0; i < randomizedNames.length; i++) {
+            htmlContent += `
+                <div class="card" onclick="flipCard(this)">
+                    <div class="inner">
+                        <div class="f"></div>
+                        <div class="back"><div class="slot-name">${randomizedNames[i]}</div></div>
+                    </div>
+                </div>`;
+        }
+        grid.innerHTML = htmlContent;
+    </script>
+</body>
+</html>
