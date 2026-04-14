@@ -48,8 +48,8 @@
 
         .magic-btn-back {
             position: relative; z-index: 200; margin-bottom: 15px;
-            padding: 8px 20px; background: rgba(0, 0, 0, 0.8);
-            color: #c5a059; text-decoration: none; font-size: 13px;
+            padding: 12px 30px; background: rgba(0, 0, 0, 0.8);
+            color: #c5a059; text-decoration: none; font-size: 18px;
             font-weight: bold; border: 2px solid #c5a059; border-radius: 50px;
             transition: 0.3s;
         }
@@ -60,7 +60,10 @@
         .slots-grid { flex: 10; display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; padding: 10px; }
         
         /* САЙДБАР (КОМПАКТНЫЙ) */
-        .sidebar { flex: 1.1; display: flex; flex-direction: column; gap: 187px; padding: 10px; min-width: 120px; }
+        .sidebar { flex: 1.1; display: flex; flex-direction: column; gap: 30px; padding: 10px; min-width: 120px; justify-content: center; /* Это выровняет группу кнопок по центру высоты */
+    /* ИЛИ */
+    /* justify-content: space-between; */ /* Это растянет кнопки от самого верха до самого низа */
+}
 
         .provider-btn {
             background: rgba(0, 0, 0, 0.85); border: 2px solid #c5a059; border-radius: 10px;
