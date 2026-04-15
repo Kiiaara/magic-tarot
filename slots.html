@@ -53,48 +53,91 @@
             font-weight: bold; border: 2px solid #c5a059; border-radius: 50px;
             transition: 0.3s; box-shadow: 0 0 15px rgba(197, 160, 89, 0.4);
         }
-/* 1. Создаем анимацию мерцания пыли */
-@keyframes goldDust {
-    0% { background-position: 0 0; opacity: 0; }
-    50% { opacity: 0.8; }
-    100% { background-position: 100px 100px; opacity: 0; }
+/* --- АНИМАЦИИ ДЛЯ ПЫЛИ --- */
+/* Медленное вращение */
+@keyframes dustRotation {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+/* Вращение в обратную сторону + пульсация scale */
+@keyframes dustSwirl {
+    0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); opacity: 0.6; }
+    50% { transform: translate(-50%, -50%) rotate(-180deg) scale(1.1); opacity: 1; }
+    100% { transform: translate(-50%, -50%) rotate(-360deg) scale(1); opacity: 0.6; }
 }
 
-/* 2. Модифицируем кнопку провайдера */
+/* --- ОБНОВЛЕННАЯ КНОПКА ПРОВАЙДЕРА --- */
 .provider-btn {
-    position: relative; /* Чтобы пыль не вылетала за границы */
-    overflow: hidden;   /* Обрезаем пыль по краям кнопки */
+    position: relative;
     z-index: 1;
+    overflow: visible; /* Пыль должна быть видна снаружи! */
+    transition: all 0.3s ease;
 }
 
-/* 3. Сама "Золотая пыль" через псевдоэлемент */
-.provider-btn::before {
+/* Базовое состояние для обоих слоев пыли */
+.provider-btn::before,
+.provider-btn::after {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
+    /* Центрируем относительно кнопки */
+    top: 50%; left: 50%; 
     
-    /* Создаем текстуру пыли с помощью радиальных градиентов */
+    /* Делаем слои БОЛЬШЕ кнопки (например, на 30px со всех сторон) */
+    width: calc(100% + 60px); 
+    height: calc(100% + 60px);
+    
+    border-radius: 15px; /* Чуть мягче углы, чем у кнопки */
+    
+    opacity: 0; /* Скрыты по умолчанию */
+    z-index: -1; /* Пыль сзади кнопки */
+    transition: opacity 0.5s ease;
+    pointer-events: none; /* Не мешают кликать по кнопке */
+}
+
+/* СЛОЙ ПЫЛИ 1: Внешнее облако */
+.provider-btn::before {
+    /* Текстура пыли из мелких точек */
     background-image: 
         radial-gradient(circle, #f5d76e 1px, transparent 1px),
-        radial-gradient(circle, #c5a059 1px, transparent 1px);
-    background-size: 10px 10px, 15px 15px; /* Размер "зерна" пыли */
+        radial-gradient(circle, rgba(197, 160, 89, 0.6) 1.5px, transparent 1.5px);
+    background-size: 12px 12px, 20px 20px;
     
-    opacity: 0;
-    z-index: -1;
-    transition: opacity 0.4s ease;
-    pointer-events: none;
+    /* Добавляем внешнее мягкое золотое свечение */
+    filter: blur(1px) drop-shadow(0 0 15px #c5a059); 
+    
+    /* Начальное положение для анимации (translate(-50%, -50%) обязателен для центрирования) */
+    transform: translate(-50%, -50%) rotate(0deg);
 }
 
-/* 4. Эффект при наведении */
+/* СЛОЙ ПЫЛИ 2: Внутренние яркие частицы */
+.provider-btn::after {
+    background-image: 
+        radial-gradient(circle, #fff 1px, transparent 1px), /* Белые искорки */
+        radial-gradient(circle, #f5d76e 1.2px, transparent 1.2px);
+    background-size: 18px 18px, 25px 25px;
+    
+    /* Яркое, "ядерное" свечение частиц */
+    filter: blur(0.5px) drop-shadow(0 0 10px #f5d76e); 
+    
+    transform: translate(-50%, -50%) rotate(0deg);
+}
+
+/* --- ЭФФЕКТ ПРИ НАВЕДЕНИИ --- */
+.provider-btn:hover {
+    color: #fff;
+    text-shadow: 0 0 10px #f5d76e;
+    box-shadow: 0 0 20px rgba(197, 160, 89, 0.5); /* Сама кнопка тоже немного светится */
+}
+
+/* Проявляем и запускаем анимации слоев пыли */
 .provider-btn:hover::before {
     opacity: 1;
-    animation: goldDust 1.5s linear infinite; /* Пыль начинает "летать" */
+    animation: dustRotation 6s linear infinite; /* Медленно крутится облако */
 }
 
-/* Добавим еще легкое золотое свечение самой кнопке для сочности */
-.provider-btn:hover {
-    box-shadow: 0 0 25px rgba(197, 160, 89, 0.6), inset 0 0 10px rgba(245, 215, 110, 0.4);
-    text-shadow: 0 0 10px #f5d76e;
+.provider-btn:hover::after {
+    opacity: 1;
+    animation: dustSwirl 4s ease-in-out infinite; /* Быстрее клубятся частицы */
 }
         .content-wrapper { display: flex; width: 100%; margin-top: 160px; z-index: 100; padding: 0 20px; box-sizing: border-box; gap: 10px; }
         
