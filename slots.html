@@ -26,7 +26,6 @@
             pointer-events: none;
         }
 
-        /* КНОПКА МУЗЫКИ */
         .music-control-btn {
             position: fixed; top: 20px; right: 20px; z-index: 1000;
             width: 65px; height: 65px; border-radius: 50%;
@@ -37,7 +36,7 @@
         }
         .music-control-btn svg { width: 32px; height: 32px; stroke: #c5a059; filter: drop-shadow(0 0 5px rgba(197, 160, 89, 0.8)); }
 
-        /* ШАПКА */
+        /* ШАПКА — оставляем размер 32px */
         .header-fixed {
             position: fixed; top: 0; left: 0; width: 100%;
             display: flex; flex-direction: column; align-items: center;
@@ -46,11 +45,8 @@
             border-bottom: 1px solid rgba(197, 160, 89, 0.2);
         }
 
-        .header-title { 
-            color: #c5a059; margin: 0 0 10px 0; text-shadow: 0 0 25px #c5a059; 
-            font-size: 32px; text-transform: uppercase; letter-spacing: 5px; 
-        }
-        .header-title span { font-size: 40px; vertical-align: middle; margin: 0 15px; display: inline-block; }
+        .header-title { color: #c5a059; margin: 0 0 10px 0; text-shadow: 0 0 20px #c5a059; font-size: 32px; text-transform: uppercase; letter-spacing: 3px; }
+        .header-title span { font-size: 40px; vertical-align: middle; margin: 0 10px; display: inline-block; }
 
         .magic-btn-back {
             position: relative; z-index: 200; margin-bottom: 15px;
@@ -60,66 +56,66 @@
             transition: 0.3s; box-shadow: 0 0 15px rgba(197, 160, 89, 0.4);
         }
 
-        /* КОНТЕНТ */
-        .content-wrapper { display: flex; width: 100%; margin-top: 200px; z-index: 100; padding: 0 20px; box-sizing: border-box; gap: 10px; }
-        .slots-grid { flex: 10; display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; padding: 10px; }
-        .sidebar { flex: 1.2; display: flex; flex-direction: column; gap: 55px; padding: 10px; min-width: 130px; justify-content: center; }
+        /* АНИМАЦИИ ДЛЯ ПРОВАЙДЕРОВ */
+        @keyframes flyParticles-1 { from { background-position: 0 0; } to { background-position: 100px 100px; } }
+        @keyframes flyParticles-2 { from { background-position: 0 0; } to { background-position: -100px 120px; } }
+        @keyframes sparkle { 0%, 100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 1; transform: scale(1.2); } }
 
-        /* АНИМАЦИИ ПЫЛИ */
-        @keyframes flyParticles-1 { from { background-position: 0 0; } to { background-position: 150px 150px; } }
-        @keyframes flyParticles-2 { from { background-position: 0 0; } to { background-position: -120px 180px; } }
-        @keyframes sparkle { 0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) translateZ(-1px) scale(1); } 50% { opacity: 1; transform: translate(-50%, -50%) translateZ(-1px) scale(1.2); } }
-
-        /* КНОПКИ ПРОВАЙДЕРОВ (ФИКС СВЕТЛЯЧКОВ) */
+        /* КНОПКИ ПРОВАЙДЕРОВ — оставляем светлячков */
         .provider-btn {
             position: relative;
-            background: rgba(0, 0, 0, 0.95); border: 2px solid #c5a059; border-radius: 10px;
-            padding: 18px 5px; color: #c5a059; text-decoration: none; text-align: center;
+            background: rgba(0, 0, 0, 0.85); border: 2px solid #c5a059; border-radius: 10px;
+            padding: 15px 5px; color: #c5a059; text-decoration: none; text-align: center;
             font-weight: bold; text-transform: uppercase; font-size: 27px;
             transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 0 10px rgba(197, 160, 89, 0.2);
-            
-            /* Магия: создаем 3D контекст, чтобы вынести частицы назад */
-            transform-style: preserve-3d;
-            z-index: 5;
+            z-index: 5; overflow: visible;
         }
 
         .provider-btn::before, .provider-btn::after {
-            content: '';
-            position: absolute;
-            top: 50%; left: 50%;
-            width: calc(100% + 100px); height: calc(100% + 100px);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.6s ease;
-            
-            /* Сдвигаем назад по оси Z */
-            transform: translate(-50%, -50%) translateZ(-1px);
-            z-index: -1; 
-
-            -webkit-mask-image: radial-gradient(circle, black 20%, transparent 70%);
-            mask-image: radial-gradient(circle, black 20%, transparent 70%);
+            content: ''; position: absolute; top: -50px; left: -50px; right: -50px; bottom: -50px;
+            opacity: 0; z-index: -1; pointer-events: none; transition: opacity 0.6s ease;
+            -webkit-mask-image: radial-gradient(circle, black 25%, transparent 70%);
+            mask-image: radial-gradient(circle, black 25%, transparent 70%);
         }
 
         .provider-btn::before {
-            background-image: radial-gradient(circle, #fff 1.2px, transparent 1.2px), radial-gradient(circle, #f5d76e 2.5px, transparent 2.5px);
-            background-size: 40px 40px; filter: drop-shadow(0 0 12px #f5d76e);
+            background-image: radial-gradient(circle, #fff 1.2px, transparent 1.2px), radial-gradient(circle, #f5d76e 2px, transparent 2px);
+            background-size: 50px 50px; filter: drop-shadow(0 0 10px #f5d76e);
         }
-
         .provider-btn::after {
-            background-image: radial-gradient(circle, #fff 1px, transparent 1px), radial-gradient(circle, #c5a059 3px, transparent 3px);
-            background-size: 60px 60px; filter: drop-shadow(0 0 18px #c5a059);
+            background-image: radial-gradient(circle, #fff 1px, transparent 1px), radial-gradient(circle, #c5a059 2.5px, transparent 2.5px);
+            background-size: 70px 70px; filter: drop-shadow(0 0 15px #c5a059);
         }
 
-        .provider-btn:hover { background: #c5a059; color: #000; transform: scale(1.1); box-shadow: 0 0 40px rgba(197, 160, 89, 0.5); }
-        .provider-btn:hover::before { opacity: 1; animation: flyParticles-1 10s linear infinite, sparkle 3s ease-in-out infinite; }
-        .provider-btn:hover::after { opacity: 0.8; animation: flyParticles-2 15s linear infinite, sparkle 4s ease-in-out infinite reverse; }
+        .provider-btn:hover { background: #c5a059; color: #000; transform: scale(1.05); }
+        .provider-btn:hover::before { opacity: 1; animation: flyParticles-1 8s linear infinite, sparkle 3s ease-in-out infinite; }
+        .provider-btn:hover::after { opacity: 0.8; animation: flyParticles-2 12s linear infinite, sparkle 4s ease-in-out infinite reverse; }
 
-        /* КАРТОЧКИ СЛОТОВ */
+        /* КАРТОЧКИ СЛОТОВ — возвращаем старое доброе свечение */
+        .content-wrapper { display: flex; width: 100%; margin-top: 160px; z-index: 100; padding: 0 20px; box-sizing: border-box; gap: 10px; }
+        .slots-grid { flex: 10; display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; padding: 10px; }
+        .sidebar { flex: 1.2; display: flex; flex-direction: column; gap: 50px; padding: 10px; min-width: 120px; justify-content: center; }
+
         .card { width: 100%; height: 100px; perspective: 1000px; cursor: pointer; }
         .inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; border-radius: 8px; }
         .card.open .inner { transform: rotateY(180deg) !important; }
-        
+
+        /* ЛОГИКА СВЕЧЕНИЯ КАРТ */
+        .card.hot-glow .inner { 
+            box-shadow: 0 0 20px 5px rgba(197, 160, 89, 0.8); 
+            animation: glow-pulse 2s infinite ease-in-out; 
+        }
+        .card.open.hot-glow .inner { 
+            animation: none; 
+            box-shadow: 0 0 30px 10px rgba(197, 160, 89, 0.6); 
+        }
+
+        @keyframes glow-pulse { 
+            0%, 100% { box-shadow: 0 0 15px 5px rgba(197, 160, 89, 0.6); } 
+            50% { box-shadow: 0 0 30px 12px rgba(197, 160, 89, 1); } 
+        }
+
         .f, .back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 8px; border: 1.5px solid #c5a059; display: flex; align-items: center; justify-content: center; }
         .f { background: rgba(0, 0, 0, 0.8) url('разворот.webp') center/cover; background-blend-mode: darken; }
         .card.zebra-light .f { background-color: rgba(0, 0, 0, 0.3); background-blend-mode: normal; }
@@ -131,10 +127,11 @@
 
         @media (max-width: 1200px) { .slots-grid { grid-template-columns: repeat(8, 1fr); } }
         @media (max-width: 768px) {
-            .content-wrapper { flex-direction: column; margin-top: 180px; }
+            .content-wrapper { flex-direction: column; }
             .slots-grid { grid-template-columns: repeat(5, 1fr); }
-            .sidebar { flex-direction: row; flex-wrap: wrap; gap: 15px; }
-            .provider-btn { flex: 1; min-width: 110px; font-size: 16px; padding: 10px; }
+            .sidebar { flex-direction: row; flex-wrap: wrap; }
+            .provider-btn { flex: 1; min-width: 100px; font-size: 15px; }
+            .slot-name { font-size: 12px; }
         }
     </style>
 </head>
@@ -190,13 +187,9 @@
         function toggleMusic(event) {
             event.stopPropagation(); 
             if (bgMusic.paused) {
-                bgMusic.play();
-                svgOn.style.display = 'block';
-                svgMute.style.display = 'none';
+                bgMusic.play(); svgOn.style.display = 'block'; svgMute.style.display = 'none';
             } else {
-                bgMusic.pause();
-                svgOn.style.display = 'none';
-                svgMute.style.display = 'block';
+                bgMusic.pause(); svgOn.style.display = 'none'; svgMute.style.display = 'block';
             }
         }
 
@@ -228,14 +221,14 @@
             "MummyLand Treasures", "Big Wild Buffalo", "Big Wild Buffalo 2", "Crystals Digger", 
             "Rise of Zeus", "Tony Gambler", "Richy Hog", "4 Secrets of Aladdin", "Fortune Mummy", 
             "Voodoo Coins", "Dragon's Bonanza", "Cops vs Robs", "Big Bang 2", "Ice Bass", 
-            "Digger's Fortune", "Jackpot Pagoda", "Slattors Battle - Orcs vs Elves", 
+            "Digger's Fortune", "Jackpot Pagoda", "Slatters Battle - Orcs vs Elves", 
             "Long Neck Fortune", "Goose Boom Bang", "Xing Fu Panda",
             "Victoria Wild West", "Sunstrike Supernova", "Guns, Love & Therapy", "Book of Truth", 
             "Micropirates & the Kraken of the Caribbean", "Dr. Rock & the Riff Reactor", "Abyss of Glory", 
-            "Book of Huli", "Happy Prison", "Egg Inc.", "Succubus Sins", "Fruity Park", 
+            "Book of Huli", "Happy Prison", "Succubus Sins", "Fruity Park", 
             "Riches Digger", "Phil MemeCity", "Dr. Rock & Frozen Monkey", "Greedy Piggy", 
             "Vituss Britva God of Random", "Most Wanted", "Street Muse", "Dr. Rock & Creepy Monster",
-            "Aztec Irwin", "Elvis Frog Trueways", "Bonanza Billion", "Snoop Dogg Dollars", 
+            "Aztec Clusters", "Elvis Frog Trueways", "Bonanza Billion", "Snoop Dogg Dollars", 
             "Gemza", "Alien Fruits 2", "Mice & Magic Wonder Spin", "Dice Bonanza", 
             "Gemhalla", "Savage Buffalo Spirit Megaways", "Sweet Rush Megaways", "Potion Spells", 
             "Luck and Magic", "Bone Bonanza", "Maneki 88 Gold", "Merge Up", "Monster Hunt"
