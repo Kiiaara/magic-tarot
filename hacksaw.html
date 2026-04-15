@@ -26,10 +26,21 @@
             pointer-events: none;
         }
 
+        /* КНОПКА МУЗЫКИ */
+        .music-control-btn {
+            position: fixed; top: 20px; right: 20px; z-index: 1000;
+            width: 65px; height: 65px; border-radius: 50%;
+            background: rgba(0, 0, 0, 0.7); border: 2px solid #c5a059;
+            cursor: pointer; display: flex; justify-content: center; align-items: center;
+            backdrop-filter: blur(5px); box-shadow: 0 0 15px rgba(197, 160, 89, 0.4);
+            transition: 0.3s;
+        }
+        .music-control-btn svg { width: 32px; height: 32px; stroke: #c5a059; filter: drop-shadow(0 0 5px rgba(197, 160, 89, 0.8)); }
+
         .header-fixed {
             position: fixed; top: 0; left: 0; width: 100%;
             display: flex; flex-direction: column; align-items: center;
-            z-: 500; padding-top: 15px;
+            z-index: 500; padding-top: 15px;
             background: rgba(5, 1, 12, 0.7); backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(197, 160, 89, 0.3);
         }
@@ -41,16 +52,15 @@
         .header-title span { font-size: 40px; vertical-align: middle; margin: 0 10px; display: inline-block; }
 
         .magic-btn-back {
-            position: relative; z-: 200; margin-bottom: 15px;
+            position: relative; z-index: 200; margin-bottom: 15px;
             padding: 10px 25px; background: rgba(0, 0, 0, 0.8);
             color: #c5a059; text-decoration: none; font-size: 14px;
             font-weight: bold; border: 2px solid #c5a059; border-radius: 50px;
             box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); transition: 0.3s;
         }
 
-        /* СЕТКА НА ПОЛНУЮ ШИРИНУ (11 СТОЛБЦОВ) */
         .slots-grid { 
-            position: relative; z-: 100;
+            position: relative; z-index: 100;
             margin-top: 160px;
             display: grid; 
             grid-template-columns: repeat(11, 1fr); 
@@ -64,17 +74,10 @@
         .inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; border-radius: 6px; }
         .card.open .inner { transform: rotateY(180deg); }
         
-        /* ЗЕБРА И ЭФФЕКТЫ */
         .f, .back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 6px; border: 1.5px solid #c5a059; display: flex; align-items: center; justify-content: center; }
-        
-        .f { 
-            background: rgba(0, 0, 0, 0.8) url('разворот.webp') center/cover; 
-            background-blend-mode: darken; 
-        }
-        .card:nth-child(even) .f { 
-            background-color: rgba(0, 0, 0, 0.3); 
-            background-blend-mode: normal; 
-        }
+        .f { background: rgba(0, 0, 0, 0.8) url('разворот.webp') center/cover; background-blend-mode: darken; }
+        /* Нечетное кол-во колонок дает шахматку автоматически */
+        .card:nth-child(even) .f { background-color: rgba(0, 0, 0, 0.3); background-blend-mode: normal; }
 
         .f::after { content: '⚚'; font-size: 26px; color: #fff; text-shadow: 0 0 10px #c5a059; }
         .back { background: #000; transform: rotateY(180deg); padding: 5px; box-sizing: border-box; box-shadow: inset 0 0 15px rgba(197, 160, 89, 0.5); }
@@ -84,7 +87,7 @@
         @media (max-width: 768px) {
             .slots-grid { grid-template-columns: repeat(6, 1fr); margin-top: 170px !important; }
             .card { height: 65px; }
-            .slot-name { font-size: 8px; }
+            .slot-name { font-size: 10px; }
         }
     </style>
 </head>
@@ -92,6 +95,12 @@
 
     <audio id="bg-music" loop><source src="magic-ambient.mp3" type="audio/mpeg"></audio>
     <audio id="flip-sound"><source src="flip-magic.mp3" type="audio/mpeg"></audio>
+    
+    <button id="music-control" class="music-control-btn" onclick="toggleMusic(event)">
+        <svg id="svg-mute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+        <svg id="svg-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+    </button>
+
     <video id="v" autoplay muted loop playsinline class="video-layer"><source src="1.mp4" type="video/mp4"></video>
 
     <div class="header-fixed">
@@ -104,10 +113,36 @@
     <script>
         const bgMusic = document.getElementById('bg-music');
         const flipSnd = document.getElementById('flip-sound');
+        const svgOn = document.getElementById('svg-on');
+        const svgMute = document.getElementById('svg-mute');
+        
+        let isInitialized = false;
 
         function startInteraction() {
+            if (isInitialized) return;
+
             document.getElementById('v').play();
-            if (bgMusic.paused) { bgMusic.volume = 0.2; bgMusic.play(); }
+            if (bgMusic.paused) { 
+                bgMusic.volume = 0.2; 
+                bgMusic.play().then(() => {
+                    svgOn.style.display = 'block';
+                    svgMute.style.display = 'none';
+                    isInitialized = true;
+                }).catch(e => console.log("Waiting for user interaction..."));
+            }
+        }
+
+        function toggleMusic(event) {
+            event.stopPropagation(); 
+            if (bgMusic.paused) {
+                bgMusic.play();
+                svgOn.style.display = 'block';
+                svgMute.style.display = 'none';
+            } else {
+                bgMusic.pause();
+                svgOn.style.display = 'none';
+                svgMute.style.display = 'block';
+            }
         }
 
         window.flipCard = function(el) {
@@ -124,25 +159,24 @@
             return array;
         }
 
-        // --- ТОЛЬКО HACKSAW И ТОЛЬКО С ПОКУПКОЙ БОНУСА ---
-       const hacksawSlots = [
-    "Wanted Dead or a Wild", "Le Bandit", "RIP City", "Chaos Crew II", "Hand of Anubis", 
-    "Slayers Inc", "Rotten", "Cursed Crypt", "Ze Zeus", "Pray for Three", 
-    "Mayan Stackways", "Stack 'Em", "Keep'em", "Dark Summoning", "Wings of Horus", 
-    "Mystery Motel", "Alpha Eagle", "Gronk's Gems", "Vending Machine", "Klowns", 
-    "Chaos Crew", "Rise of Ymir", "Twisted Lab", "Hop'n'Pop", "The Count", 
-    "Bloodthirst", "Cursed Seas", "Time Spinners", "Eye of Medusa", "Rusty & Curly", 
-    "Divine Drop", "Rad Maxx", "Cloud Princess", "Cash Crew", "Book of Time", 
-    "Temple of Torment", "Bash Bros", "Le King", "Eye of the Panda", "FRKN Bananas", 
-    "Drop'em", "Xmas Drop", "Buffalo Stack'n'Sync", "2 Wild 2 Die", "Ronin Stackways", 
-    "Magic Piggy", "Donny Dough", "Danny Dollar", "Feel the Beat", "Immortal Desire", 
-    "Reign of Rome", "Frutz", "Evil Eyes", "Fear The Dark", "Densho", 
-    "Break Bones", "Undead Fortune", "Gladiator Legends", "King Carrot", "Cubes 2", 
-    "Dork Unit", "Octo Attack", "ITERO", "Cash Quest", "Get the CHEESE", 
-    "Duel at Dawn", "Le Viking", "Orb of Destiny", "Beast Below", "Toshi Video Club", 
-    "Freds Food Truck", "Frank's Farm", "Dragon's Domain", "Rocket Reels", 
-    "Tasty Treats", "Outlaws Inc", "Xpander", "Warrior Ways", "Fruit Duel", "Tai the Toad"
-];
+        const hacksawSlots = [
+            "Wanted Dead or a Wild", "Le Bandit", "RIP City", "Chaos Crew II", "Hand of Anubis", 
+            "Slayers Inc", "Rotten", "Cursed Crypt", "Ze Zeus", "Pray for Three", 
+            "Mayan Stackways", "Stack 'Em", "Keep'em", "Dark Summoning", "Wings of Horus", 
+            "Mystery Motel", "Alpha Eagle", "Gronk's Gems", "Vending Machine", "Klowns", 
+            "Chaos Crew", "Rise of Ymir", "Twisted Lab", "Hop'n'Pop", "The Count", 
+            "Bloodthirst", "Cursed Seas", "Time Spinners", "Eye of Medusa", "Rusty & Curly", 
+            "Divine Drop", "Rad Maxx", "Cloud Princess", "Cash Crew", "Book of Time", 
+            "Temple of Torment", "Bash Bros", "Le King", "Eye of the Panda", "FRKN Bananas", 
+            "Drop'em", "Xmas Drop", "Buffalo Stack'n'Sync", "2 Wild 2 Die", "Ronin Stackways", 
+            "Magic Piggy", "Donny Dough", "Danny Dollar", "Feel the Beat", "Immortal Desire", 
+            "Reign of Rome", "Frutz", "Evil Eyes", "Fear The Dark", "Densho", 
+            "Break Bones", "Undead Fortune", "Gladiator Legends", "King Carrot", "Cubes 2", 
+            "Dork Unit", "Octo Attack", "ITERO", "Cash Quest", "Get the CHEESE", 
+            "Duel at Dawn", "Le Viking", "Orb of Destiny", "Beast Below", "Toshi Video Club", 
+            "Freds Food Truck", "Frank's Farm", "Dragon's Domain", "Rocket Reels", 
+            "Tasty Treats", "Outlaws Inc", "Xpander", "Warrior Ways", "Fruit Duel", "Tai the Toad"
+        ];
 
         const randomizedNames = shuffle([...hacksawSlots]);
         const grid = document.getElementById('grid');
