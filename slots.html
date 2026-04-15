@@ -207,32 +207,42 @@
             return array;
         }
 
-        const top100Slots = [
-            "Wanted Dead or a Wild", "Le Bandit", "RIP City", "Chaos Crew II", "Hand of Anubis", 
-            "Slayers Inc", "Rotten", "Fist of Destruction", "Chaos Crew 3", "Ze Zeus", 
-            "Pray for Three", "Mayan Stackways", "Stack 'Em", "Dark Summoning", "Wings of Horus", 
-            "Mystery Motel", "Double Rainbow", "Gronk's Gems", "Vending Machine", "Twisted Lab", 
-            "Rusty & Curly", "Cash Crew", "Dork Unit",
-            "Gates of Olympus 1000", "Sugar Rush 1000", "Sweet Bonanza 1000", "Starlight Princess 1000", 
-            "Zeus vs Hades – Gods of War 250", "Big Bass Splash 1000", "Wisdom of Athena 1000 Xmas", 
-            "The Dog House Megaways", "Gems Bonanza", "Madame Destiny Megaways", "Cleocatra", 
-            "Forge of Olympus", "Juicy Fruits", "Fruit Party 2", "Release the Bison", 
-            "Rise of Pyramids", "Fire Portals", "Candy Corner", "Moleionaire", "Loki's Riches",
-            "MummyLand Treasures", "Big Wild Buffalo", "Big Wild Buffalo 2", "Crystals Digger", 
-            "Rise of Zeus", "Tony Gambler", "Richy Hog", "4 Secrets of Aladdin", "Fortune Mummy", 
-            "Voodoo Coins", "Dragon's Bonanza", "Cops vs Robs", "Big Bang 2", "Ice Bass", 
-            "Digger's Fortune", "Jackpot Pagoda", "Slatters Battle - Orcs vs Elves", 
-            "Long Neck Fortune", "Goose Boom Bang", "Xing Fu Panda",
-            "Victoria Wild West", "Sunstrike Supernova", "Guns, Love & Therapy", "Book of Truth", 
-            "Micropirates & the Kraken of the Caribbean", "Dr. Rock & the Riff Reactor", "Abyss of Glory", 
-            "Book of Huli", "Happy Prison", "Succubus Sins", "Fruity Park", 
-            "Riches Digger", "Phil MemeCity", "Dr. Rock & Frozen Monkey", "Greedy Piggy", 
-            "Vituss Britva God of Random", "Most Wanted", "Street Muse", "Dr. Rock & Creepy Monster",
-            "Aztec Clusters", "Elvis Frog Trueways", "Bonanza Billion", "Snoop Dogg Dollars", 
-            "Gemza", "Alien Fruits 2", "Mice & Magic Wonder Spin", "Dice Bonanza", 
-            "Gemhalla", "Savage Buffalo Spirit Megaways", "Sweet Rush Megaways", "Potion Spells", 
-            "Luck and Magic", "Bone Bonanza", "Maneki 88 Gold", "Merge Up", "Monster Hunt"
-        ];
+       const top100Slots = [
+    // Hacksaw Gaming (23)
+    "Wanted Dead or a Wild", "Le Bandit", "RIP City", "Chaos Crew II", "Hand of Anubis", 
+    "Slayers Inc", "Rotten", "Fist of Destruction", "Chaos Crew 3", "Ze Zeus", 
+    "Pray for Three", "Mayan Stackways", "Stack 'Em", "Keep'em", "Dark Summoning", "Wings of Horus", 
+    "Mystery Motel", "Double Rainbow", "Gronk's Gems", "Vending Machine", "Twisted Lab", 
+    "Rusty & Curly", "Cash Crew", "Dork Unit",
+
+    // Pragmatic Play (20)
+    "Gates of Olympus 1000", "Sugar Rush 1000", "Sweet Bonanza 1000", "Starlight Princess 1000", 
+    "Zeus vs Hades – Gods of War 250", "Big Bass Splash 1000", "Wisdom of Athena 1000 Xmas", 
+    "The Dog House Megaways", "Gems Bonanza", "Madame Destiny Megaways", "Cleocatra", 
+    "Forge of Olympus", "Juicy Fruits", "Fruit Party 2", "Release the Bison", 
+    "Rise of Pyramids", "Fire Portals", "Candy Corner", "Moleionaire", "Loki's Riches",
+
+    // Belatra (19)
+    "MummyLand Treasures", "Big Wild Buffalo", "Big Wild Buffalo 2", "Crystals Digger", 
+    "Rise of Zeus", "Tony Gambler", "Richy Hog", "4 Secrets of Aladdin", "Fortune Mummy", 
+    "Voodoo Coins", "Cops vs Robs", "Big Bang 2", "Ice Bass", 
+    "Digger's Fortune", "Jackpot Pagoda", "Slattors Battle - Orcs vs Elves", 
+    "Long Neck Fortune", "Goose Boom Bang", "Xing Fu Panda",
+
+    // TrueLab (19)
+    "Victoria Wild West", "Sunstrike Supernova", "Guns, Love & Therapy", "Book of Truth", 
+    "Micropirates & the Kraken of the Caribbean", "Dr. Rock & the Riff Reactor", "Abyss of Glory", 
+    "Book of Huli", "Happy Prison", "Succubus Sins", "Fruity Park", 
+    "Riches Digger", "Phil MemeCity", "Dr. Rock & Frozen Monkey", "Greedy Piggy", 
+    "Vituss Britva God of Random", "Most Wanted", "Street Muse", "Dr. Rock & Creepy Monster",
+
+    // BGaming (19)
+    "Aztec Irwin", "Elvis Frog Trueways", "Bonanza Billion", "Snoop Dogg Dollars", 
+    "Gemza", "Alien Fruits 2", "Mice & Magic Wonder Spin", "Dice Bonanza", 
+    "Gemhalla", "Savage Buffalo Spirit Megaways", "Sweet Rush Megaways", "Potion Spells", 
+    "Luck and Magic", "Bone Bonanza", "Maneki 88 Gold", "Merge Up", "Monster Hunt",
+    "Lady Wolf Moon Megaways", "Keepers Of The Secret"
+];
 
         const randomizedNames = shuffle([...top100Slots]);
         const grid = document.getElementById('grid');
