@@ -26,6 +26,17 @@
             pointer-events: none;
         }
 
+        /* КНОПКА МУЗЫКИ */
+        .music-control-btn {
+            position: fixed; top: 20px; right: 20px; z-index: 1000;
+            width: 65px; height: 65px; border-radius: 50%;
+            background: rgba(0, 0, 0, 0.7); border: 2px solid #c5a059;
+            cursor: pointer; display: flex; justify-content: center; align-items: center;
+            backdrop-filter: blur(5px); box-shadow: 0 0 15px rgba(197, 160, 89, 0.4);
+            transition: 0.3s;
+        }
+        .music-control-btn svg { width: 32px; height: 32px; stroke: #c5a059; filter: drop-shadow(0 0 5px rgba(197, 160, 89, 0.8)); }
+
         .header-fixed {
             position: fixed; top: 0; left: 0; width: 100%;
             display: flex; flex-direction: column; align-items: center;
@@ -48,7 +59,6 @@
             box-shadow: 0 0 15px rgba(197, 160, 89, 0.4); transition: 0.3s;
         }
 
-        /* СЕТКА НА 11 СТОЛБЦОВ */
         .slots-grid { 
             position: relative; z-index: 100;
             margin-top: 160px;
@@ -65,16 +75,8 @@
         .card.open .inner { transform: rotateY(180deg); }
         
         .f, .back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 6px; border: 1.5px solid #c5a059; display: flex; align-items: center; justify-content: center; }
-        
-        /* ЗЕБРА */
-        .f { 
-            background: rgba(0, 0, 0, 0.8) url('разворот.webp') center/cover; 
-            background-blend-mode: darken; 
-        }
-        .card:nth-child(even) .f { 
-            background-color: rgba(0, 0, 0, 0.3); 
-            background-blend-mode: normal; 
-        }
+        .f { background: rgba(0, 0, 0, 0.8) url('разворот.webp') center/cover; background-blend-mode: darken; }
+        .card:nth-child(even) .f { background-color: rgba(0, 0, 0, 0.3); background-blend-mode: normal; }
 
         .f::after { content: '⚚'; font-size: 26px; color: #fff; text-shadow: 0 0 10px #c5a059; }
         .back { background: #000; transform: rotateY(180deg); padding: 5px; box-sizing: border-box; box-shadow: inset 0 0 15px rgba(197, 160, 89, 0.5); }
@@ -84,7 +86,7 @@
         @media (max-width: 768px) {
             .slots-grid { grid-template-columns: repeat(6, 1fr); margin-top: 170px !important; }
             .card { height: 65px; }
-            .slot-name { font-size: 8px; }
+            .slot-name { font-size: 10px; }
         }
     </style>
 </head>
@@ -92,6 +94,12 @@
 
     <audio id="bg-music" loop><source src="magic-ambient.mp3" type="audio/mpeg"></audio>
     <audio id="flip-sound"><source src="flip-magic.mp3" type="audio/mpeg"></audio>
+    
+    <button id="music-control" class="music-control-btn" onclick="toggleMusic(event)">
+        <svg id="svg-mute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+        <svg id="svg-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+    </button>
+
     <video id="v" autoplay muted loop playsinline class="video-layer"><source src="1.mp4" type="video/mp4"></video>
 
     <div class="header-fixed">
@@ -104,10 +112,36 @@
     <script>
         const bgMusic = document.getElementById('bg-music');
         const flipSnd = document.getElementById('flip-sound');
+        const svgOn = document.getElementById('svg-on');
+        const svgMute = document.getElementById('svg-mute');
+        
+        let isInitialized = false;
 
         function startInteraction() {
+            if (isInitialized) return;
+
             document.getElementById('v').play();
-            if (bgMusic.paused) { bgMusic.volume = 0.2; bgMusic.play(); }
+            if (bgMusic.paused) { 
+                bgMusic.volume = 0.2; 
+                bgMusic.play().then(() => {
+                    svgOn.style.display = 'block';
+                    svgMute.style.display = 'none';
+                    isInitialized = true;
+                }).catch(e => console.log("Waiting..."));
+            }
+        }
+
+        function toggleMusic(event) {
+            event.stopPropagation(); 
+            if (bgMusic.paused) {
+                bgMusic.play();
+                svgOn.style.display = 'block';
+                svgMute.style.display = 'none';
+            } else {
+                bgMusic.pause();
+                svgOn.style.display = 'none';
+                svgMute.style.display = 'block';
+            }
         }
 
         window.flipCard = function(el) {
@@ -124,19 +158,18 @@
             return array;
         }
 
-        // --- ТОЛЬКО BELATRA И ТОЛЬКО С ПОКУПКОЙ БОНУСА (ИЗ ТВОЕГО СПИСКА) ---
-       const belatraSlots = [
-    "MummyLand Treasures", "Big Wild Buffalo", "Big Wild Buffalo 2", "Crystals Digger", 
-    "Rise of Zeus", "Tony Gambler", "Richy Hog", "4 Secrets of Aladdin", 
-    "Fortune Mummy", "Voodoo Coins", "Dragon's Bonanza", "Cops vs Robs", 
-    "Big Bang 2", "Ice Bass", "Digger's Fortune", "Jackpot Pagoda", 
-    "Slattors Battle - Orcs vs Elves", "Long Neck Fortune", "Goose Boom Bang", 
-    "Xing Fu Panda", "Blast the Bass", "Make it Gold", "Cafe 50's", 
-    "Winter Thunder", "Tortuga CodeX", "Lucky Bandits", "Wolf Thunder", 
-    "Lucky Barrel Tavern", "Axe of Fortune", "Merry Hog", "Ice Princess", 
-    "Santa Mummy", "Golden Lantern", "Lucky Drink In Egypt", "Book of Doom", 
-    "88 Dragons Bounty", "Hot Wild Pepper"
-];
+        const belatraSlots = [
+            "MummyLand Treasures", "Big Wild Buffalo", "Big Wild Buffalo 2", "Crystals Digger", 
+            "Rise of Zeus", "Tony Gambler", "Richy Hog", "4 Secrets of Aladdin", 
+            "Fortune Mummy", "Voodoo Coins", "Dragon's Bonanza", "Cops vs Robs", 
+            "Big Bang 2", "Ice Bass", "Digger's Fortune", "Jackpot Pagoda", 
+            "Slatters Battle - Orcs vs Elves", "Long Neck Fortune", "Goose Boom Bang", 
+            "Xing Fu Panda", "Blast the Bass", "Make it Gold", "Cafe 50's", 
+            "Winter Thunder", "Tortuga CodeX", "Lucky Bandits", "Wolf Thunder", 
+            "Lucky Barrel Tavern", "Axe of Fortune", "Merry Hog", "Ice Princess", 
+            "Santa Mummy", "Golden Lantern", "Lucky Drink In Egypt", "Book of Doom", 
+            "88 Dragons Bounty", "Hot Wild Pepper"
+        ];
 
         const randomizedNames = shuffle([...belatraSlots]);
         const grid = document.getElementById('grid');
