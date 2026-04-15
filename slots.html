@@ -51,19 +51,14 @@
             padding: 12px 30px; background: rgba(0, 0, 0, 0.8);
             color: #c5a059; text-decoration: none; font-size: 18px;
             font-weight: bold; border: 2px solid #c5a059; border-radius: 50px;
-            transition: 0.3s;
+            transition: 0.3s; box-shadow: 0 0 15px rgba(197, 160, 89, 0.4);
         }
 
         .content-wrapper { display: flex; width: 100%; margin-top: 160px; z-index: 100; padding: 0 20px; box-sizing: border-box; gap: 10px; }
         
-        /* СЕТКА (10 СТОЛБЦОВ) */
         .slots-grid { flex: 10; display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; padding: 10px; }
         
-        /* САЙДБАР (КОМПАКТНЫЙ) */
-        .sidebar { flex: 1.1; display: flex; flex-direction: column; gap: 30px; padding: 10px; min-width: 120px; justify-content: center; /* Это выровняет группу кнопок по центру высоты */
-    /* ИЛИ */
-    /* justify-content: space-between; */ /* Это растянет кнопки от самого верха до самого низа */
-}
+        .sidebar { flex: 1.2; display: flex; flex-direction: column; gap: 50px; padding: 10px; min-width: 120px; justify-content: center; }
 
         .provider-btn {
             background: rgba(0, 0, 0, 0.85); border: 2px solid #c5a059; border-radius: 10px;
@@ -74,11 +69,9 @@
         }
         .provider-btn:hover { background: #c5a059; color: #000; box-shadow: 0 0 30px #c5a059; transform: scale(1.05); }
 
-        /* КАРТОЧКИ */
         .card { width: 100%; height: 100px; perspective: 1000px; cursor: pointer; }
         .inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; border-radius: 8px; }
         
-        /* Фикс флипа: принудительно держим 180 градусов, если карта открыта */
         .card.open .inner { transform: rotateY(180deg) !important; }
 
         .card.hot-glow .inner { box-shadow: 0 0 20px 5px rgba(197, 160, 89, 0.8); animation: glow-pulse 2s infinite ease-in-out; }
@@ -87,33 +80,20 @@
         @keyframes glow-pulse { 0%, 100% { box-shadow: 0 0 15px 5px rgba(197, 160, 89, 0.6); } 50% { box-shadow: 0 0 30px 12px rgba(197, 160, 89, 1); } }
 
         .f, .back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 8px; border: 1.5px solid #c5a059; display: flex; align-items: center; justify-content: center; }
-        
-        /* Базовая темная рубашка */
         .f { background: rgba(0, 0, 0, 0.8) url('разворот.webp') center/cover; background-blend-mode: darken; }
-        
-        /* Класс для шахматки (светлая версия) */
         .card.zebra-light .f { background-color: rgba(0, 0, 0, 0.3); background-blend-mode: normal; }
 
         .f::after { content: '⚚'; font-size: 30px; color: #fff; text-shadow: 0 0 10px #c5a059; }
         .back { background: #000; transform: rotateY(180deg); padding: 8px; box-sizing: border-box; box-shadow: inset 0 0 20px rgba(197, 160, 89, 0.4); }
 
-        .slot-name { 
-            font-size: 18px; 
-            font-weight: bold; 
-            color: #c5a059; 
-            text-align: center; 
-            word-wrap: break-word; 
-            line-height: 1.1; 
-            text-transform: uppercase;
-            padding: 0 5px;
-        }
+        .slot-name { font-size: 18px; font-weight: bold; color: #c5a059; text-align: center; word-wrap: break-word; line-height: 1.1; text-transform: uppercase; padding: 0 5px; }
 
         @media (max-width: 1200px) { .slots-grid { grid-template-columns: repeat(8, 1fr); } }
         @media (max-width: 768px) {
             .content-wrapper { flex-direction: column; }
             .slots-grid { grid-template-columns: repeat(5, 1fr); }
             .sidebar { flex-direction: row; flex-wrap: wrap; }
-            .provider-btn { flex: 1; min-width: 100px; }
+            .provider-btn { flex: 1; min-width: 100px; font-size: 15px; }
             .slot-name { font-size: 12px; }
         }
     </style>
@@ -151,15 +131,20 @@
         const flipSnd = document.getElementById('flip-sound');
         const svgOn = document.getElementById('svg-on');
         const svgMute = document.getElementById('svg-mute');
+        
+        let isInitialized = false; // Флаг, чтобы музыка не включалась на каждый клик
 
         function startInteraction() {
+            if (isInitialized) return; // Если уже запустили — выходим
+            
             document.getElementById('v').play();
             if (bgMusic.paused) {
                 bgMusic.volume = 0.2;
                 bgMusic.play().then(() => {
                     svgOn.style.display = 'block';
                     svgMute.style.display = 'none';
-                }).catch(e => console.log("Ждем клика"));
+                    isInitialized = true; // Запоминаем, что старт выполнен
+                }).catch(e => console.log("Ждем первого честного клика"));
             }
         }
 
@@ -190,8 +175,7 @@
             return array;
         }
 
-        // --- ТОП-100 С ЛЮБИМЫМИ БОНУСКАМИ (СТРОГО ИЗ ТВОИХ СПИСКОВ) ---
-       const top100Slots = [
+        const top100Slots = [
             // Hacksaw Gaming (23)
             "Wanted Dead or a Wild", "Le Bandit", "RIP City", "Chaos Crew II", "Hand of Anubis", 
             "Slayers Inc", "Rotten", "Fist of Destruction", "Chaos Crew 3", "Ze Zeus", 
@@ -213,12 +197,12 @@
             "Digger's Fortune", "Jackpot Pagoda", "Slattors Battle - Orcs vs Elves", 
             "Long Neck Fortune", "Goose Boom Bang", "Xing Fu Panda",
 
-            // TrueLab (20) - ОБНОВЛЕНО (Без Dr. Luck)
+            // TrueLab (20) - ЧИСТЫЙ СПИСОК
             "Victoria Wild West", "Sunstrike Supernova", "Guns, Love & Therapy", "Book of Truth", 
             "Micropirates & the Kraken of the Caribbean", "Dr. Rock & the Riff Reactor", "Abyss of Glory", 
             "Book of Huli", "Happy Prison", "Egg Inc.", "Succubus Sins", "Fruity Park", 
             "Riches Digger", "Phil MemeCity", "Dr. Rock & Frozen Monkey", "Greedy Piggy", 
-            "Vituss Britva God of Random", "Most Wanted", "Street Muse", "Abyss of Glory",
+            "Vituss Britva God of Random", "Most Wanted", "Street Muse", "Dr. Rock & Creepy Monster",
 
             // BGaming (17)
             "Aztec Irwin", "Elvis Frog Trueways", "Bonanza Billion", "Snoop Dogg Dollars", 
@@ -233,8 +217,6 @@
 
         for (let i = 0; i < 100; i++) {
             const name = randomizedNames[i];
-            
-            // ЛОГИКА ШАХМАТКИ: (номер ряда + номер колонки)
             const row = Math.floor(i / 10);
             const col = i % 10;
             const zebraClass = (row + col) % 2 === 0 ? 'zebra-light' : '';
@@ -243,9 +225,7 @@
                 <div class="card ${zebraClass}" onclick="flipCard(this)">
                     <div class="inner">
                         <div class="f"></div>
-                        <div class="back">
-                            <div class="slot-name">${name}</div>
-                        </div>
+                        <div class="back"><div class="slot-name">${name}</div></div>
                     </div>
                 </div>`;
         }
