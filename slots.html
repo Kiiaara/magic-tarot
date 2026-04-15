@@ -54,12 +54,12 @@
             transition: 0.3s; box-shadow: 0 0 15px rgba(197, 160, 89, 0.4);
         }
 /* --- АНИМАЦИИ ДЛЯ ПЫЛИ --- */
-/* Медленное вращение */
+/* Медленное вращение облака пыли */
 @keyframes dustRotation {
     from { transform: translate(-50%, -50%) rotate(0deg); }
     to { transform: translate(-50%, -50%) rotate(360deg); }
 }
-/* Вращение в обратную сторону + пульсация scale */
+/* Обратное вращение + пульсация scale (эффект клубящейся пыли) */
 @keyframes dustSwirl {
     0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); opacity: 0.6; }
     50% { transform: translate(-50%, -50%) rotate(-180deg) scale(1.1); opacity: 1; }
@@ -74,12 +74,12 @@
     transition: all 0.3s ease;
 }
 
-/* Базовое состояние для обоих слоев пыли */
+/* СЛОИ ПЫЛИ: Базовое состояние */
 .provider-btn::before,
 .provider-btn::after {
     content: '';
     position: absolute;
-    /* Центрируем относительно кнопки */
+    /* Центрируем слои пыли относительно кнопки */
     top: 50%; left: 50%; 
     
     /* Делаем слои БОЛЬШЕ кнопки (например, на 30px со всех сторон) */
@@ -94,31 +94,32 @@
     pointer-events: none; /* Не мешают кликать по кнопке */
 }
 
-/* СЛОЙ ПЫЛИ 1: Внешнее облако */
+/* СЛОЙ ПЫЛИ 1: Мелкое внешнее облако (фон) */
 .provider-btn::before {
-    /* Текстура пыли из мелких точек */
+    /* Текстура мелкой золотой пыли */
     background-image: 
         radial-gradient(circle, #f5d76e 1px, transparent 1px),
         radial-gradient(circle, rgba(197, 160, 89, 0.6) 1.5px, transparent 1.5px);
     background-size: 12px 12px, 20px 20px;
     
-    /* Добавляем внешнее мягкое золотое свечение */
-    filter: blur(1px) drop-shadow(0 0 15px #c5a059); 
+    /* Добавляем мягкое золотое свечение пыли */
+    filter: blur(1.5px) drop-shadow(0 0 15px #c5a059); 
     
-    /* Начальное положение для анимации (translate(-50%, -50%) обязателен для центрирования) */
+    /* Начальное положение для центрирования */
     transform: translate(-50%, -50%) rotate(0deg);
 }
 
-/* СЛОЙ ПЫЛИ 2: Внутренние яркие частицы */
+/* СЛОЙ ПЫЛИ 2: Крупные "Светлячки" (яркие частицы) */
 .provider-btn::after {
     background-image: 
-        radial-gradient(circle, #fff 1px, transparent 1px), /* Белые искорки */
-        radial-gradient(circle, #f5d76e 1.2px, transparent 1.2px);
+        radial-gradient(circle, #fff 1.2px, transparent 1.2px), /* Белые искорки (как звезды) */
+        radial-gradient(circle, #f5d76e 1.5px, transparent 1.5px);
     background-size: 18px 18px, 25px 25px;
     
     /* Яркое, "ядерное" свечение частиц */
-    filter: blur(0.5px) drop-shadow(0 0 10px #f5d76e); 
+    filter: blur(1px) drop-shadow(0 0 10px #f5d76e); 
     
+    /* Начальное положение для центрирования */
     transform: translate(-50%, -50%) rotate(0deg);
 }
 
@@ -126,18 +127,23 @@
 .provider-btn:hover {
     color: #fff;
     text-shadow: 0 0 10px #f5d76e;
-    box-shadow: 0 0 20px rgba(197, 160, 89, 0.5); /* Сама кнопка тоже немного светится */
+    
+    /* Сама кнопка получает богатое, многослойное свечение "как на картах" */
+    box-shadow: 
+        0 0 20px 5px #f5d76e, /* Яркое золото */
+        0 0 40px 10px rgba(197, 160, 89, 0.6), /* Насыщенный шлейф */
+        0 0 80px 20px rgba(197, 160, 89, 0.3); /* Рассеянное свечение */
 }
 
-/* Проявляем и запускаем анимации слоев пыли */
+/* Проявляем и запускаем анимации для слоев пыли */
 .provider-btn:hover::before {
     opacity: 1;
-    animation: dustRotation 6s linear infinite; /* Медленно крутится облако */
+    animation: dustRotation 6s linear infinite; /* Медленно крутится фон пылевого облака */
 }
 
 .provider-btn:hover::after {
     opacity: 1;
-    animation: dustSwirl 4s ease-in-out infinite; /* Быстрее клубятся частицы */
+    animation: dustSwirl 4s ease-in-out infinite; /* Быстрее клубятся крупные "светлячки" */
 }
         .content-wrapper { display: flex; width: 100%; margin-top: 160px; z-index: 100; padding: 0 20px; box-sizing: border-box; gap: 10px; }
         
