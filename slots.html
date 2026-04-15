@@ -26,6 +26,7 @@
             pointer-events: none;
         }
 
+        /* КНОПКА МУЗЫКИ */
         .music-control-btn {
             position: fixed; top: 20px; right: 20px; z-index: 1000;
             width: 65px; height: 65px; border-radius: 50%;
@@ -36,6 +37,7 @@
         }
         .music-control-btn svg { width: 32px; height: 32px; stroke: #c5a059; filter: drop-shadow(0 0 5px rgba(197, 160, 89, 0.8)); }
 
+        /* ШАПКА */
         .header-fixed {
             position: fixed; top: 0; left: 0; width: 100%;
             display: flex; flex-direction: column; align-items: center;
@@ -44,7 +46,11 @@
             border-bottom: 1px solid rgba(197, 160, 89, 0.2);
         }
 
-        .header-title { color: #c5a059; margin: 0 0 10px 0; text-shadow: 0 0 20px #c5a059; font-size: 32px; text-transform: uppercase; letter-spacing: 3px; }
+        .header-title { 
+            color: #c5a059; margin: 0 0 10px 0; text-shadow: 0 0 25px #c5a059; 
+            font-size: 52px; text-transform: uppercase; letter-spacing: 5px; 
+        }
+        .header-title span { font-size: 64px; vertical-align: middle; margin: 0 15px; display: inline-block; }
 
         .magic-btn-back {
             position: relative; z-index: 200; margin-bottom: 15px;
@@ -53,112 +59,67 @@
             font-weight: bold; border: 2px solid #c5a059; border-radius: 50px;
             transition: 0.3s; box-shadow: 0 0 15px rgba(197, 160, 89, 0.4);
         }
-/* 1. Вектор движения №1: Вправо-вниз */
-@keyframes flyParticles-1 {
-    from { background-position: 0 0; }
-    to { background-position: 100px 100px; }
-}
 
-/* 2. Вектор движения №2: Влево-вниз (в противоход) */
-@keyframes flyParticles-2 {
-    from { background-position: 0 0; }
-    to { background-position: -100px 120px; }
-}
-
-/* 3. Мерцание для живости */
-@keyframes sparkle {
-    0%, 100% { opacity: 0.4; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.2); }
-}
-
-.provider-btn {
-    position: relative;
-    z-index: 5; /* Сама кнопка выше всех пылинок */
-    overflow: visible;
-    background: rgba(0, 0, 0, 0.9); /* Кнопка должна быть непрозрачной, чтобы закрыть пыль под собой */
-    transition: all 0.4s ease;
-}
-
-/* Общий стиль для слоев пыли */
-.provider-btn::before,
-.provider-btn::after {
-    content: '';
-    position: absolute;
-    /* Увеличиваем область вылета частиц */
-    top: -50px; left: -50px; right: -50px; bottom: -50px;
-    
-    opacity: 0;
-    z-index: -1; /* Пыль ВСЕГДА за кнопкой */
-    pointer-events: none;
-    transition: opacity 0.6s ease;
-    
-    /* Убираем прямоугольные границы через мягкую маску */
-    -webkit-mask-image: radial-gradient(circle, black 25%, transparent 70%);
-    mask-image: radial-gradient(circle, black 25%, transparent 70%);
-}
-
-/* СЛОЙ 1: Летит в одну сторону */
-.provider-btn::before {
-    background-image: 
-        radial-gradient(circle, #fff 1.2px, transparent 1.2px), /* Яркое ядро */
-        radial-gradient(circle, #f5d76e 2px, transparent 2px);  /* Золотой ореол */
-    background-size: 50px 50px;
-    filter: drop-shadow(0 0 10px #f5d76e);
-}
-
-/* СЛОЙ 2: Летит в другую сторону */
-.provider-btn::after {
-    background-image: 
-        radial-gradient(circle, #fff 1px, transparent 1px),
-        radial-gradient(circle, #c5a059 2.5px, transparent 2.5px);
-    background-size: 70px 70px;
-    filter: drop-shadow(0 0 15px #c5a059);
-}
-
-.provider-btn:hover {
-    transform: scale(1.05);
-    /* Глубокое свечение "из-под" кнопки */
-    box-shadow: 0 0 40px 10px rgba(197, 160, 89, 0.4);
-}
-
-.provider-btn:hover::before {
-    opacity: 1;
-    animation: 
-        flyParticles-1 8s linear infinite,
-        sparkle 3s ease-in-out infinite;
-}
-
-.provider-btn:hover::after {
-    opacity: 0.8;
-    animation: 
-        flyParticles-2 12s linear infinite,
-        sparkle 4s ease-in-out infinite reverse; /* Мерцает вразнобой с первым слоем */
-}
-        .content-wrapper { display: flex; width: 100%; margin-top: 160px; z-index: 100; padding: 0 20px; box-sizing: border-box; gap: 10px; }
-        
+        /* КОНТЕНТ */
+        .content-wrapper { display: flex; width: 100%; margin-top: 200px; z-index: 100; padding: 0 20px; box-sizing: border-box; gap: 10px; }
         .slots-grid { flex: 10; display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; padding: 10px; }
-        
-        .sidebar { flex: 1.2; display: flex; flex-direction: column; gap: 50px; padding: 10px; min-width: 120px; justify-content: center; }
+        .sidebar { flex: 1.2; display: flex; flex-direction: column; gap: 55px; padding: 10px; min-width: 130px; justify-content: center; }
 
+        /* АНИМАЦИИ ПЫЛИ */
+        @keyframes flyParticles-1 { from { background-position: 0 0; } to { background-position: 150px 150px; } }
+        @keyframes flyParticles-2 { from { background-position: 0 0; } to { background-position: -120px 180px; } }
+        @keyframes sparkle { 0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) translateZ(-1px) scale(1); } 50% { opacity: 1; transform: translate(-50%, -50%) translateZ(-1px) scale(1.2); } }
+
+        /* КНОПКИ ПРОВАЙДЕРОВ (ФИКС СВЕТЛЯЧКОВ) */
         .provider-btn {
-            background: rgba(0, 0, 0, 0.85); border: 2px solid #c5a059; border-radius: 10px;
-            padding: 15px 5px; color: #c5a059; text-decoration: none; text-align: center;
+            position: relative;
+            background: rgba(0, 0, 0, 0.95); border: 2px solid #c5a059; border-radius: 10px;
+            padding: 18px 5px; color: #c5a059; text-decoration: none; text-align: center;
             font-weight: bold; text-transform: uppercase; font-size: 27px;
             transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 0 10px rgba(197, 160, 89, 0.2);
+            
+            /* Магия: создаем 3D контекст, чтобы вынести частицы назад */
+            transform-style: preserve-3d;
+            z-index: 5;
         }
-        .provider-btn:hover { background: #c5a059; color: #000; box-shadow: 0 0 30px #c5a059; transform: scale(1.05); }
 
+        .provider-btn::before, .provider-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: calc(100% + 100px); height: calc(100% + 100px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease;
+            
+            /* Сдвигаем назад по оси Z */
+            transform: translate(-50%, -50%) translateZ(-1px);
+            z-index: -1; 
+
+            -webkit-mask-image: radial-gradient(circle, black 20%, transparent 70%);
+            mask-image: radial-gradient(circle, black 20%, transparent 70%);
+        }
+
+        .provider-btn::before {
+            background-image: radial-gradient(circle, #fff 1.2px, transparent 1.2px), radial-gradient(circle, #f5d76e 2.5px, transparent 2.5px);
+            background-size: 40px 40px; filter: drop-shadow(0 0 12px #f5d76e);
+        }
+
+        .provider-btn::after {
+            background-image: radial-gradient(circle, #fff 1px, transparent 1px), radial-gradient(circle, #c5a059 3px, transparent 3px);
+            background-size: 60px 60px; filter: drop-shadow(0 0 18px #c5a059);
+        }
+
+        .provider-btn:hover { background: #c5a059; color: #000; transform: scale(1.1); box-shadow: 0 0 40px rgba(197, 160, 89, 0.5); }
+        .provider-btn:hover::before { opacity: 1; animation: flyParticles-1 10s linear infinite, sparkle 3s ease-in-out infinite; }
+        .provider-btn:hover::after { opacity: 0.8; animation: flyParticles-2 15s linear infinite, sparkle 4s ease-in-out infinite reverse; }
+
+        /* КАРТОЧКИ СЛОТОВ */
         .card { width: 100%; height: 100px; perspective: 1000px; cursor: pointer; }
         .inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; border-radius: 8px; }
-        
         .card.open .inner { transform: rotateY(180deg) !important; }
-
-        .card.hot-glow .inner { box-shadow: 0 0 20px 5px rgba(197, 160, 89, 0.8); animation: glow-pulse 2s infinite ease-in-out; }
-        .card.open.hot-glow .inner { animation: none; box-shadow: 0 0 30px 10px rgba(197, 160, 89, 0.6); }
-
-        @keyframes glow-pulse { 0%, 100% { box-shadow: 0 0 15px 5px rgba(197, 160, 89, 0.6); } 50% { box-shadow: 0 0 30px 12px rgba(197, 160, 89, 1); } }
-
+        
         .f, .back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 8px; border: 1.5px solid #c5a059; display: flex; align-items: center; justify-content: center; }
         .f { background: rgba(0, 0, 0, 0.8) url('разворот.webp') center/cover; background-blend-mode: darken; }
         .card.zebra-light .f { background-color: rgba(0, 0, 0, 0.3); background-blend-mode: normal; }
@@ -170,11 +131,10 @@
 
         @media (max-width: 1200px) { .slots-grid { grid-template-columns: repeat(8, 1fr); } }
         @media (max-width: 768px) {
-            .content-wrapper { flex-direction: column; }
+            .content-wrapper { flex-direction: column; margin-top: 180px; }
             .slots-grid { grid-template-columns: repeat(5, 1fr); }
-            .sidebar { flex-direction: row; flex-wrap: wrap; }
-            .provider-btn { flex: 1; min-width: 100px; font-size: 15px; }
-            .slot-name { font-size: 12px; }
+            .sidebar { flex-direction: row; flex-wrap: wrap; gap: 15px; }
+            .provider-btn { flex: 1; min-width: 110px; font-size: 16px; padding: 10px; }
         }
     </style>
 </head>
@@ -212,19 +172,18 @@
         const svgOn = document.getElementById('svg-on');
         const svgMute = document.getElementById('svg-mute');
         
-        let isInitialized = false; // Флаг, чтобы музыка не включалась на каждый клик
+        let isInitialized = false;
 
         function startInteraction() {
-            if (isInitialized) return; // Если уже запустили — выходим
-            
+            if (isInitialized) return;
             document.getElementById('v').play();
             if (bgMusic.paused) {
                 bgMusic.volume = 0.2;
                 bgMusic.play().then(() => {
                     svgOn.style.display = 'block';
                     svgMute.style.display = 'none';
-                    isInitialized = true; // Запоминаем, что старт выполнен
-                }).catch(e => console.log("Ждем первого честного клика"));
+                    isInitialized = true;
+                }).catch(e => console.log("Interaction needed"));
             }
         }
 
@@ -256,35 +215,26 @@
         }
 
         const top100Slots = [
-            // Hacksaw Gaming (23)
             "Wanted Dead or a Wild", "Le Bandit", "RIP City", "Chaos Crew II", "Hand of Anubis", 
             "Slayers Inc", "Rotten", "Fist of Destruction", "Chaos Crew 3", "Ze Zeus", 
             "Pray for Three", "Mayan Stackways", "Stack 'Em", "Dark Summoning", "Wings of Horus", 
             "Mystery Motel", "Double Rainbow", "Gronk's Gems", "Vending Machine", "Twisted Lab", 
             "Rusty & Curly", "Cash Crew", "Dork Unit",
-
-            // Pragmatic Play (20)
             "Gates of Olympus 1000", "Sugar Rush 1000", "Sweet Bonanza 1000", "Starlight Princess 1000", 
             "Zeus vs Hades – Gods of War 250", "Big Bass Splash 1000", "Wisdom of Athena 1000 Xmas", 
             "The Dog House Megaways", "Gems Bonanza", "Madame Destiny Megaways", "Cleocatra", 
             "Forge of Olympus", "Juicy Fruits", "Fruit Party 2", "Release the Bison", 
             "Rise of Pyramids", "Fire Portals", "Candy Corner", "Moleionaire", "Loki's Riches",
-
-            // Belatra (20)
             "MummyLand Treasures", "Big Wild Buffalo", "Big Wild Buffalo 2", "Crystals Digger", 
             "Rise of Zeus", "Tony Gambler", "Richy Hog", "4 Secrets of Aladdin", "Fortune Mummy", 
             "Voodoo Coins", "Dragon's Bonanza", "Cops vs Robs", "Big Bang 2", "Ice Bass", 
             "Digger's Fortune", "Jackpot Pagoda", "Slattors Battle - Orcs vs Elves", 
             "Long Neck Fortune", "Goose Boom Bang", "Xing Fu Panda",
-
-            // TrueLab (20) - ЧИСТЫЙ СПИСОК
             "Victoria Wild West", "Sunstrike Supernova", "Guns, Love & Therapy", "Book of Truth", 
             "Micropirates & the Kraken of the Caribbean", "Dr. Rock & the Riff Reactor", "Abyss of Glory", 
             "Book of Huli", "Happy Prison", "Egg Inc.", "Succubus Sins", "Fruity Park", 
             "Riches Digger", "Phil MemeCity", "Dr. Rock & Frozen Monkey", "Greedy Piggy", 
             "Vituss Britva God of Random", "Most Wanted", "Street Muse", "Dr. Rock & Creepy Monster",
-
-            // BGaming (17)
             "Aztec Irwin", "Elvis Frog Trueways", "Bonanza Billion", "Snoop Dogg Dollars", 
             "Gemza", "Alien Fruits 2", "Mice & Magic Wonder Spin", "Dice Bonanza", 
             "Gemhalla", "Savage Buffalo Spirit Megaways", "Sweet Rush Megaways", "Potion Spells", 
